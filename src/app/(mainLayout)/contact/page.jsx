@@ -17,7 +17,7 @@ import {
 import { FaFacebookF, FaYoutube, FaLinkedinIn, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+import { API_BASE_URL as API_URL } from "@/config/api";
 
 const ContactPage = () => {
   const { t, language } = useLanguage();

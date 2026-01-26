@@ -7,6 +7,8 @@ import { FiUser, FiMail, FiPhone, FiLock, FiCheck, FiAward, FiUsers, FiBookOpen 
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
+import { API_BASE_URL } from "@/config/api";
+
 const Register = () => {
   const router = useRouter();
   const { language } = useLanguage();
@@ -52,8 +54,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://hiictpark-backend.vercel.app/api";
-      const res = await fetch(`${BASE_URL}/auth/register`, {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -80,7 +81,7 @@ const Register = () => {
       // If registration didn't return a token, try explicit login
       if (!token || !user) {
         try {
-          const loginRes = await fetch(`${BASE_URL}/auth/login`, {
+          const loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

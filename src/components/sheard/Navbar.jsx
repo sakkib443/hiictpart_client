@@ -17,7 +17,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+import { API_BASE_URL as API_URL } from "@/config/api";
 
 // Category icons mapping
 const categoryIcons = {

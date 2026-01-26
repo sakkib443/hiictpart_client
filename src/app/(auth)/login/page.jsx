@@ -7,6 +7,8 @@ import { FiMail, FiLock, FiCheck, FiShield, FiClock, FiHeadphones } from "react-
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
+import { API_BASE_URL } from "@/config/api";
+
 const Login = () => {
   const router = useRouter();
   const { language } = useLanguage();
@@ -25,9 +27,8 @@ const Login = () => {
     setError("");
 
     try {
-      // Use local API in development, fallback to Vercel if needed
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://hiictpark-backend.vercel.app/api";
-      const res = await fetch(`${BASE_URL}/auth/login`, {
+      // Use centralized API URL
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
