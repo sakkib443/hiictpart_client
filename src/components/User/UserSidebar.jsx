@@ -99,6 +99,7 @@ const UserSidebar = () => {
             gradient: 'from-[#E62D26] to-[#f79952]',
             submenu: [
                 { title: 'My Courses', href: '/dashboard/user/courses', icon: FiBook, count: stats?.totalEnrolled },
+                { title: 'Live Classes', href: '/dashboard/user/live-classes', icon: FiCalendar },
                 { title: 'My Schedule', href: '/dashboard/user/schedule', icon: FiClock },
                 { title: 'Assignments', href: '/dashboard/user/assignments', icon: FiLayout },
             ],

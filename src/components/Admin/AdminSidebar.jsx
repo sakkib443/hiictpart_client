@@ -95,6 +95,10 @@ const AdminSidebar = () => {
         { title: 'All Lessons', href: '/dashboard/admin/lesson', icon: FiPlay },
         { title: 'Create Lesson', href: '/dashboard/admin/lesson/create', icon: FiFileText },
         { title: 'Enrollments', href: '/dashboard/admin/enrollment', icon: FiUserCheck },
+        { title: 'All Batches', href: '/dashboard/admin/batch', icon: FiUsers },
+        { title: 'Create Batch', href: '/dashboard/admin/batch/create', icon: FiFileText },
+        { title: 'Live Classes', href: '/dashboard/admin/live-class', icon: FiPlay },
+        { title: 'Schedule Class', href: '/dashboard/admin/live-class/create', icon: FiFileText },
       ],
     },
     {
