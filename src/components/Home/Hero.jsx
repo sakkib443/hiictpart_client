@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { LuBrain, LuAward, LuTarget, LuUsers } from "react-icons/lu";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const Hero = () => {
     const { language, t } = useLanguage();
@@ -403,3 +403,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

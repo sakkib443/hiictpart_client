@@ -14,7 +14,7 @@ export default function MentorWebsitePage() {
     const [statusFilter, setStatusFilter] = useState('all');
 
     const fetchWebsites = async () => {
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
         try {
             setLoading(true);
@@ -277,3 +277,4 @@ export default function MentorWebsitePage() {
         </div>
     );
 }
+

@@ -20,7 +20,7 @@ export default function CreateModulePage() {
         isPublished: true,
     });
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -239,4 +239,5 @@ export default function CreateModulePage() {
         </div>
     );
 }
+
 

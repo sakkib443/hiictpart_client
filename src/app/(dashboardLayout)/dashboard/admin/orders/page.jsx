@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState([]);
@@ -537,3 +537,4 @@ export default function OrdersPage() {
         </div>
     );
 }
+

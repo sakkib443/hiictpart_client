@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 // Icon mapping
 const iconMap = {
@@ -219,3 +219,4 @@ const PageContentDashboard = () => {
 };
 
 export default PageContentDashboard;
+

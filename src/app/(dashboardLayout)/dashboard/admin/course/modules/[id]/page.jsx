@@ -22,7 +22,7 @@ export default function CourseModulesPage({ params: paramsPromise }) {
         data: { title: '', titleBn: '', description: '', order: 1 }
     });
 
-    const BASE_URL = 'https://motionboss-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchData = async () => {
         setLoading(true);

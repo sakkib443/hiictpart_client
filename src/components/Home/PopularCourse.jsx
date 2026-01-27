@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import SharedCourseCard from "@/components/sheard/CourseCard";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 // Loading Skeleton
 const CourseCardSkeleton = () => (
@@ -281,3 +281,4 @@ const PopularCourse = () => {
 };
 
 export default PopularCourse;
+

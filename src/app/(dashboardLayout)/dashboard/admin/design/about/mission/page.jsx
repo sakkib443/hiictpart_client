@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiSave, FiRefreshCw } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const AboutMissionDesignPage = () => {
     const [loading, setLoading] = useState(true);
@@ -127,3 +127,4 @@ const AboutMissionDesignPage = () => {
 };
 
 export default AboutMissionDesignPage;
+

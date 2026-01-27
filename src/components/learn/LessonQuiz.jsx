@@ -20,7 +20,7 @@ export default function LessonQuiz({ lessonId, questions = [], quizSettings = {}
     const [loading, setLoading] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(null);
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     // Timer for quiz
     useEffect(() => {
@@ -385,3 +385,4 @@ export default function LessonQuiz({ lessonId, questions = [], quizSettings = {}
         </div>
     );
 }
+

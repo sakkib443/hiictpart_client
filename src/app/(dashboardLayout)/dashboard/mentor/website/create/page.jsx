@@ -58,7 +58,7 @@ export default function MentorCreateWebsitePage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
             try {
                 const catRes = await fetch(`${BASE_URL}/categories?type=website`);
                 const catData = await catRes.json();
@@ -70,7 +70,7 @@ export default function MentorCreateWebsitePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
 
         // Clean up empty arrays
@@ -292,3 +292,4 @@ export default function MentorCreateWebsitePage() {
         </div>
     );
 }
+

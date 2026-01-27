@@ -96,7 +96,7 @@ export default function AnalyticsPage() {
         software: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     });
 
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchAnalytics = async () => {
         try {
@@ -519,3 +519,4 @@ export default function AnalyticsPage() {
         </div>
     );
 }
+

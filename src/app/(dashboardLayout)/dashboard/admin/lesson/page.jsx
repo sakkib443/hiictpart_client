@@ -15,7 +15,7 @@ export default function LessonsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [deleteModal, setDeleteModal] = useState({ show: false, id: null, title: '' });
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchLessons = async () => {
         try {
@@ -255,3 +255,4 @@ export default function LessonsPage() {
         </div>
     );
 }
+

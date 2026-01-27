@@ -25,7 +25,7 @@ const MentorSoftwarePage = () => {
     const router = useRouter();
 
     const fetchSoftware = async () => {
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
         try {
             setLoading(true);
@@ -272,3 +272,4 @@ const MentorSoftwarePage = () => {
 };
 
 export default MentorSoftwarePage;
+

@@ -19,7 +19,7 @@ export default function CreateUserPage() {
         role: 'student',
     });
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -224,3 +224,4 @@ export default function CreateUserPage() {
         </div>
     );
 }
+

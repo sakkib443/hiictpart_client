@@ -7,7 +7,7 @@ import {
     FiTrash2, FiEdit2, FiEye, FiRefreshCw, FiLayout, FiStar
 } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 export default function WebsiteAdminPage() {
     const [websites, setWebsites] = useState([]);
@@ -257,3 +257,4 @@ export default function WebsiteAdminPage() {
         </div>
     );
 }
+

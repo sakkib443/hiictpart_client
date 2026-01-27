@@ -15,7 +15,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const CheckoutContent = () => {
     const { items: cartItems, totalAmount: cartTotal } = useSelector((state) => state.cart || { items: [], totalAmount: 0 });
@@ -613,3 +613,4 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+

@@ -15,7 +15,7 @@ export default function AllModulesPage() {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchData = async () => {
         setLoading(true);
@@ -261,3 +261,4 @@ export default function AllModulesPage() {
         </div>
     );
 }
+

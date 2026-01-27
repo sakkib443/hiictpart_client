@@ -40,7 +40,7 @@ export default function SettingsPage() {
     const [updatingPassword, setUpdatingPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [passwordSuccess, setPasswordSuccess] = useState('');
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const handleChange = (key, value) => {
         setSettings(prev => ({ ...prev, [key]: value }));
@@ -385,3 +385,4 @@ export default function SettingsPage() {
         </div>
     );
 }
+

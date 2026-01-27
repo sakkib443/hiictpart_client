@@ -22,7 +22,7 @@ export default function EditModulePage({ params: paramsPromise }) {
         isPublished: true,
     });
 
-    const BASE_URL = 'https://motionboss-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     useEffect(() => {
         const fetchData = async () => {

@@ -49,7 +49,7 @@ export default function EditSoftwarePage() {
     const imageFields = useFieldArray({ control, name: 'images' });
 
     const fetchData = useCallback(async () => {
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
         try {
             setFetching(true);
@@ -87,7 +87,7 @@ export default function EditSoftwarePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
 
         try {

@@ -18,7 +18,7 @@ export default function MentorOrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchOrders = async () => {
         try {
@@ -433,3 +433,4 @@ export default function MentorOrdersPage() {
         </div>
     );
 }
+

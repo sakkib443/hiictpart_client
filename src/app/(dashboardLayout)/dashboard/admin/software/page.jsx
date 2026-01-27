@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const PLATFORM_OPTIONS = [
     'WordPress', 'PHP', 'JavaScript', 'Python', 'React', 'Next.js', 'Vue.js',
@@ -373,3 +373,4 @@ const SoftwarePage = () => {
 };
 
 export default SoftwarePage;
+

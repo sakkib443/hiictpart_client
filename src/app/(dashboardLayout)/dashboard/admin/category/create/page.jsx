@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiArrowLeft, FiSave, FiLoader, FiImage, FiGlobe, FiInfo, FiBook, FiCode, FiLayout, FiCheck, FiFolder, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import { API_BASE_URL } from '@/config/api';
+
 
 const CreateCategory = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ const CreateCategory = () => {
   // Fetch parent categories
   useEffect(() => {
     const fetchParents = async () => {
-      const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+      const BASE_URL = API_BASE_URL;
       const token = localStorage.getItem('token');
       try {
         const res = await fetch(`${BASE_URL}/categories/admin/parents`, {
@@ -49,7 +51,7 @@ const CreateCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
     const token = localStorage.getItem('token');
 
     // Prepare payload
@@ -342,3 +344,4 @@ const CreateCategory = () => {
 };
 
 export default CreateCategory;
+

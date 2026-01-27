@@ -95,7 +95,7 @@ export default function CreateSoftwarePage() {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
             try {
                 const res = await fetch(`${BASE_URL}/categories?type=software`);
                 const data = await res.json();
@@ -108,7 +108,7 @@ export default function CreateSoftwarePage() {
     // Fetch existing software data if in edit mode
     useEffect(() => {
         if (isEditMode && editId) {
-            const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
             const token = localStorage.getItem('token');
 
             const fetchSoftware = async () => {
@@ -161,7 +161,7 @@ export default function CreateSoftwarePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -550,3 +550,4 @@ export default function CreateSoftwarePage() {
         </div>
     );
 }
+

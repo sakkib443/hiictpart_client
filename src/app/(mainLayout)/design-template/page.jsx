@@ -19,7 +19,7 @@ import {
 } from "react-icons/lu";
 import { useLanguage } from "@/context/LanguageContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const DesignTemplatePage = () => {
     const { language } = useLanguage();
@@ -357,3 +357,4 @@ const DesignTemplatePage = () => {
 };
 
 export default DesignTemplatePage;
+

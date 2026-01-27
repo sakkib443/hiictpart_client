@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { LuPlus, LuPencil, LuTrash2, LuSearch, LuTag, LuPercent, LuCalendar, LuUsers, LuCheck, LuX, LuCopy, LuRefreshCw } from 'react-icons/lu';
 import { useTheme } from '@/providers/ThemeProvider';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const CouponsPage = () => {
     const { isDark } = useTheme();
@@ -509,3 +509,4 @@ const CouponsPage = () => {
 };
 
 export default CouponsPage;
+

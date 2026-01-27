@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const NotificationDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -293,3 +293,4 @@ const NotificationDropdown = () => {
 };
 
 export default NotificationDropdown;
+

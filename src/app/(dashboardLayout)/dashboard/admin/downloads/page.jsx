@@ -12,7 +12,7 @@ export default function DownloadsPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
-    const BASE_URL = 'https://hiictpark-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchDownloads = async () => {
         try {
@@ -183,3 +183,4 @@ export default function DownloadsPage() {
         </div>
     );
 }
+

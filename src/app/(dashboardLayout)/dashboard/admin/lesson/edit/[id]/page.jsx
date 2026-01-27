@@ -58,7 +58,7 @@ export default function EditLessonPage() {
     const [modules, setModules] = useState([]);
     const [fetchingModules, setFetchingModules] = useState(false);
 
-    const BASE_URL = 'https://motionboss-backend.vercel.app/api';
+    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
     const fetchModules = async (courseId) => {
         if (!courseId) {

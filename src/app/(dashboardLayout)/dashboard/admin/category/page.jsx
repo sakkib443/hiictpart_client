@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiEdit3, FiTrash2, FiLoader, FiCheck, FiX, FiGrid, FiSearch, FiRefreshCw, FiBook, FiCode, FiLayout, FiFolder, FiChevronRight, FiChevronDown } from 'react-icons/fi';
 import Link from 'next/link';
+import { API_BASE_URL } from '@/config/api';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+
+const API_URL = API_BASE_URL;
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);

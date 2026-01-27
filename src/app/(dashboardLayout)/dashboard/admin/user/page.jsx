@@ -6,7 +6,7 @@ import {
   FiSearch, FiUsers, FiTrash2, FiPlus, FiCalendar, FiLoader, FiCheck, FiX, FiRefreshCw
 } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://hiictpark-backend.vercel.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -318,3 +318,4 @@ const UserManagement = () => {
 };
 
 export default UserManagement;
+
