@@ -38,12 +38,20 @@ export default function CreateBatchPage() {
     const fetchCourses = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}/courses/admin/all?courseType=online&limit=100`, {
+            const res = await fetch(`${API_URL}/courses/admin/all?limit=100`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
+            console.log('Courses response:', data);
             if (data.success) {
                 setCourses(data.data || []);
+            } else {
+                // Try alternative endpoint
+                const res2 = await fetch(`${API_URL}/courses?limit=100`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                const data2 = await res2.json();
+                setCourses(data2.data || []);
             }
         } catch (error) {
             console.error('Error fetching courses:', error);
