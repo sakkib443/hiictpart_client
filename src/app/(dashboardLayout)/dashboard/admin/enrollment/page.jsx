@@ -581,6 +581,7 @@ export default function EnrollmentsPage() {
                     </div>
                 </div>
             )}
+        </div>
     );
 }
 
