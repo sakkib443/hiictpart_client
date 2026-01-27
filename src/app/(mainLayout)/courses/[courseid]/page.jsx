@@ -10,13 +10,14 @@ import { addToCart } from "@/redux/cartSlice";
 import {
   LuDownload, LuExternalLink, LuClock, LuTrophy,
   LuLayoutGrid, LuEye, LuPackage, LuShieldCheck,
-  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers
+  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers, LuCalendar, LuTimer, LuGraduationCap
 } from "react-icons/lu";
 import { FaHeart, FaRegHeart, FaStar, FaArrowRight } from "react-icons/fa";
 import { MdVerified, MdOutlineMenuBook, MdPlayCircleOutline } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ReviewsSection from "@/components/Reviews/ReviewsSection";
+import { API_URL } from "@/config/api";
 
 // Animated Counter - matching Website Details
 const AnimatedCounter = ({ value }) => {
@@ -59,8 +60,31 @@ const SingleCourse = () => {
   const [popularCourses, setPopularCourses] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLiking, setIsLiking] = useState(false);
+  const [batches, setBatches] = useState([]);
+  const [loadingBatches, setLoadingBatches] = useState(false);
 
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
+
+  useEffect(() => {
+    dispatch(fetchSingleCourse(id));
+    dispatch(fetchCoursesData());
+    fetchBatches();
+  }, [dispatch, id]);
+
+  const fetchBatches = async () => {
+    try {
+      setLoadingBatches(true);
+      const res = await fetch(`${API_URL}/batches?course=${id}&isActive=true`);
+      const data = await res.json();
+      if (data.success) {
+        setBatches(data.data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching batches:', error);
+    } finally {
+      setLoadingBatches(false);
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchSingleCourse(id));
@@ -597,6 +621,132 @@ const SingleCourse = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Batch Information Section - Only for Online Courses */}
+                {currentCourse.courseType === 'online' && batches.length > 0 && (
+                  <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-md border border-indigo-100 shadow-sm overflow-hidden">
+                    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-3">
+                      <h3 className="text-white font-bold outfit flex items-center gap-2">
+                        <LuGraduationCap size={18} />
+                        Available Batches
+                      </h3>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      {batches.slice(0, 3).map((batch, idx) => (
+                        <div 
+                          key={batch._id} 
+                          className={`relative p-4 rounded-lg border-2 transition-all hover:shadow-md ${
+                            idx === 0 
+                              ? 'bg-white border-indigo-200 shadow-sm' 
+                              : 'bg-gray-50/50 border-gray-200 hover:border-indigo-200'
+                          }`}
+                        >
+                          {/* Batch Header */}
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${
+                                batch.status === 'upcoming' 
+                                  ? 'bg-amber-100 text-amber-700' 
+                                  : batch.status === 'ongoing'
+                                  ? 'bg-green-100 text-green-700'
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}>
+                                {batch.status?.toUpperCase()}
+                              </span>
+                              {idx === 0 && (
+                                <span className="px-2 py-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold rounded">
+                                  RECOMMENDED
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-xs font-medium text-gray-400 poppins">
+                              {batch.enrolledStudents?.length || 0}/{batch.maxStudents} Seats
+                            </span>
+                          </div>
+
+                          {/* Batch Name & Code */}
+                          <h4 className="font-bold text-gray-900 outfit text-base mb-1">{batch.batchName}</h4>
+                          <p className="text-xs text-indigo-600 font-semibold poppins mb-3">Code: {batch.batchCode}</p>
+
+                          {/* Batch Details Grid */}
+                          <div className="grid grid-cols-2 gap-2 mb-3">
+                            <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-100">
+                              <div className="w-7 h-7 rounded bg-green-50 flex items-center justify-center">
+                                <LuCalendar className="text-green-600" size={14} />
+                              </div>
+                              <div>
+                                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Start Date</p>
+                                <p className="text-xs font-semibold text-gray-800">
+                                  {new Date(batch.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-100">
+                              <div className="w-7 h-7 rounded bg-red-50 flex items-center justify-center">
+                                <LuTimer className="text-red-600" size={14} />
+                              </div>
+                              <div>
+                                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Last Date</p>
+                                <p className="text-xs font-semibold text-gray-800">
+                                  {batch.enrollmentDeadline 
+                                    ? new Date(batch.enrollmentDeadline).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+                                    : new Date(batch.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+                                  }
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Schedule Preview */}
+                          {batch.schedule?.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {batch.schedule.slice(0, 3).map((sch, sIdx) => (
+                                <span key={sIdx} className="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-medium rounded capitalize">
+                                  {sch.day} {sch.startTime}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Progress Bar for Seats */}
+                          <div className="mb-3">
+                            <div className="flex justify-between text-[10px] text-gray-500 mb-1">
+                              <span>Enrollment Progress</span>
+                              <span>{Math.round(((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100)}%</span>
+                            </div>
+                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all"
+                                style={{ width: `${((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Enroll Button */}
+                          <button
+                            onClick={() => {
+                              handleAddToCart();
+                              router.push('/cart');
+                            }}
+                            className={`w-full py-2.5 rounded-md font-semibold text-sm transition-all poppins ${
+                              idx === 0
+                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-200'
+                                : 'bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50'
+                            }`}
+                          >
+                            Enroll in {batch.batchName}
+                          </button>
+                        </div>
+                      ))}
+
+                      {batches.length > 3 && (
+                        <button className="w-full py-2 text-indigo-600 font-medium text-sm border border-dashed border-indigo-200 rounded-md hover:bg-indigo-50 transition-colors poppins">
+                          View All {batches.length} Batches
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Recommended Courses Widget mirroring Website Popular Websites */}
                 <div className="bg-white rounded-md p-5 border border-gray-200 shadow-sm">
