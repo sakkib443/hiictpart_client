@@ -1,7 +1,5 @@
 "use client";
-import { API_URL, API_BASE_URL } from '@/config/api';
-
-
+import { API_URL } from '@/config/api';
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,11 +15,10 @@ import {
     LuDownload,
     LuArrowRight,
     LuSparkles,
-    LuHeart
+    LuHeart,
+    LuShoppingCart
 } from "react-icons/lu";
 import { useLanguage } from "@/context/LanguageContext";
-
-
 
 const DesignTemplatePage = () => {
     const { language } = useLanguage();
@@ -31,89 +28,57 @@ const DesignTemplatePage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [viewMode, setViewMode] = useState("grid");
-
-    // Sample templates data (will be replaced with API data)
-    const [templates, setTemplates] = useState([
-        {
-            _id: "1",
-            title: "Business Pro Template",
-            category: "Business",
-            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600",
-            price: 2500,
-            rating: 4.8,
-            downloads: 1250,
-            views: 8500
-        },
-        {
-            _id: "2",
-            title: "Creative Portfolio",
-            category: "Portfolio",
-            image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
-            price: 1800,
-            rating: 4.9,
-            downloads: 980,
-            views: 6200
-        },
-        {
-            _id: "3",
-            title: "E-commerce starter",
-            category: "E-commerce",
-            image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600",
-            price: 3500,
-            rating: 4.7,
-            downloads: 2100,
-            views: 12000
-        },
-        {
-            _id: "4",
-            title: "Blog starter kit",
-            category: "Blog",
-            image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600",
-            price: 1200,
-            rating: 4.6,
-            downloads: 1800,
-            views: 9500
-        },
-        {
-            _id: "5",
-            title: "Agency pro",
-            category: "Agency",
-            image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600",
-            price: 2800,
-            rating: 4.9,
-            downloads: 1500,
-            views: 7800
-        },
-        {
-            _id: "6",
-            title: "Restaurant template",
-            category: "Restaurant",
-            image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600",
-            price: 2200,
-            rating: 4.5,
-            downloads: 890,
-            views: 5400
-        },
+    const [templates, setTemplates] = useState([]);
+    const [categories, setCategories] = useState([
+        { value: "all", label: language === "bn" ? "সব" : "All" }
     ]);
 
-    const categories = [
-        { value: "all", label: language === "bn" ? "সব" : "All" },
-        { value: "business", label: language === "bn" ? "বিজনেস" : "Business" },
-        { value: "portfolio", label: language === "bn" ? "পোর্টফোলিও" : "Portfolio" },
-        { value: "ecommerce", label: language === "bn" ? "ই-কমার্স" : "E-commerce" },
-        { value: "blog", label: language === "bn" ? "ব্লগ" : "Blog" },
-        { value: "agency", label: language === "bn" ? "এজেন্সি" : "Agency" },
-    ];
-
+    // Fetch design templates from API
     useEffect(() => {
-        const timer = setTimeout(() => setIsVisible(true), 100);
-        setLoading(false);
-        return () => clearTimeout(timer);
-    }, []);
+        const fetchTemplates = async () => {
+            try {
+                setLoading(true);
+                const res = await fetch(`${API_URL}/design-templates?limit=50`);
+                const data = await res.json();
+                if (data.success) {
+                    setTemplates(data.data || []);
+                }
+            } catch (error) {
+                console.error('Error fetching templates:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const fetchCategories = async () => {
+            try {
+                const res = await fetch(`${API_URL}/categories?type=design`);
+                const data = await res.json();
+                if (data.success && data.data) {
+                    const cats = [
+                        { value: "all", label: language === "bn" ? "সব" : "All" },
+                        ...data.data.map(cat => ({
+                            value: cat._id,
+                            label: cat.name
+                        }))
+                    ];
+                    setCategories(cats);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchTemplates();
+        fetchCategories();
+        setIsVisible(true);
+    }, [language]);
 
     const filteredTemplates = templates.filter(template => {
-        const matchesSearch = template.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = selectedCategory === "all" || template.category.toLowerCase() === selectedCategory;
+        const matchesSearch = (template.title || template.name || '').toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === "all" || 
+            template.category?._id === selectedCategory || 
+            template.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
 
@@ -249,8 +214,8 @@ const DesignTemplatePage = () => {
                                     {/* Image */}
                                     <div className={`relative overflow-hidden ${viewMode === "list" ? "w-64 flex-shrink-0" : "aspect-[16/10]"}`}>
                                         <Image
-                                            src={template.image}
-                                            alt={template.title}
+                                            src={template.thumbnail || template.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600"}
+                                            alt={template.title || template.name}
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
@@ -269,7 +234,7 @@ const DesignTemplatePage = () => {
                                         {/* Category Badge */}
                                         <div className="absolute bottom-3 left-3">
                                             <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-bold text-slate-700">
-                                                {template.category}
+                                                {template.category?.name || template.category || "Design"}
                                             </span>
                                         </div>
                                     </div>
@@ -278,22 +243,22 @@ const DesignTemplatePage = () => {
                                     <div className={`p-5 ${viewMode === "list" ? "flex-1 flex flex-col justify-between" : ""}`}>
                                         <div>
                                             <h3 className={`text-base font-bold text-slate-800 dark:text-white mb-2 group-hover:text-[#E62D26] transition-colors ${bengaliClass}`}>
-                                                {template.title}
+                                                {template.title || template.name}
                                             </h3>
 
                                             {/* Stats */}
                                             <div className="flex items-center gap-4 text-slate-500 mb-3">
                                                 <div className="flex items-center gap-1">
                                                     <LuStar className="text-amber-400" size={14} />
-                                                    <span className="text-xs font-semibold">{template.rating}</span>
+                                                    <span className="text-xs font-semibold">{template.rating || template.averageRating || 4.5}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <LuDownload size={14} />
-                                                    <span className="text-xs">{template.downloads}</span>
+                                                    <span className="text-xs">{template.downloads || template.totalDownloads || 0}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
-                                                    <LuEye size={14} />
-                                                    <span className="text-xs">{template.views}</span>
+                                                    <LuShoppingCart size={14} />
+                                                    <span className="text-xs">{template.sales || template.totalSales || 0}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -301,7 +266,14 @@ const DesignTemplatePage = () => {
                                         {/* Price & Action */}
                                         <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5">
                                             <div>
-                                                <span className="text-lg font-bold text-[#E62D26]">৳{template.price}</span>
+                                                {template.offerPrice ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-lg font-bold text-[#E62D26]">৳{template.offerPrice}</span>
+                                                        <span className="text-sm text-slate-400 line-through">৳{template.price}</span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-lg font-bold text-[#E62D26]">৳{template.price || 0}</span>
+                                                )}
                                             </div>
                                             <Link
                                                 href={`/design-template/${template._id}`}
