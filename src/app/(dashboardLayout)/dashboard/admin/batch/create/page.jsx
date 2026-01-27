@@ -105,13 +105,20 @@ export default function CreateBatchPage() {
 
         try {
             const token = localStorage.getItem('token');
+            
+            // Remove instructor if empty
+            const submitData = { ...formData };
+            if (!submitData.instructor) {
+                delete submitData.instructor;
+            }
+            
             const res = await fetch(`${API_URL}/batches`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(submitData),
             });
 
             const data = await res.json();
@@ -190,13 +197,12 @@ export default function CreateBatchPage() {
                         </div>
                         <div>
                             <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                                Instructor <span className="text-red-500">*</span>
+                                Instructor <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>(Optional)</span>
                             </label>
                             <select
                                 name="instructor"
                                 value={formData.instructor}
                                 onChange={handleChange}
-                                required
                                 className={`w-full px-4 py-2.5 rounded-md border font-normal ${isDark
                                     ? 'bg-slate-700 border-slate-600 text-white'
                                     : 'bg-white border-gray-200 text-gray-900'
