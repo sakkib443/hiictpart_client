@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -40,7 +42,7 @@ export default function SettingsPage() {
     const [updatingPassword, setUpdatingPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [passwordSuccess, setPasswordSuccess] = useState('');
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     const handleChange = (key, value) => {
         setSettings(prev => ({ ...prev, [key]: value }));

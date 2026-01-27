@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -58,7 +60,7 @@ export default function MentorCreateWebsitePage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+            
             try {
                 const catRes = await fetch(`${BASE_URL}/categories?type=website`);
                 const catData = await catRes.json();
@@ -70,7 +72,7 @@ export default function MentorCreateWebsitePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
 
         // Clean up empty arrays

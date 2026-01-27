@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -54,7 +56,7 @@ export default function CreateLessonPage() {
     const [modules, setModules] = useState([]);
     const [fetchingModules, setFetchingModules] = useState(false);
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     useEffect(() => {
         const fetchCourses = async () => {

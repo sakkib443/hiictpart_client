@@ -1,4 +1,6 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -19,7 +21,7 @@ import {
 } from "react-icons/lu";
 import { useLanguage } from "@/context/LanguageContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const DesignTemplatePage = () => {
     const { language } = useLanguage();

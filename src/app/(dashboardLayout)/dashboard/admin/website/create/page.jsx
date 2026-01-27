@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -64,7 +66,7 @@ export default function CreateWebsitePage() {
     useEffect(() => {
         const fetchCategories = async () => {
             setFetchingCategories(true);
-            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+            
             const token = localStorage.getItem('token');
             try {
                 // Fetch using admin endpoint to see all categories (active/inactive)
@@ -84,7 +86,7 @@ export default function CreateWebsitePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
 
         // Clean up empty strings from arrays

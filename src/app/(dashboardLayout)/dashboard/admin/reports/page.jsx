@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -32,7 +34,7 @@ const ReportsPage = () => {
         reportTitle: 'Custom Business Report'
     });
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     useEffect(() => {
         fetchStats();

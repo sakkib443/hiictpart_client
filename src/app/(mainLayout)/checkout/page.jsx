@@ -1,4 +1,6 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +17,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const CheckoutContent = () => {
     const { items: cartItems, totalAmount: cartTotal } = useSelector((state) => state.cart || { items: [], totalAmount: 0 });

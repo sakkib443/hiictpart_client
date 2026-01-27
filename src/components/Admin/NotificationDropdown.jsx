@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -8,7 +10,7 @@ import {
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const NotificationDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);

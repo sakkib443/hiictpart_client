@@ -1,4 +1,6 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -7,7 +9,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import SharedCourseCard from "@/components/sheard/CourseCard";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 // Loading Skeleton
 const CourseCardSkeleton = () => (

@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -18,7 +20,7 @@ export default function MentorOrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     const fetchOrders = async () => {
         try {

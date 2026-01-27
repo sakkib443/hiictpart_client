@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,7 +22,7 @@ export default function LessonQuiz({ lessonId, questions = [], quizSettings = {}
     const [loading, setLoading] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(null);
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     // Timer for quiz
     useEffect(() => {

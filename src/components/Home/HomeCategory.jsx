@@ -1,4 +1,6 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -6,7 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { LuGraduationCap, LuCode, LuGlobe, LuWrench, LuArrowRight } from 'react-icons/lu';
 import { motion } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 // Animation variants - Entry only, no scroll effects
 const staggerContainer = {

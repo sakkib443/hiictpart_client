@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,7 +21,7 @@ export default function CreateUserPage() {
         role: 'student',
     });
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;

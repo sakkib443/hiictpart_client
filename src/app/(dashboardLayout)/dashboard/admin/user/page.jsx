@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -6,7 +8,7 @@ import {
   FiSearch, FiUsers, FiTrash2, FiPlus, FiCalendar, FiLoader, FiCheck, FiX, FiRefreshCw
 } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

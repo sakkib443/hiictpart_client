@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -9,7 +11,7 @@ import {
     FiMoreVertical, FiAlertCircle
 } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 
 export default function WebsiteAdminPage() {
     const [websites, setWebsites] = useState([]);

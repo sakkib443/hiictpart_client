@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -64,7 +66,7 @@ export default function EditWebsitePage() {
     const techFields = useFieldArray({ control, name: 'technologies' });
 
     const fetchData = useCallback(async () => {
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
         try {
             setFetching(true);
@@ -114,7 +116,7 @@ export default function EditWebsitePage() {
 
     const onSubmit = async (values) => {
         setLoading(true);
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
 
         // Clean up empty strings from arrays

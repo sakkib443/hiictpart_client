@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -6,7 +8,7 @@ import {
     FiChevronLeft, FiChevronRight, FiBook, FiCalendar
 } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 export default function EnrollmentsPage() {
     const [enrollments, setEnrollments] = useState([]);

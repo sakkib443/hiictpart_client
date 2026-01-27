@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,7 +24,7 @@ export default function EditModulePage({ params: paramsPromise }) {
         isPublished: true,
     });
 
-    const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+    
 
     useEffect(() => {
         const fetchData = async () => {

@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -25,7 +27,7 @@ const MentorSoftwarePage = () => {
     const router = useRouter();
 
     const fetchSoftware = async () => {
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
         try {
             setLoading(true);

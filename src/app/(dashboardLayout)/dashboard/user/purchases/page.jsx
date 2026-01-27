@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -21,7 +23,7 @@ export default function UserPurchasesPage() {
 
     const fetchOrders = async () => {
         const token = localStorage.getItem('token');
-        const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
 
         try {
             if (!isRefreshing) setLoading(true);

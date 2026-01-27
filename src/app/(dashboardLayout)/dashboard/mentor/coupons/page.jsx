@@ -1,11 +1,13 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { LuSearch, LuTag, LuPercent, LuCalendar, LuUsers, LuCopy, LuRefreshCw } from 'react-icons/lu';
 import { FiAlertCircle } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const MentorCouponsPage = () => {
     const { isDark } = useTheme();

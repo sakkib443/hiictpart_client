@@ -1,11 +1,13 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { LuSave, LuRefreshCw, LuEye, LuMail, LuPhone, LuMapPin, LuClock, LuGlobe, LuMessageCircle } from 'react-icons/lu';
 import { FaFacebookF, FaYoutube, FaLinkedinIn, FaWhatsapp, FaInstagram } from 'react-icons/fa';
 import { useTheme } from '@/providers/ThemeProvider';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const ContactDesignPage = () => {
     const { isDark } = useTheme();

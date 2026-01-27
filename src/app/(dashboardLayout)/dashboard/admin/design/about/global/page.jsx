@@ -1,9 +1,11 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { FiSave, FiRefreshCw } from 'react-icons/fi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const AboutGlobalDesignPage = () => {
     const [loading, setLoading] = useState(true);

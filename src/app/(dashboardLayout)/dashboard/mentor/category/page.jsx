@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiEdit3, FiLoader, FiCheck, FiX, FiGrid, FiSearch, FiImage, FiRefreshCw, FiBook, FiCode, FiLayout, FiFolder, FiChevronRight, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
@@ -16,7 +18,7 @@ const MentorCategoryPage = () => {
     const [parentCategories, setParentCategories] = useState([]);
 
     const fetchCategories = async () => {
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
         try {
             setLoading(true);
@@ -48,7 +50,7 @@ const MentorCategoryPage = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
         try {
             const res = await fetch(`${BASE_URL}/categories/admin/${editData._id}`, {

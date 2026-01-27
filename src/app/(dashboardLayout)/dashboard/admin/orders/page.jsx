@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -8,7 +10,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState([]);

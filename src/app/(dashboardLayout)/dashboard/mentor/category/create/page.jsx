@@ -1,4 +1,6 @@
 'use client';
+import { API_URL, API_BASE_URL, API_URL as BASE_URL } from '@/config/api';
+
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,7 +24,7 @@ const MentorCreateCategory = () => {
 
     useEffect(() => {
         const fetchParents = async () => {
-            const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+            
             const token = localStorage.getItem('token');
             try {
                 const res = await fetch(`${BASE_URL}/categories/admin/parents`, {
@@ -47,7 +49,7 @@ const MentorCreateCategory = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+        
         const token = localStorage.getItem('token');
 
         const payload = {

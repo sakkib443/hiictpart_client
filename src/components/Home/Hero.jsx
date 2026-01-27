@@ -1,4 +1,6 @@
 "use client";
+import { API_URL, API_BASE_URL } from '@/config/api';
+
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -7,7 +9,7 @@ import { motion } from "framer-motion";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { LuBrain, LuAward, LuTarget, LuUsers } from "react-icons/lu";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
 
 const Hero = () => {
     const { language, t } = useLanguage();
