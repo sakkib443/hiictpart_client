@@ -100,7 +100,7 @@ const TopCategories = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: index * 0.05 }}
                         >
-                            <div className={`bg-white dark:bg-gray-900 rounded-xl p-5 border-l-4 ${category.borderColor} shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col`}>
+                            <div className={`bg-white dark:bg-gray-900 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col`}>
                                 {/* Top Section */}
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="flex items-center gap-4">

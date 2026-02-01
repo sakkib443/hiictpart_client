@@ -358,7 +358,7 @@ const Hero = () => {
             </div>
 
             {/* Bottom Features Bar - Integrated */}
-            <div className="hidden lg:block absolute bottom-0 left-0 w-full z-20 bg-[#0066CC] dark:bg-[#004C99] shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+            <div className="hidden lg:block absolute bottom-0 left-0 w-full z-20 bg-[#666666] dark:bg-[#555555] shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
                 <div className="container mx-auto px-4 lg:px-20 py-5">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {features.map((feature, index) => (

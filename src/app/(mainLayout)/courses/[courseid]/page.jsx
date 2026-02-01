@@ -363,6 +363,16 @@ const SingleCourse = () => {
                     >
                       <tab.icon size={16} />
                       <span className="hidden sm:inline">{tab.label}</span>
+                      {activeTab !== tab.id && (
+                        <FaArrowRight
+                          size={10}
+                          className="text-red-500 animate-pulse hidden sm:inline"
+                          style={{
+                            filter: 'drop-shadow(0 0 4px rgba(239, 68, 68, 0.8))',
+                            animation: 'glow 1.5s ease-in-out infinite alternate'
+                          }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -385,7 +395,7 @@ const SingleCourse = () => {
                             <span className="w-1 h-5 bg-red-500 rounded-full"></span>
                             Course Description
                           </h2>
-                          <div className="text-gray-600 poppins text-[15px] leading-7 whitespace-pre-line">
+                          <div className="text-gray-800 poppins text-[15px] leading-7 whitespace-pre-line">
                             {currentCourse.description || currentCourse.details}
                           </div>
                         </div>
@@ -638,24 +648,22 @@ const SingleCourse = () => {
                     </div>
                     <div className="p-4 space-y-3">
                       {batches.slice(0, 3).map((batch, idx) => (
-                        <div 
-                          key={batch._id} 
-                          className={`relative p-4 rounded-lg border-2 transition-all hover:shadow-md ${
-                            idx === 0 
-                              ? 'bg-white border-indigo-200 shadow-sm' 
-                              : 'bg-gray-50/50 border-gray-200 hover:border-indigo-200'
-                          }`}
+                        <div
+                          key={batch._id}
+                          className={`relative p-4 rounded-lg border-2 transition-all hover:shadow-md ${idx === 0
+                            ? 'bg-white border-indigo-200 shadow-sm'
+                            : 'bg-gray-50/50 border-gray-200 hover:border-indigo-200'
+                            }`}
                         >
                           {/* Batch Header */}
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${
-                                batch.status === 'upcoming' 
-                                  ? 'bg-amber-100 text-amber-700' 
-                                  : batch.status === 'ongoing'
+                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${batch.status === 'upcoming'
+                                ? 'bg-amber-100 text-amber-700'
+                                : batch.status === 'ongoing'
                                   ? 'bg-green-100 text-green-700'
                                   : 'bg-gray-100 text-gray-600'
-                              }`}>
+                                }`}>
                                 {batch.status?.toUpperCase()}
                               </span>
                               {idx === 0 && (
@@ -693,7 +701,7 @@ const SingleCourse = () => {
                               <div>
                                 <p className="text-[10px] text-gray-400 uppercase tracking-wider">Last Date</p>
                                 <p className="text-xs font-semibold text-gray-800">
-                                  {batch.enrollmentDeadline 
+                                  {batch.enrollmentDeadline
                                     ? new Date(batch.enrollmentDeadline).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
                                     : new Date(batch.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
                                   }
@@ -720,7 +728,7 @@ const SingleCourse = () => {
                               <span>{Math.round(((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100)}%</span>
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div 
+                              <div
                                 className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all"
                                 style={{ width: `${((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100}%` }}
                               />
@@ -733,11 +741,10 @@ const SingleCourse = () => {
                               handleAddToCart();
                               router.push('/cart');
                             }}
-                            className={`w-full py-2.5 rounded-md font-semibold text-sm transition-all poppins ${
-                              idx === 0
-                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-200'
-                                : 'bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50'
-                            }`}
+                            className={`w-full py-2.5 rounded-md font-semibold text-sm transition-all poppins ${idx === 0
+                              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-200'
+                              : 'bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50'
+                              }`}
                           >
                             Enroll in {batch.batchName}
                           </button>
