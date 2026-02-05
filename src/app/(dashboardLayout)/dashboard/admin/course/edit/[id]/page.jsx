@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
   FiArrowLeft, FiSave, FiLoader, FiImage, FiBookOpen,
-  FiPlus, FiTrash2, FiDollarSign, FiVideo, FiTag
+  FiPlus, FiTrash2, FiDollarSign, FiVideo, FiTag, FiBriefcase, FiTool
 } from 'react-icons/fi';
 import Link from 'next/link';
 import { useTheme } from '@/providers/ThemeProvider';
@@ -35,6 +35,8 @@ const courseValidationSchema = z.object({
   requirements: z.array(z.string()).optional(),
   whatYouWillLearn: z.array(z.string()).optional(),
   targetAudience: z.array(z.string()).optional(),
+  jobOpportunities: z.array(z.string()).optional(),
+  softwareWeLearn: z.array(z.string()).optional(),
   previewVideo: z.string().url().optional().or(z.literal('')),
   totalDuration: z.coerce.number().min(0).optional(),
   totalLessons: z.coerce.number().min(0).optional(),
@@ -67,6 +69,8 @@ export default function EditCoursePage() {
       requirements: [''],
       whatYouWillLearn: [''],
       targetAudience: [''],
+      jobOpportunities: [''],
+      softwareWeLearn: [''],
       tags: [''],
       isFeatured: false,
       isPopular: false,
@@ -77,6 +81,8 @@ export default function EditCoursePage() {
   const requirementsFields = useFieldArray({ control, name: 'requirements' });
   const learningFields = useFieldArray({ control, name: 'whatYouWillLearn' });
   const audienceFields = useFieldArray({ control, name: 'targetAudience' });
+  const jobFields = useFieldArray({ control, name: 'jobOpportunities' });
+  const softwareFields = useFieldArray({ control, name: 'softwareWeLearn' });
   const tagsFields = useFieldArray({ control, name: 'tags' });
 
   const fetchData = useCallback(async () => {
@@ -109,6 +115,8 @@ export default function EditCoursePage() {
           requirements: course.requirements?.length ? course.requirements : [''],
           whatYouWillLearn: course.whatYouWillLearn?.length ? course.whatYouWillLearn : [''],
           targetAudience: course.targetAudience?.length ? course.targetAudience : [''],
+          jobOpportunities: course.jobOpportunities?.length ? course.jobOpportunities : [''],
+          softwareWeLearn: course.softwareWeLearn?.length ? course.softwareWeLearn : [''],
           tags: course.tags?.length ? course.tags : [''],
           previewVideo: course.previewVideo || '',
           bannerImage: course.bannerImage || '',
@@ -295,6 +303,38 @@ export default function EditCoursePage() {
                     <div key={field.id} className="group relative">
                       <input {...register(`features.${idx}`)} className={inputClass} placeholder="Feature name" />
                       <button type="button" onClick={() => featuresFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Job Opportunities */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className={`${labelClass} flex items-center gap-2`}><FiBriefcase className="text-orange-500" size={14} /> Job Opportunities</label>
+                  <button type="button" onClick={() => jobFields.append('')} className="text-xs font-medium text-orange-600 hover:text-orange-700">+ Add</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {jobFields.fields.map((field, idx) => (
+                    <div key={field.id} className="group relative">
+                      <input {...register(`jobOpportunities.${idx}`)} className={inputClass} placeholder="e.g. Graphic Designer, Video Editor" />
+                      <button type="button" onClick={() => jobFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Software We Learn */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className={`${labelClass} flex items-center gap-2`}><FiTool className="text-cyan-500" size={14} /> Software We Learn</label>
+                  <button type="button" onClick={() => softwareFields.append('')} className="text-xs font-medium text-cyan-600 hover:text-cyan-700">+ Add</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {softwareFields.fields.map((field, idx) => (
+                    <div key={field.id} className="group relative">
+                      <input {...register(`softwareWeLearn.${idx}`)} className={inputClass} placeholder="e.g. Adobe Photoshop, Premiere Pro" />
+                      <button type="button" onClick={() => softwareFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
                     </div>
                   ))}
                 </div>

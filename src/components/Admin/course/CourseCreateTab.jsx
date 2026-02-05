@@ -9,7 +9,7 @@ import { API_BASE_URL } from '@/config/api';
 import {
     FiPlus, FiTrash2, FiSave, FiImage, FiVideo,
     FiBookOpen, FiDollarSign, FiGlobe, FiLayers, FiCheck,
-    FiTarget, FiList, FiAward, FiTag, FiSearch, FiLayout, FiArrowRight
+    FiTarget, FiList, FiAward, FiTag, FiSearch, FiLayout, FiArrowRight, FiBriefcase, FiTool
 } from 'react-icons/fi';
 
 // Style constants - moved outside component to prevent re-creation
@@ -62,6 +62,8 @@ const courseValidationSchema = z.object({
     requirements: z.array(z.string()).optional(),
     whatYouWillLearn: z.array(z.string()).optional(),
     targetAudience: z.array(z.string()).optional(),
+    jobOpportunities: z.array(z.string()).optional(),
+    softwareWeLearn: z.array(z.string()).optional(),
     previewVideo: z.string().url().optional().or(z.literal('')),
     totalDuration: z.coerce.number().min(0).optional(),
     totalLessons: z.coerce.number().min(0).optional(),
@@ -90,6 +92,8 @@ const CourseCreateTab = ({ onSuccess }) => {
             requirements: [''],
             whatYouWillLearn: [''],
             targetAudience: [''],
+            jobOpportunities: [''],
+            softwareWeLearn: [''],
             tags: [''],
             price: 0,
             currency: 'BDT',
@@ -105,6 +109,8 @@ const CourseCreateTab = ({ onSuccess }) => {
     const requirementsFields = useFieldArray({ control, name: 'requirements' });
     const learningFields = useFieldArray({ control, name: 'whatYouWillLearn' });
     const audienceFields = useFieldArray({ control, name: 'targetAudience' });
+    const jobFields = useFieldArray({ control, name: 'jobOpportunities' });
+    const softwareFields = useFieldArray({ control, name: 'softwareWeLearn' });
     const tagsFields = useFieldArray({ control, name: 'tags' });
 
     useEffect(() => {
@@ -321,6 +327,41 @@ const CourseCreateTab = ({ onSuccess }) => {
                                     <div key={field.id} className="flex gap-2">
                                         <input {...register(`targetAudience.${index}`)} className={`${inputBase} py-2`} placeholder="Audience..." />
                                         <button type="button" onClick={() => audienceFields.remove(index)} className="text-red-400 hover:text-red-600"><FiTrash2 size={16} /></button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Job Opportunities & Software We Learn */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Job Opportunities */}
+                        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-5 py-4 bg-gradient-to-r from-orange-50 to-amber-50 border-b border-slate-100 flex justify-between items-center">
+                                <h3 className="text-sm font-bold text-slate-700 flex items-center gap-2"><FiBriefcase className="text-orange-500" /> Job Opportunities</h3>
+                                <button type="button" onClick={() => jobFields.append('')} className="p-1.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700"><FiPlus size={14} /></button>
+                            </div>
+                            <div className="p-5 space-y-3">
+                                {jobFields.fields.map((field, index) => (
+                                    <div key={field.id} className="flex gap-2">
+                                        <input {...register(`jobOpportunities.${index}`)} className={`${inputBase} py-2`} placeholder="e.g. Graphic Designer, Video Editor..." />
+                                        <button type="button" onClick={() => jobFields.remove(index)} className="text-red-400 hover:text-red-600"><FiTrash2 size={16} /></button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Software We Learn */}
+                        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="px-5 py-4 bg-gradient-to-r from-cyan-50 to-teal-50 border-b border-slate-100 flex justify-between items-center">
+                                <h3 className="text-sm font-bold text-slate-700 flex items-center gap-2"><FiTool className="text-cyan-500" /> Software We Learn</h3>
+                                <button type="button" onClick={() => softwareFields.append('')} className="p-1.5 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700"><FiPlus size={14} /></button>
+                            </div>
+                            <div className="p-5 space-y-3">
+                                {softwareFields.fields.map((field, index) => (
+                                    <div key={field.id} className="flex gap-2">
+                                        <input {...register(`softwareWeLearn.${index}`)} className={`${inputBase} py-2`} placeholder="e.g. Adobe Photoshop, Premiere Pro..." />
+                                        <button type="button" onClick={() => softwareFields.remove(index)} className="text-red-400 hover:text-red-600"><FiTrash2 size={16} /></button>
                                     </div>
                                 ))}
                             </div>
