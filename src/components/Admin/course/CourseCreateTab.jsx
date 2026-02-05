@@ -51,6 +51,7 @@ const courseValidationSchema = z.object({
     thumbnail: z.string().url("Must be a valid URL"),
     bannerImage: z.string().url("Must be a valid URL").optional().or(z.literal('')),
     category: z.string().min(1, "Category is required"),
+    instructor: z.string().optional(),
     price: z.coerce.number().min(0, "Price must be positive"),
     discountPrice: z.coerce.number().min(0).optional(),
     courseType: z.enum(['online', 'offline', 'recorded']),
@@ -75,6 +76,7 @@ const courseValidationSchema = z.object({
 const CourseCreateTab = ({ onSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [instructors, setInstructors] = useState([]);
     const router = useRouter();
 
     const { register, control, handleSubmit, setValue, watch, formState: { errors } } = useForm({
@@ -106,14 +108,22 @@ const CourseCreateTab = ({ onSuccess }) => {
     const tagsFields = useFieldArray({ control, name: 'tags' });
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchData = async () => {
             try {
-                const res = await fetch(`${API_BASE_URL}/categories`);
-                const data = await res.json();
-                setCategories(data.data || []);
-            } catch (err) { console.error(err); }
+                const [catsRes, instRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/categories`),
+                    fetch(`${API_BASE_URL}/instructors`)
+                ]);
+                const catsData = await catsRes.json();
+                const instData = await instRes.json();
+
+                if (catsData.success) setCategories(catsData.data);
+                if (instData.success) setInstructors(instData.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         };
-        fetchCategories();
+        fetchData();
     }, []);
 
     const title = watch('title');
@@ -350,14 +360,43 @@ const CourseCreateTab = ({ onSuccess }) => {
                                     {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
                                 </select>
                             </FormField>
-                            <FormField label="Total Lessons (Auto)">
-                                <input type="number" {...register('totalLessons')} className={`${inputBase} bg-slate-100 text-slate-500 cursor-not-allowed`} readOnly />
-                                <p className="text-xs text-slate-400 mt-1">Auto-calculated from lessons</p>
+                            <FormField label="Instructor">
+                                <select {...register('instructor')} className={selectBase}>
+                                    <option value="">Select Instructor</option>
+                                    {instructors.map(inst => <option key={inst._id} value={inst._id}>{inst.name} ({inst.designation})</option>)}
+                                </select>
                             </FormField>
-                            <FormField label="Total Modules (Auto)">
-                                <input type="number" {...register('totalModules')} className={`${inputBase} bg-slate-100 text-slate-500 cursor-not-allowed`} readOnly />
-                                <p className="text-xs text-slate-400 mt-1">Auto-calculated from modules</p>
-                            </FormField>
+                            {(() => {
+                                const courseType = watch('courseType');
+                                const isManual = courseType === 'online' || courseType === 'offline';
+
+                                return (
+                                    <>
+                                        <FormField label={isManual ? "Total Lessons" : "Total Lessons (Auto)"}>
+                                            <input
+                                                type="number"
+                                                {...register('totalLessons')}
+                                                className={`${inputBase} ${!isManual ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}`}
+                                                readOnly={!isManual}
+                                            />
+                                            <p className="text-xs text-slate-400 mt-1">
+                                                {isManual ? "Enter total number of classes" : "Auto-calculated from lessons"}
+                                            </p>
+                                        </FormField>
+                                        <FormField label={isManual ? "Total Modules" : "Total Modules (Auto)"}>
+                                            <input
+                                                type="number"
+                                                {...register('totalModules')}
+                                                className={`${inputBase} ${!isManual ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}`}
+                                                readOnly={!isManual}
+                                            />
+                                            <p className="text-xs text-slate-400 mt-1">
+                                                {isManual ? "Enter total number of modules" : "Auto-calculated from modules"}
+                                            </p>
+                                        </FormField>
+                                    </>
+                                );
+                            })()}
                             <FormField label="Course Type">
                                 <select {...register('courseType')} className={selectBase}>
                                     <option value="recorded">Pre-recorded</option>

@@ -97,6 +97,7 @@ const AdminSidebar = () => {
         { title: 'Enrollments', href: '/dashboard/admin/enrollment', icon: FiUserCheck },
         { title: 'All Batches', href: '/dashboard/admin/batch', icon: FiUsers },
         { title: 'Create Batch', href: '/dashboard/admin/batch/create', icon: FiFileText },
+        { title: 'Instructors', href: '/dashboard/admin/instructor', icon: FiUserCheck },
         { title: 'Live Classes', href: '/dashboard/admin/live-class', icon: FiPlay },
         { title: 'Schedule Class', href: '/dashboard/admin/live-class/create', icon: FiFileText },
       ],
@@ -272,7 +273,7 @@ const AdminSidebar = () => {
                   </button>
 
                   {/* Submenu Items */}
-                  <div className={`overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-96 mt-1' : 'max-h-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-[800px] mt-1' : 'max-h-0'}`}>
                     <div className={`ml-6 pl-4 border-l-2 space-y-1 ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
                       {item.submenu.map((sub) => {
                         const SubIcon = sub.icon;

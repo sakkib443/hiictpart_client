@@ -74,15 +74,11 @@ const SingleCourse = () => {
   const fetchBatches = async () => {
     try {
       setLoadingBatches(true);
-      // Fetch batches for this course (without isActive filter to get all)
-      const res = await fetch(`${API_URL}/batches?course=${id}`);
+      const res = await fetch(`${API_URL}/batches/course/${id}`);
       const data = await res.json();
-      console.log('Batches API response:', data);
       if (data.success) {
-        // Filter only active batches on frontend
-        const activeBatches = (data.data || []).filter(b => b.isActive !== false);
-        setBatches(activeBatches);
-        console.log('Active batches:', activeBatches);
+        // This endpoint returns batches array directly in data.data
+        setBatches(data.data || []);
       }
     } catch (error) {
       console.error('Error fetching batches:', error);
@@ -90,11 +86,6 @@ const SingleCourse = () => {
       setLoadingBatches(false);
     }
   };
-
-  useEffect(() => {
-    dispatch(fetchSingleCourse(id));
-    dispatch(fetchCoursesData());
-  }, [dispatch, id]);
 
   useEffect(() => {
     if (reduxCourse) {
@@ -352,7 +343,12 @@ const SingleCourse = () => {
                     { id: "whatyoulearn", label: "Learning", icon: LuZap },
                     { id: "instructor", label: "Instructor", icon: LuUsers },
                     { id: "reviews", label: "Reviews", icon: FaStar },
-                  ].map((tab) => (
+                  ].filter(tab => {
+                    if (tab.id === 'curriculum') {
+                      return currentCourse?.courseType !== 'online' && currentCourse?.courseType !== 'offline';
+                    }
+                    return true;
+                  }).map((tab) => (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
@@ -531,12 +527,12 @@ const SingleCourse = () => {
                                 <h3 className="text-2xl font-bold outfit text-gray-900">{instructor.name}</h3>
                                 <MdVerified className="text-blue-500 text-xl" />
                               </div>
-                              <p className="text-red-600 font-semibold poppins text-base">{instructor.designation} • {instructor.subject}</p>
+                              <p className="text-red-600 font-semibold poppins text-base">{instructor.designation} {instructor.specialization?.length > 0 && `• ${instructor.specialization.join(', ')}`}</p>
                               <p className="text-gray-600 poppins text-sm leading-relaxed">
-                                {instructor.details?.substring(0, 300)}...
+                                {instructor.bio || 'Professional instructor with years of industry experience.'}
                               </p>
                               <div className="flex gap-3 pt-2">
-                                <button className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-md hover:bg-red-50 hover:border-teal-200 transition-colors text-gray-700 text-xs font-bold poppins">VIEW PROFILE</button>
+                                <Link href="#" className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-md hover:bg-red-50 hover:border-teal-200 transition-colors text-gray-700 text-xs font-bold poppins">VIEW PROFILE</Link>
                               </div>
                             </div>
                           </div>
@@ -584,15 +580,96 @@ const SingleCourse = () => {
 
                   {/* Content */}
                   <div className="p-5 space-y-5">
+                    {/* Batch Information - Shows if any active batches exist for this course */}
+                    {batches.length > 0 && (
+                      <div className="p-4 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/20 rounded-xl border border-indigo-100 dark:border-indigo-900/30 shadow-sm">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2">
+                            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
+                              <LuGraduationCap className="text-white" size={18} />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-bold outfit text-gray-900 dark:text-white">Admission Going On</h4>
+                              <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold poppins">{batches[0].batchName}</p>
+                            </div>
+                          </div>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${batches[0].status === 'upcoming' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'
+                            }`}>
+                            {batches[0].status}
+                          </span>
+                        </div>
+
+                        <div className="space-y-3">
+                          {/* Batch Details Grid */}
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="bg-white/80 dark:bg-slate-800/50 p-2 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <LuCalendar className="text-indigo-500" size={12} />
+                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Start Date</span>
+                              </div>
+                              <p className="text-xs font-bold text-gray-800 dark:text-gray-200 poppins">
+                                {new Date(batches[0].startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                              </p>
+                            </div>
+                            <div className="bg-white/80 dark:bg-slate-800/50 p-2 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <LuTimer className="text-indigo-500" size={12} />
+                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Batch No</span>
+                              </div>
+                              <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 poppins">
+                                {batches[0].batchCode}
+                              </p>
+                            </div>
+                          </div>
+
+                          {batches[0].schedule?.length > 0 && (
+                            <div className="bg-white/80 dark:bg-slate-800/50 p-2.5 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
+                              <div className="flex items-center gap-1.5 mb-2">
+                                <LuTimer className="text-indigo-500" size={14} />
+                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Class Schedule</span>
+                              </div>
+                              <div className="space-y-1">
+                                {batches[0].schedule.map((sch, sIdx) => {
+                                  // Helper to format 22:00 -> 10.00pm
+                                  const formatTime = (timeStr) => {
+                                    if (!timeStr) return "";
+                                    if (timeStr.toLowerCase().includes('am') || timeStr.toLowerCase().includes('pm')) return timeStr.toLowerCase();
+                                    const parts = timeStr.split(/[:.]/);
+                                    if (parts.length >= 2) {
+                                      let h = parseInt(parts[0]);
+                                      const m = parts[1].padStart(2, '0');
+                                      const ampm = h >= 12 ? 'pm' : 'am';
+                                      h = h % 12 || 12;
+                                      return `${h}.${m}${ampm}`;
+                                    }
+                                    return timeStr;
+                                  };
+
+                                  return (
+                                    <div key={sIdx} className="flex items-center justify-between">
+                                      <span className="text-xs font-bold text-gray-800 dark:text-gray-200 capitalize">{sch.day}</span>
+                                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-0.5 rounded poppins">
+                                        {formatTime(sch.startTime)} - {formatTime(sch.endTime)}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Price */}
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold text-gray-900 outfit">৳{price.toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">৳{(discountPrice || price).toLocaleString()}</span>
                         {discountPrice && (
-                          <span className="text-gray-400 line-through text-sm">৳{(price + 2000).toLocaleString()}</span>
+                          <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>
                         )}
                       </div>
-                      <p className="text-red-600 text-xs font-semibold uppercase tracking-wide mt-1 poppins">Full Lifetime Access</p>
+                      <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">Full Lifetime Access</p>
                     </div>
 
                     {/* Buttons */}
@@ -637,128 +714,7 @@ const SingleCourse = () => {
                   </div>
                 </div>
 
-                {/* Batch Information Section - Shows if batches exist for this course */}
-                {batches.length > 0 && (
-                  <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-md border border-indigo-100 shadow-sm overflow-hidden">
-                    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-3">
-                      <h3 className="text-white font-bold outfit flex items-center gap-2">
-                        <LuGraduationCap size={18} />
-                        Available Batches
-                      </h3>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      {batches.slice(0, 3).map((batch, idx) => (
-                        <div
-                          key={batch._id}
-                          className={`relative p-4 rounded-lg border-2 transition-all hover:shadow-md ${idx === 0
-                            ? 'bg-white border-indigo-200 shadow-sm'
-                            : 'bg-gray-50/50 border-gray-200 hover:border-indigo-200'
-                            }`}
-                        >
-                          {/* Batch Header */}
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${batch.status === 'upcoming'
-                                ? 'bg-amber-100 text-amber-700'
-                                : batch.status === 'ongoing'
-                                  ? 'bg-green-100 text-green-700'
-                                  : 'bg-gray-100 text-gray-600'
-                                }`}>
-                                {batch.status?.toUpperCase()}
-                              </span>
-                              {idx === 0 && (
-                                <span className="px-2 py-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold rounded">
-                                  RECOMMENDED
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-xs font-medium text-gray-400 poppins">
-                              {batch.enrolledStudents?.length || 0}/{batch.maxStudents} Seats
-                            </span>
-                          </div>
-
-                          {/* Batch Name & Code */}
-                          <h4 className="font-bold text-gray-900 outfit text-base mb-1">{batch.batchName}</h4>
-                          <p className="text-xs text-indigo-600 font-semibold poppins mb-3">Code: {batch.batchCode}</p>
-
-                          {/* Batch Details Grid */}
-                          <div className="grid grid-cols-2 gap-2 mb-3">
-                            <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-100">
-                              <div className="w-7 h-7 rounded bg-green-50 flex items-center justify-center">
-                                <LuCalendar className="text-green-600" size={14} />
-                              </div>
-                              <div>
-                                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Start Date</p>
-                                <p className="text-xs font-semibold text-gray-800">
-                                  {new Date(batch.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-100">
-                              <div className="w-7 h-7 rounded bg-red-50 flex items-center justify-center">
-                                <LuTimer className="text-red-600" size={14} />
-                              </div>
-                              <div>
-                                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Last Date</p>
-                                <p className="text-xs font-semibold text-gray-800">
-                                  {batch.enrollmentDeadline
-                                    ? new Date(batch.enrollmentDeadline).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
-                                    : new Date(batch.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
-                                  }
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Schedule Preview */}
-                          {batch.schedule?.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mb-3">
-                              {batch.schedule.slice(0, 3).map((sch, sIdx) => (
-                                <span key={sIdx} className="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-medium rounded capitalize">
-                                  {sch.day} {sch.startTime}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Progress Bar for Seats */}
-                          <div className="mb-3">
-                            <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-                              <span>Enrollment Progress</span>
-                              <span>{Math.round(((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100)}%</span>
-                            </div>
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all"
-                                style={{ width: `${((batch.enrolledStudents?.length || 0) / batch.maxStudents) * 100}%` }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Enroll Button */}
-                          <button
-                            onClick={() => {
-                              handleAddToCart();
-                              router.push('/cart');
-                            }}
-                            className={`w-full py-2.5 rounded-md font-semibold text-sm transition-all poppins ${idx === 0
-                              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-200'
-                              : 'bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50'
-                              }`}
-                          >
-                            Enroll in {batch.batchName}
-                          </button>
-                        </div>
-                      ))}
-
-                      {batches.length > 3 && (
-                        <button className="w-full py-2 text-indigo-600 font-medium text-sm border border-dashed border-indigo-200 rounded-md hover:bg-indigo-50 transition-colors poppins">
-                          View All {batches.length} Batches
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
+                {/* Recommended Courses Widget mirroring Website Popular Websites */}
 
                 {/* Recommended Courses Widget mirroring Website Popular Websites */}
                 <div className="bg-white rounded-md p-5 border border-gray-200 shadow-sm">

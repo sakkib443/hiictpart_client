@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { FiArrowLeft, FiSave, FiPlus, FiTrash2 } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
@@ -9,10 +9,12 @@ import { API_URL } from '@/config/api';
 
 const DAYS = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
-export default function CreateBatchPage() {
+export default function EditBatchPage() {
     const { isDark } = useTheme();
     const router = useRouter();
+    const { id } = useParams();
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const [courses, setCourses] = useState([]);
     const [instructors, setInstructors] = useState([]);
     const [error, setError] = useState('');
@@ -31,9 +33,18 @@ export default function CreateBatchPage() {
     });
 
     useEffect(() => {
-        fetchCourses();
-        fetchInstructors();
-    }, []);
+        fetchInitialData();
+    }, [id]);
+
+    const fetchInitialData = async () => {
+        setFetching(true);
+        await Promise.all([
+            fetchCourses(),
+            fetchInstructors(),
+            fetchBatchDetails()
+        ]);
+        setFetching(false);
+    };
 
     const fetchCourses = async () => {
         try {
@@ -42,11 +53,9 @@ export default function CreateBatchPage() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
-            console.log('Courses response:', data);
             if (data.success) {
                 setCourses(data.data || []);
             } else {
-                // Try alternative endpoint
                 const res2 = await fetch(`${API_URL}/courses?limit=100`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
@@ -70,6 +79,41 @@ export default function CreateBatchPage() {
             }
         } catch (error) {
             console.error('Error fetching instructors:', error);
+        }
+    };
+
+    const fetchBatchDetails = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/batches/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            if (data.success) {
+                const batch = data.data;
+
+                // Format dates for input[type="date"]
+                const formatDate = (dateStr) => {
+                    if (!dateStr) return '';
+                    return new Date(dateStr).toISOString().split('T')[0];
+                };
+
+                setFormData({
+                    course: batch.course?._id || batch.course,
+                    instructor: batch.instructor?._id || batch.instructor || '',
+                    batchName: batch.batchName,
+                    batchCode: batch.batchCode,
+                    description: batch.description || '',
+                    startDate: formatDate(batch.startDate),
+                    endDate: formatDate(batch.endDate),
+                    enrollmentDeadline: formatDate(batch.enrollmentDeadline),
+                    maxStudents: batch.maxStudents,
+                    schedule: batch.schedule || [],
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching batch details:', error);
+            setError('Failed to load batch details');
         }
     };
 
@@ -106,19 +150,17 @@ export default function CreateBatchPage() {
         try {
             const token = localStorage.getItem('token');
 
-            // Format data
             const submitData = {
                 ...formData,
                 maxStudents: Number(formData.maxStudents)
             };
 
-            // Remove instructor if empty
             if (!submitData.instructor) {
                 delete submitData.instructor;
             }
 
-            const res = await fetch(`${API_URL}/batches`, {
-                method: 'POST',
+            const res = await fetch(`${API_URL}/batches/${id}`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
@@ -131,25 +173,31 @@ export default function CreateBatchPage() {
             if (data.success) {
                 router.push('/dashboard/admin/batch');
             } else {
-                // If there are detailed error messages, show them
                 if (data.errorMessages && data.errorMessages.length > 0) {
                     const detailedErrors = data.errorMessages.map(err => `${err.path}: ${err.message}`).join(', ');
                     setError(detailedErrors);
                 } else {
-                    setError(data.message || 'Failed to create batch');
+                    setError(data.message || 'Failed to update batch');
                 }
             }
         } catch (err) {
-            console.error('Batch creation error:', err);
+            console.error('Batch update error:', err);
             setError('Something went wrong');
         } finally {
             setLoading(false);
         }
     };
 
+    if (fetching) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+            </div>
+        );
+    }
+
     return (
         <div className="p-6 max-w-4xl mx-auto">
-            {/* Header */}
             <div className="flex items-center gap-4 mb-6">
                 <Link
                     href="/dashboard/admin/batch"
@@ -162,24 +210,21 @@ export default function CreateBatchPage() {
                 </Link>
                 <div>
                     <h1 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        Create New Batch
+                        Edit Batch
                     </h1>
                     <p className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        Create a new batch for an online course
+                        Update batch information and schedule
                     </p>
                 </div>
             </div>
 
-            {/* Error Message */}
             {error && (
                 <div className="mb-6 p-4 bg-red-100 border border-red-200 text-red-700 rounded-md">
                     {error}
                 </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Basic Info */}
                 <div className={`p-6 rounded-md border ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
                     <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         Basic Information
@@ -281,7 +326,6 @@ export default function CreateBatchPage() {
                     </div>
                 </div>
 
-                {/* Dates & Capacity */}
                 <div className={`p-6 rounded-md border ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
                     <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         Schedule & Capacity
@@ -354,7 +398,6 @@ export default function CreateBatchPage() {
                     </div>
                 </div>
 
-                {/* Weekly Schedule */}
                 <div className={`p-6 rounded-md border ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
                     <div className="flex items-center justify-between mb-4">
                         <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -424,7 +467,6 @@ export default function CreateBatchPage() {
                     )}
                 </div>
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-3">
                     <Link
                         href="/dashboard/admin/batch"
@@ -441,7 +483,7 @@ export default function CreateBatchPage() {
                         className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50"
                     >
                         <FiSave size={18} />
-                        {loading ? 'Creating...' : 'Create Batch'}
+                        {loading ? 'Updating...' : 'Update Batch'}
                     </button>
                 </div>
             </form>

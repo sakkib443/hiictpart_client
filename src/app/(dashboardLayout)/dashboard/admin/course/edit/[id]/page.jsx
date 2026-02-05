@@ -24,6 +24,7 @@ const courseValidationSchema = z.object({
   thumbnail: z.string().url("Must be a valid URL"),
   bannerImage: z.string().url("Must be a valid URL").optional().or(z.literal('')),
   category: z.string().min(1, "Category is required"),
+  instructor: z.string().optional(),
   price: z.coerce.number().min(0, "Price must be positive"),
   discountPrice: z.coerce.number().min(0).optional().nullable(),
   courseType: z.enum(['online', 'offline', 'recorded']),
@@ -50,11 +51,12 @@ export default function EditCoursePage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [instructors, setInstructors] = useState([]);
   const [courseData, setCourseData] = useState(null);
   const router = useRouter();
   const { id } = useParams();
 
-  const { register, control, handleSubmit, reset, formState: { errors } } = useForm({
+  const { register, control, handleSubmit, reset, watch, formState: { errors } } = useForm({
     resolver: zodResolver(courseValidationSchema),
     defaultValues: {
       courseType: 'recorded',
@@ -82,22 +84,26 @@ export default function EditCoursePage() {
     const token = localStorage.getItem('token');
     try {
       setFetching(true);
-      const [catRes, courseRes] = await Promise.all([
+      const [catRes, courseRes, instRes] = await Promise.all([
         fetch(`${BASE_URL}/categories`),
         fetch(`${BASE_URL}/courses/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
-        })
+        }),
+        fetch(`${BASE_URL}/instructors`)
       ]);
       const catData = await catRes.json();
       const courseResult = await courseRes.json();
+      const instData = await instRes.json();
 
       setCategories(catData.data || []);
+      setInstructors(instData.data || []);
       const course = courseResult.data;
 
       if (course) {
         setCourseData(course);
         reset({
           ...course,
+          instructor: course.instructor?._id || course.instructor || '',
           category: course.category?._id || course.category,
           features: course.features?.length ? course.features : [''],
           requirements: course.requirements?.length ? course.requirements : [''],
@@ -206,7 +212,7 @@ export default function EditCoursePage() {
                   <input {...register('titleBn')} placeholder="যেমনঃ ভিডিও এডিটিং কোর্স" className={inputClass} />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass}>Course Type *</label>
                   <select {...register('courseType')} className={inputClass}>
@@ -231,7 +237,15 @@ export default function EditCoursePage() {
                   </select>
                   {errors.category && <p className="text-rose-500 text-xs mt-1">{errors.category.message}</p>}
                 </div>
+                <div>
+                  <label className={labelClass}>Instructor</label>
+                  <select {...register('instructor')} className={inputClass}>
+                    <option value="">Select instructor...</option>
+                    {instructors.map(i => <option key={i._id} value={i._id}>{i.name}</option>)}
+                  </select>
+                </div>
               </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass}>Language</label>
@@ -384,20 +398,36 @@ export default function EditCoursePage() {
           </div>
 
           <div className={cardClass}>
-            <h2 className={`text-sm font-semibold border-b pb-3 mb-2 ${isDark ? 'text-slate-300 border-slate-800' : 'text-slate-700 border-slate-100'}`}>Engagement Summary</h2>
-            <div className="grid grid-cols-2 gap-3">
-              <div className={`p-3 rounded-xl border ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
-                <p className="text-[10px] uppercase font-bold text-slate-500">Modules</p>
-                <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{courseData?.totalModules || 0}</p>
-              </div>
-              <div className={`p-3 rounded-xl border ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
-                <p className="text-[10px] uppercase font-bold text-slate-500">Lessons</p>
-                <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{courseData?.totalLessons || 0}</p>
-              </div>
-            </div>
+            <h2 className={`text-sm font-semibold border-b pb-3 mb-4 ${isDark ? 'text-slate-300 border-slate-800' : 'text-slate-700 border-slate-100'}`}>Engagement Summary</h2>
+            {(() => {
+              const courseType = watch('courseType');
+              const isManual = courseType === 'online' || courseType === 'offline';
+              return (
+                <div className="space-y-4">
+                  <div>
+                    <label className={labelClass}>{isManual ? "Total Modules" : "Modules (Auto)"}</label>
+                    <input
+                      type="number"
+                      {...register('totalModules')}
+                      className={`${inputClass} ${!isManual ? 'bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed' : ''}`}
+                      readOnly={!isManual}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>{isManual ? "Total Lessons" : "Lessons (Auto)"}</label>
+                    <input
+                      type="number"
+                      {...register('totalLessons')}
+                      className={`${inputClass} ${!isManual ? 'bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed' : ''}`}
+                      readOnly={!isManual}
+                    />
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }
