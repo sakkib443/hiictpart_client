@@ -5,22 +5,23 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FiSave, FiX, FiUser, FiLink, FiCheckCircle, FiInfo, FiMail, FiPhone, FiBriefcase } from 'react-icons/fi';
+import { FiSave, FiX, FiUser, FiLink, FiCheckCircle, FiInfo, FiMail, FiPhone, FiBriefcase, FiAlertCircle } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
 import { API_BASE_URL } from '@/config/api';
 
+// Relaxed validation - only name is required
 const instructorSchema = z.object({
-    name: z.string().min(3, 'Name must be at least 3 characters'),
-    designation: z.string().min(2, 'Designation is required'),
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    designation: z.string().optional(),
     bio: z.string().optional(),
-    image: z.string().url('Must be a valid URL').optional().or(z.literal('')),
-    email: z.string().email('Invalid email address').optional().or(z.literal('')),
+    image: z.string().optional(),
+    email: z.string().email('Invalid email format').optional().or(z.literal('')),
     phone: z.string().optional(),
     socialLinks: z.object({
-        facebook: z.string().url().optional().or(z.literal('')),
-        twitter: z.string().url().optional().or(z.literal('')),
-        linkedin: z.string().url().optional().or(z.literal('')),
-        github: z.string().url().optional().or(z.literal('')),
+        facebook: z.string().optional(),
+        twitter: z.string().optional(),
+        linkedin: z.string().optional(),
+        github: z.string().optional(),
     }).optional(),
     specialization: z.string().optional(),
     isActive: z.boolean().default(true),
@@ -32,6 +33,7 @@ export default function CreateInstructorPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
+    const [submitError, setSubmitError] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(instructorSchema),
@@ -63,12 +65,26 @@ export default function CreateInstructorPage() {
     const onSubmit = async (data) => {
         try {
             setLoading(true);
+            setSubmitError('');
             const token = localStorage.getItem('token');
 
-            // Transform specialization string to array
+            // Clean up empty fields and transform specialization
             const payload = {
-                ...data,
-                specialization: data.specialization ? data.specialization.split(',').map(s => s.trim()) : []
+                name: data.name,
+                ...(data.designation && { designation: data.designation }),
+                ...(data.bio && { bio: data.bio }),
+                ...(data.image && { image: data.image }),
+                ...(data.email && { email: data.email }),
+                ...(data.phone && { phone: data.phone }),
+                ...(data.user && { user: data.user }),
+                isActive: data.isActive,
+                specialization: data.specialization ? data.specialization.split(',').map(s => s.trim()).filter(s => s) : [],
+                socialLinks: {
+                    ...(data.socialLinks?.facebook && { facebook: data.socialLinks.facebook }),
+                    ...(data.socialLinks?.twitter && { twitter: data.socialLinks.twitter }),
+                    ...(data.socialLinks?.linkedin && { linkedin: data.socialLinks.linkedin }),
+                    ...(data.socialLinks?.github && { github: data.socialLinks.github }),
+                }
             };
 
             const res = await fetch(`${API_BASE_URL}/instructors`, {
@@ -82,14 +98,16 @@ export default function CreateInstructorPage() {
 
             const result = await res.json();
             if (result.success) {
-                alert('Instructor created successfully');
+                alert('Instructor created successfully!');
                 router.push('/dashboard/admin/instructor');
             } else {
-                alert(result.message || 'Failed to create instructor');
+                // Show specific error message from backend
+                const errorMsg = result.message || result.errorMessages?.[0]?.message || 'Failed to create instructor';
+                setSubmitError(errorMsg);
             }
         } catch (error) {
             console.error('Error creating instructor:', error);
-            alert('Something went wrong');
+            setSubmitError('Network error. Please check your connection and try again.');
         } finally {
             setLoading(false);
         }
@@ -122,6 +140,13 @@ export default function CreateInstructorPage() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Error Alert */}
+                {submitError && (
+                    <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400">
+                        <FiAlertCircle size={20} />
+                        <span className="text-sm font-medium">{submitError}</span>
+                    </div>
+                )}
                 <div className={`p-8 rounded-3xl border ${isDark ? 'bg-slate-900 border-slate-800 shadow-2xl shadow-indigo-500/5' : 'bg-white border-slate-200 shadow-xl shadow-indigo-500/5'}`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div>
@@ -138,7 +163,7 @@ export default function CreateInstructorPage() {
                         </div>
 
                         <div>
-                            <label className={labelClass}>Designation <span className="text-red-500">*</span></label>
+                            <label className={labelClass}>Designation</label>
                             <div className="relative">
                                 <FiBriefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input

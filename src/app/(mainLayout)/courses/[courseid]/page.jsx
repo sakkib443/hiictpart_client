@@ -580,55 +580,64 @@ const SingleCourse = () => {
 
                   {/* Content */}
                   <div className="p-5 space-y-5">
-                    {/* Batch Information - Shows if any active batches exist for this course */}
+                    {/* Batch Information - Premium Design */}
                     {batches.length > 0 && (
-                      <div className="p-4 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/20 rounded-xl border border-indigo-100 dark:border-indigo-900/30 shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
-                              <LuGraduationCap className="text-white" size={18} />
+                      <div className="p-5 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-2xl border-2 border-red-100 dark:border-red-900/30 shadow-lg">
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-5 pb-4 border-b border-red-100 dark:border-red-900/30">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-200 dark:shadow-none">
+                              <LuGraduationCap className="text-white" size={24} />
                             </div>
                             <div>
-                              <h4 className="text-sm font-bold outfit text-gray-900 dark:text-white">Admission Going On</h4>
-                              <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold poppins">{batches[0].batchName}</p>
+                              <h4 className="text-base font-bold outfit text-red-600 dark:text-red-400">Admission Going On</h4>
+                              <p className="text-sm text-gray-800 dark:text-gray-300 font-semibold poppins">{batches[0].batchName}</p>
                             </div>
                           </div>
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${batches[0].status === 'upcoming' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'
+                          <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm ${batches[0].status === 'upcoming' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'
                             }`}>
                             {batches[0].status}
                           </span>
                         </div>
 
-                        <div className="space-y-3">
-                          {/* Batch Details Grid */}
-                          <div className="grid grid-cols-2 gap-2">
-                            <div className="bg-white/80 dark:bg-slate-800/50 p-2 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
-                              <div className="flex items-center gap-1.5 mb-1">
-                                <LuCalendar className="text-indigo-500" size={12} />
-                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Start Date</span>
+                        {/* Batch Details */}
+                        <div className="space-y-4">
+                          {/* Date & Batch Grid */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuCalendar className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">Start Date</span>
                               </div>
-                              <p className="text-xs font-bold text-gray-800 dark:text-gray-200 poppins">
+                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
                                 {new Date(batches[0].startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
                               </p>
                             </div>
-                            <div className="bg-white/80 dark:bg-slate-800/50 p-2 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
-                              <div className="flex items-center gap-1.5 mb-1">
-                                <LuTimer className="text-indigo-500" size={12} />
-                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Batch No</span>
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuTimer className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">Batch No</span>
                               </div>
-                              <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 poppins">
+                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
                                 {batches[0].batchCode}
                               </p>
                             </div>
                           </div>
 
+                          {/* Class Schedule */}
                           {batches[0].schedule?.length > 0 && (
-                            <div className="bg-white/80 dark:bg-slate-800/50 p-2.5 rounded-lg border border-indigo-50 dark:border-indigo-900/10">
-                              <div className="flex items-center gap-1.5 mb-2">
-                                <LuTimer className="text-indigo-500" size={14} />
-                                <span className="text-[10px] text-gray-500 dark:text-gray-400 poppins uppercase font-medium">Class Schedule</span>
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-4">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuClock className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-sm text-red-600 dark:text-red-400 font-bold poppins uppercase">Class Schedule</span>
                               </div>
-                              <div className="space-y-1">
+                              <div className="space-y-3">
                                 {batches[0].schedule.map((sch, sIdx) => {
                                   // Helper to format 22:00 -> 10.00pm
                                   const formatTime = (timeStr) => {
@@ -646,9 +655,9 @@ const SingleCourse = () => {
                                   };
 
                                   return (
-                                    <div key={sIdx} className="flex items-center justify-between">
-                                      <span className="text-xs font-bold text-gray-800 dark:text-gray-200 capitalize">{sch.day}</span>
-                                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-0.5 rounded poppins">
+                                    <div key={sIdx} className="flex items-center justify-between py-2 px-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                      <span className="text-sm font-bold text-gray-800 dark:text-gray-200 capitalize poppins">{sch.day}</span>
+                                      <span className="text-sm font-semibold text-gray-800 dark:text-gray-300 bg-white dark:bg-slate-600 px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-600 poppins">
                                         {formatTime(sch.startTime)} - {formatTime(sch.endTime)}
                                       </span>
                                     </div>
