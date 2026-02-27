@@ -439,32 +439,26 @@ export default function EditCoursePage() {
 
           <div className={cardClass}>
             <h2 className={`text-sm font-semibold border-b pb-3 mb-4 ${isDark ? 'text-slate-300 border-slate-800' : 'text-slate-700 border-slate-100'}`}>Engagement Summary</h2>
-            {(() => {
-              const courseType = watch('courseType');
-              const isManual = courseType === 'online' || courseType === 'offline';
-              return (
-                <div className="space-y-4">
-                  <div>
-                    <label className={labelClass}>{isManual ? "Total Modules" : "Modules (Auto)"}</label>
-                    <input
-                      type="number"
-                      {...register('totalModules')}
-                      className={`${inputClass} ${!isManual ? 'bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed' : ''}`}
-                      readOnly={!isManual}
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClass}>{isManual ? "Total Lessons" : "Lessons (Auto)"}</label>
-                    <input
-                      type="number"
-                      {...register('totalLessons')}
-                      className={`${inputClass} ${!isManual ? 'bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed' : ''}`}
-                      readOnly={!isManual}
-                    />
-                  </div>
-                </div>
-              );
-            })()}
+            <div className="space-y-4">
+              <div>
+                <label className={labelClass}>Modules (Auto)</label>
+                <input
+                  type="number"
+                  {...register('totalModules')}
+                  className={`${inputClass} bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed`}
+                  readOnly
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Lessons (Auto)</label>
+                <input
+                  type="number"
+                  {...register('totalLessons')}
+                  className={`${inputClass} bg-slate-100 dark:bg-slate-900/50 text-slate-500 cursor-not-allowed`}
+                  readOnly
+                />
+              </div>
+            </div>
           </div>
         </div>
       </form >

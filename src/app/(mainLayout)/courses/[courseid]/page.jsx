@@ -63,6 +63,8 @@ const SingleCourse = () => {
   const [batches, setBatches] = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(false);
 
+  const [expandedModule, setExpandedModule] = useState(0);
+
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
 
   useEffect(() => {
@@ -343,12 +345,7 @@ const SingleCourse = () => {
                     { id: "whatyoulearn", label: "Learning", icon: LuZap },
                     { id: "instructor", label: "Instructor", icon: LuUsers },
                     { id: "reviews", label: "Reviews", icon: FaStar },
-                  ].filter(tab => {
-                    if (tab.id === 'curriculum') {
-                      return currentCourse?.courseType !== 'online' && currentCourse?.courseType !== 'offline';
-                    }
-                    return true;
-                  }).map((tab) => (
+                  ].map((tab) => (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
@@ -456,30 +453,61 @@ const SingleCourse = () => {
                         </h2>
                         <div className="space-y-4">
                           {currentCourse.curriculum?.map((module, idx) => (
-                            <div key={idx} className="bg-gray-50 border border-gray-100 rounded-md overflow-hidden">
-                              <div className="flex items-center justify-between p-4 bg-white border-b border-gray-100">
+                            <div key={idx} className="bg-gray-50 border border-gray-100 rounded-md overflow-hidden mb-3">
+                              <button
+                                onClick={() => setExpandedModule(expandedModule === idx ? -1 : idx)}
+                                className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50 transition-colors"
+                              >
                                 <div className="flex items-center gap-3">
                                   <span className="w-8 h-8 rounded bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs outfit">
                                     {idx + 1}
                                   </span>
-                                  <div>
+                                  <div className="text-left">
                                     <h3 className="font-bold text-gray-900 outfit text-sm">{module.moduleTitle}</h3>
                                     <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons • {module.totalDuration} min</p>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="divide-y divide-gray-100/50">
-                                {module.lessons?.map((lesson, lIdx) => (
-                                  <div key={lIdx} className="flex items-center justify-between p-4 pl-12 hover:bg-white transition-colors group">
-                                    <div className="flex items-center gap-3">
-                                      <MdPlayCircleOutline className="text-red-400" size={18} />
-                                      <span className="text-sm font-medium text-gray-600 poppins group-hover:text-red-600">{lesson.title}</span>
-                                      {lesson.isFree && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded border border-red-100">FREE</span>}
+                                <motion.div
+                                  animate={{ rotate: expandedModule === idx ? 180 : 0 }}
+                                  className="text-gray-400"
+                                >
+                                  <LuZap size={14} />
+                                </motion.div>
+                              </button>
+
+                              <AnimatePresence>
+                                {expandedModule === idx && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="divide-y divide-gray-100/50 bg-gray-50/50">
+                                      {module.lessons?.map((lesson, lIdx) => (
+                                        <div key={lIdx} className="flex items-center justify-between p-4 pl-12 hover:bg-white transition-colors group">
+                                          <div className="flex items-center gap-3">
+                                            {lesson.videoUrl ? (
+                                              <MdPlayCircleOutline className="text-red-400" size={18} />
+                                            ) : (
+                                              <LuBookOpen className="text-emerald-400" size={16} />
+                                            )}
+                                            <span className="text-sm font-medium text-gray-600 poppins group-hover:text-red-600">{lesson.title}</span>
+                                            {lesson.isFree && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded border border-red-100">FREE</span>}
+                                          </div>
+                                          {lesson.videoDuration > 0 && (
+                                            <span className="text-[11px] font-medium text-gray-400 poppins">{lesson.videoDuration}s</span>
+                                          )}
+                                        </div>
+                                      ))}
+                                      {(!module.lessons || module.lessons.length === 0) && (
+                                        <div className="p-4 pl-12 text-xs text-gray-400 italic poppins">No lessons added yet.</div>
+                                      )}
                                     </div>
-                                    <span className="text-[11px] font-medium text-gray-400 poppins">{lesson.videoDuration}s</span>
-                                  </div>
-                                ))}
-                              </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
                           ))}
                           {!currentCourse.curriculum?.length && <p className="text-gray-400 text-sm poppins py-10 text-center border border-dashed rounded-md">Curriculum details coming soon.</p>}
