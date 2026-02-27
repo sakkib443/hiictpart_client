@@ -415,6 +415,29 @@ const SingleCourse = () => {
                             </div>
                           </div>
                         )}
+
+                        {/* Job Opportunities Section - Moved Here */}
+                        {currentCourse.jobOpportunities?.length > 0 && (
+                          <div className="mt-8">
+                            <h2 className="text-lg font-bold outfit text-red-600 mb-5 flex items-center gap-2">
+                              <span className="w-1 h-5 bg-orange-500 rounded-full"></span>
+                              Job Opportunities
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {currentCourse.jobOpportunities.map((job, idx) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-center gap-3 p-4 bg-orange-50 border border-orange-100 rounded-md hover:border-orange-300 hover:bg-orange-100/50 transition-colors"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <LuGraduationCap className="text-white" size={18} />
+                                  </div>
+                                  <span className="text-gray-800 font-semibold text-sm poppins">{job}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </motion.div>
                     )}
 
@@ -495,29 +518,6 @@ const SingleCourse = () => {
                           <div className="text-center py-12 bg-gray-50 rounded-md border border-dashed border-gray-200">
                             <LuZap className="mx-auto text-2xl text-gray-300 mb-2" />
                             <p className="text-gray-400 text-sm poppins">Learning topics not listed yet</p>
-                          </div>
-                        )}
-
-                        {/* Job Opportunities Section */}
-                        {currentCourse.jobOpportunities?.length > 0 && (
-                          <div className="mt-8">
-                            <h2 className="text-lg font-bold outfit text-red-600 mb-5 flex items-center gap-2">
-                              <span className="w-1 h-5 bg-orange-500 rounded-full"></span>
-                              Job Opportunities
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {currentCourse.jobOpportunities.map((job, idx) => (
-                                <div
-                                  key={idx}
-                                  className="flex items-center gap-3 p-4 bg-orange-50 border border-orange-100 rounded-md hover:border-orange-300 hover:bg-orange-100/50 transition-colors"
-                                >
-                                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-sm">
-                                    <LuGraduationCap className="text-white" size={18} />
-                                  </div>
-                                  <span className="text-gray-800 font-semibold text-sm poppins">{job}</span>
-                                </div>
-                              ))}
-                            </div>
                           </div>
                         )}
 
