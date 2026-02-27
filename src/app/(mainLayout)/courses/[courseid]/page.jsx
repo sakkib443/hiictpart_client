@@ -10,7 +10,7 @@ import { addToCart } from "@/redux/cartSlice";
 import {
   LuDownload, LuExternalLink, LuClock, LuTrophy,
   LuLayoutGrid, LuEye, LuPackage, LuShieldCheck,
-  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers, LuCalendar, LuTimer, LuGraduationCap
+  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers, LuCalendar, LuTimer, LuGraduationCap, LuChevronDown, LuChevronUp, LuListVideo
 } from "react-icons/lu";
 import { FaHeart, FaRegHeart, FaStar, FaArrowRight } from "react-icons/fa";
 import { MdVerified, MdOutlineMenuBook, MdPlayCircleOutline } from "react-icons/md";
@@ -467,12 +467,13 @@ const SingleCourse = () => {
                                     <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons • {module.totalDuration} min</p>
                                   </div>
                                 </div>
-                                <motion.div
-                                  animate={{ rotate: expandedModule === idx ? 180 : 0 }}
-                                  className="text-gray-400"
-                                >
-                                  <LuZap size={14} />
-                                </motion.div>
+                                <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${expandedModule === idx ? 'bg-red-50 text-red-500' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}>
+                                  <LuListVideo size={13} />
+                                  {expandedModule === idx
+                                    ? <LuChevronUp size={13} />
+                                    : <LuChevronDown size={13} />
+                                  }
+                                </div>
                               </button>
 
                               <AnimatePresence>
