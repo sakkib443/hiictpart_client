@@ -762,7 +762,7 @@ const SingleCourse = () => {
                         onClick={handleBuyNow}
                         className="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2 poppins"
                       >
-                        Buy Now <FaArrowRight size={12} />
+                        Enroll Now <FaArrowRight size={12} />
                       </button>
                       <button
                         onClick={handleAddToCart}
