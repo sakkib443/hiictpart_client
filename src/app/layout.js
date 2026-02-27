@@ -1,11 +1,5 @@
 import {
   Poppins,
-  Roboto,
-  Lobster,
-  Caveat,
-  Work_Sans,
-  Outfit,
-  Hind_Siliguri,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/sheard/Navbar";
@@ -24,37 +18,6 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-poppins",
 });
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-  variable: "--font-roboto",
-});
-const lobster = Lobster({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-lobster",
-});
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-caveat",
-});
-const worksans = Work_Sans({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-work",
-});
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-outfit",
-});
-// Hind Siliguri for Bengali text
-const hindSiliguri = Hind_Siliguri({
-  subsets: ["bengali", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-hind-siliguri",
-});
 
 export const metadata = {
   title: {
@@ -62,7 +25,7 @@ export const metadata = {
     default: "Hi Ict Park | Home",
   },
   description:
-    "ejobs it � a leading IT training institute and digital solutions provider. We specialize in professional courses, ready-made software, and premium website templates to help you grow your skills and business.",
+    "ejobs it  a leading IT training institute and digital solutions provider. We specialize in professional courses, ready-made software, and premium website templates to help you grow your skills and business.",
   icons: {
     icon: "/images/ejobsitlogo.png",
     shortcut: "/images/ejobsitlogo.png",
@@ -74,7 +37,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${roboto.variable} ${lobster.variable} ${caveat.variable} ${worksans.variable} ${outfit.variable} ${hindSiliguri.variable}`}
+      className={`${poppins.variable}`}
       suppressHydrationWarning
     >
       <body className="antialiased" suppressHydrationWarning>

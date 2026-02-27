@@ -463,7 +463,7 @@ const SingleCourse = () => {
                                     {idx + 1}
                                   </span>
                                   <div className="text-left">
-                                    <h3 className="font-bold text-gray-900 outfit text-sm">{module.moduleTitle}</h3>
+                                    <h3 className="font-semibold text-gray-900 text-base">{module.moduleTitle}</h3>
                                     <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons • {module.totalDuration} min</p>
                                   </div>
                                 </div>

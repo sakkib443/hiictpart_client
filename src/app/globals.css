@@ -39,9 +39,9 @@
   --color-white: #ffffff;
 
   /* Font Families */
-  --font-heading: "Outfit", sans-serif;
+  --font-heading: "Poppins", sans-serif;
   --font-body: "Poppins", sans-serif;
-  --font-bengali: "Hind Siliguri", sans-serif;
+  --font-bengali: "Poppins", sans-serif;
 }
 
 /* =====================================================
@@ -56,7 +56,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* All Headings - Outfit */
+/* All Headings - Poppins */
 h1,
 h2,
 h3,
@@ -84,7 +84,7 @@ div {
   font-family: var(--font-body);
 }
 
-/* Bengali Font Override */
+/* Bengali Font Override - Fallback to Poppins */
 .hind-siliguri,
 [lang="bn"],
 .bn {
@@ -100,7 +100,7 @@ body.font-bengali * {
   font-family: var(--font-bengali), var(--font-body) !important;
 }
 
-/* Keep Outfit for icons and special elements in Bengali mode */
+/* Keep Font for icons and special elements */
 body.font-bengali .icon-font,
 body.font-bengali [class*="lucide-"],
 body.font-bengali [class*="fa-"],
@@ -120,7 +120,7 @@ body.font-bengali .font-icon {
   font-family: var(--font-body) !important;
 }
 
-/* Outfit Weights */
+/* Poppins Weights (replacing Outfit classes for compatibility) */
 .outfit {
   font-family: var(--font-heading);
   font-weight: 800;
