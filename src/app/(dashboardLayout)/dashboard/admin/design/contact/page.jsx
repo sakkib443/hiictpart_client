@@ -26,7 +26,7 @@ const ContactDesignPage = () => {
         },
         contactInfo: {
             email: 'info@ejobsit.com',
-            phone: '+88 01730481212',
+            phone: '+880 1829-818616',
             address: 'Daisy Garden, House 14 (Level-5), Block A, Banasree, Dhaka',
             addressBn: '????? ???????, ????? ?? (?????-?), ???? ?, ??????, ????',
             officeHours: 'Sat - Thu: 10:00 AM - 6:00 PM',
@@ -36,7 +36,7 @@ const ContactDesignPage = () => {
             facebook: 'https://www.facebook.com/ejobsit',
             youtube: 'https://www.youtube.com/@ejobsit',
             linkedin: 'https://www.linkedin.com/company/ejobsit',
-            whatsapp: 'https://wa.me/8801730481212',
+            whatsapp: 'https://wa.me/8801829818616',
             instagram: 'https://www.instagram.com/ejobsit/'
         },
         whatsappSection: {

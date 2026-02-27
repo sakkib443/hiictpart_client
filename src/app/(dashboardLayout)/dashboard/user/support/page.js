@@ -45,7 +45,7 @@ export default function UserSupportPage() {
         {
             icon: FiPhone,
             title: 'Phone Support',
-            value: '+880 1730-481212',
+            value: '+880 1829-818616',
             subtext: 'Mon-Fri, 9AM-6PM',
             color: 'text-indigo-500',
             bg: 'bg-indigo-500/10',
