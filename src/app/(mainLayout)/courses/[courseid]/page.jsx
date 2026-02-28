@@ -47,6 +47,63 @@ const AnimatedCounter = ({ value }) => {
   return <span className="tabular-nums">{formatNumber(count)}</span>;
 };
 
+// Video Modal Component
+const VideoModal = ({ isOpen, onClose, videoUrl }) => {
+  if (!isOpen || !videoUrl) return null;
+
+  const getEmbedUrl = (url) => {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1` : url;
+    }
+    if (url.includes('vimeo.com')) {
+      const regExp = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+      const match = url.match(regExp);
+      return match ? `https://player.vimeo.com/video/${match[1]}?autoplay=1` : url;
+    }
+    return url;
+  };
+
+  const embedUrl = getEmbedUrl(videoUrl);
+  const isDirectVideo = embedUrl.match(/\.(mp4|webm|ogg)$/) || embedUrl.includes('cloudinary');
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all"
+        >
+          <LuX size={24} />
+        </button>
+
+        {isDirectVideo ? (
+          <video
+            src={embedUrl}
+            controls
+            autoPlay
+            className="w-full h-full object-contain"
+          />
+        ) : (
+          <iframe
+            src={embedUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
 const SingleCourse = () => {
   const { courseid: id } = useParams();
   const router = useRouter();
@@ -64,6 +121,7 @@ const SingleCourse = () => {
   const [loadingBatches, setLoadingBatches] = useState(false);
 
   const [expandedModule, setExpandedModule] = useState(0);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
 
@@ -111,7 +169,7 @@ const SingleCourse = () => {
     dispatch(addToCart({
       id: currentCourse._id,
       title: currentCourse.title,
-      price: currentCourse.price,
+      price: currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price,
       image: currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png",
       type: 'course'
     }));
@@ -330,16 +388,26 @@ const SingleCourse = () => {
                     <span className="text-2xl font-bold text-gray-900 outfit">৳{price.toLocaleString()}</span>
                     {discountPrice && <span className="text-gray-400 line-through text-sm">৳{(price + 2000).toLocaleString()}</span>}
                   </div>
-                  <motion.button
-                    onClick={handleBuyNow}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-3 enroll-wave-btn shadow-lg group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
-                  >
-                    <LuZap className="enroll-jump-icon text-white" size={24} />
-                    <span className="uppercase tracking-widest text-lg">{t("courseDetails.enrollNow")}</span>
-                    <FaArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </motion.button>
+                  <div className="flex flex-col gap-3">
+                    <motion.button
+                      onClick={handleBuyNow}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-3 enroll-wave-btn shadow-lg group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
+                    >
+                      <LuZap className="enroll-jump-icon text-white" size={24} />
+                      <span className="uppercase tracking-widest text-lg">{t("courseDetails.enrollNow")}</span>
+                      <FaArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </motion.button>
+                    {currentCourse.sampleVideoUrl && (
+                      <button
+                        onClick={() => setShowVideoModal(true)}
+                        className="w-full py-3 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 transition-all flex items-center justify-center gap-2 poppins"
+                      >
+                        <LuVideo size={18} /> Sample Lesson
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -782,12 +850,13 @@ const SingleCourse = () => {
                       >
                         Add to Cart
                       </button>
-                      <Link
-                        href={`/learn/${id}`}
-                        className="w-full py-2.5 bg-gray-50 border border-gray-200 text-gray-600 font-medium rounded-md hover:border-red-400 hover:text-red-600 transition-colors flex items-center justify-center gap-2 text-sm poppins"
+                      <button
+                        onClick={() => setShowVideoModal(true)}
+                        disabled={!currentCourse.sampleVideoUrl}
+                        className={`w-full py-2.5 bg-gray-50 border border-gray-200 text-gray-600 font-medium rounded-md transition-colors flex items-center justify-center gap-2 text-sm poppins ${currentCourse.sampleVideoUrl ? 'hover:border-red-400 hover:text-red-600' : 'opacity-50 cursor-not-allowed'}`}
                       >
                         <LuVideo size={14} /> Sample Lesson
-                      </Link>
+                      </button>
                     </div>
 
                     {/* What's Included mirroring Website style */}
@@ -848,6 +917,15 @@ const SingleCourse = () => {
           </div>
         </div>
       </section >
+      <AnimatePresence>
+        {showVideoModal && (
+          <VideoModal
+            isOpen={showVideoModal}
+            onClose={() => setShowVideoModal(false)}
+            videoUrl={currentCourse.sampleVideoUrl}
+          />
+        )}
+      </AnimatePresence>
     </div >
   );
 };

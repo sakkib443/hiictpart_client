@@ -2,9 +2,9 @@
 import { API_URL } from '@/config/api';
 import React, { useEffect, useState } from 'react';
 import {
-  FiShoppingBag, FiSearch, FiRefreshCw, FiEye,
+  FiShoppingBag, FiSearch, FiRefreshCw, FiEye, FiTrash2, FiAlertTriangle,
   FiChevronLeft, FiChevronRight, FiDollarSign, FiPackage, FiCheck, FiClock, FiX,
-  FiMail, FiEdit3, FiSave, FiCreditCard, FiHash, FiAlertCircle, FiCalendar, FiPhone
+  FiMail, FiEdit3, FiSave, FiCreditCard, FiHash, FiAlertCircle, FiCalendar, FiPhone, FiTag
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
@@ -19,6 +19,8 @@ export default function OrdersPage() {
   const [editMode, setEditMode] = useState(false);
   const [editStatus, setEditStatus] = useState('');
   const [saving, setSaving] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletingOrder, setDeletingOrder] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -63,6 +65,35 @@ export default function OrdersPage() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!deletingOrder) return;
+    try {
+      setSaving(true);
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/orders/admin/${deletingOrder}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        toast.success('Order and enrollments deleted successfully!');
+        setShowDeleteModal(false);
+        setDeletingOrder(null);
+        fetchOrders();
+      } else {
+        toast.error('Failed to delete order');
+      }
+    } catch (err) {
+      toast.error('Deletion failed');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const confirmDelete = (orderId) => {
+    setDeletingOrder(orderId);
+    setShowDeleteModal(true);
   };
 
   const filteredOrders = orders.filter(order => {
@@ -191,11 +222,10 @@ export default function OrdersPage() {
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                statusFilter === status
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-gray-200'
-              }`}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${statusFilter === status
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-gray-200'
+                }`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
@@ -285,6 +315,13 @@ export default function OrdersPage() {
                           className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-md transition-colors"
                         >
                           <FiEye size={14} />
+                        </button>
+                        <button
+                          onClick={() => confirmDelete(order._id)}
+                          className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                          title="Delete Order"
+                        >
+                          <FiTrash2 size={14} />
                         </button>
                       </div>
                     </td>
@@ -432,9 +469,8 @@ export default function OrdersPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-800 dark:text-white truncate">{item.title}</p>
-                        <span className={`px-1.5 py-0.5 rounded text-xs ${
-                          item.productType === 'course' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
-                        }`}>
+                        <span className={`px-1.5 py-0.5 rounded text-xs ${item.productType === 'course' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
+                          }`}>
                           {item.productType}
                         </span>
                       </div>
@@ -444,12 +480,21 @@ export default function OrdersPage() {
                 </div>
               </div>
 
-              {/* Total */}
-              <div className="p-4 bg-blue-500 rounded-md text-white">
+              {/* Total & Discount */}
+              <div className="p-4 bg-blue-500 rounded-md text-white space-y-2">
+                {selectedOrder.discountAmount > 0 && (
+                  <div className="flex items-center justify-between border-b border-white/20 pb-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <FiTag size={12} className="text-blue-100" />
+                      <p className="text-xs text-blue-100 uppercase tracking-widest font-bold">Discount ({selectedOrder.couponCode})</p>
+                    </div>
+                    <span className="text-sm font-medium">-৳{selectedOrder.discountAmount?.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs text-blue-100">Total Amount</p>
-                    <p className="text-xs text-blue-200 mt-0.5">Including all fees</p>
+                    <p className="text-xs text-blue-200 mt-0.5">Final payable amount</p>
                   </div>
                   <span className="text-2xl font-semibold">৳{selectedOrder.totalAmount?.toLocaleString()}</span>
                 </div>
@@ -489,6 +534,38 @@ export default function OrdersPage() {
                   <p className="text-xs text-red-600">This transaction was marked as failed. Please audit manually if necessary.</p>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-xl shadow-2xl overflow-hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
+                <FiAlertTriangle className="text-red-600 dark:text-red-500" size={32} />
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Delete Order?</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Are you sure you want to delete this order? This will also remove any associated course enrollments for this user. This action cannot be undone.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-900/50">
+              <button
+                onClick={() => { setShowDeleteModal(false); setDeletingOrder(null); }}
+                className="flex-1 px-4 py-2.5 rounded-lg font-semibold transition-colors bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteOrder}
+                disabled={saving}
+                className="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+              >
+                {saving ? <FiRefreshCw className="animate-spin" size={18} /> : <FiTrash2 size={18} />}
+                Yes, Delete
+              </button>
             </div>
           </div>
         </div>

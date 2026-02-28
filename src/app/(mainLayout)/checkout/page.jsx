@@ -74,7 +74,9 @@ const CheckoutContent = () => {
                             id: course._id || course.id,
                             title: course.title,
                             type: 'course',
-                            price: course.price || (parseInt(course.fee?.replace(/[^\d]/g, '') || 0)),
+                            price: (course.discountPrice && course.discountPrice > 0)
+                                ? course.discountPrice
+                                : (course.price || (parseInt(course.fee?.replace(/[^\d]/g, '') || 0))),
                             image: course.thumbnail || course.image
                         };
                         setCheckoutItems([item]);
@@ -192,7 +194,9 @@ const CheckoutContent = () => {
                     image: item.image
                 })),
                 paymentMethod: paymentMethod === 'manual' ? 'manual' : 'direct',
-                paymentStatus: 'pending'
+                paymentStatus: 'pending',
+                discountAmount: discountAmount || 0,
+                couponCode: appliedCoupon?.code || ''
             };
 
             const orderRes = await fetch(`${BASE_URL}/orders`, {

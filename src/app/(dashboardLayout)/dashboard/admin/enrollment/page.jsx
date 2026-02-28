@@ -3,17 +3,20 @@ import { API_URL } from '@/config/api';
 import React, { useEffect, useState } from 'react';
 import {
     FiUserCheck, FiSearch, FiRefreshCw, FiX,
-    FiChevronLeft, FiChevronRight, FiBook, FiCalendar,
+    FiChevronLeft, FiChevronRight, FiChevronDown, FiBook, FiCalendar,
     FiMail, FiPhone, FiEye, FiAward, FiClock,
-    FiCheckCircle, FiXCircle, FiUsers, FiTrendingUp
+    FiCheckCircle, FiXCircle, FiUsers, FiTrendingUp, FiEdit3, FiSave, FiAlertCircle
 } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
+import { toast } from 'react-hot-toast';
 
 export default function EnrollmentsPage() {
     const { isDark } = useTheme();
     const [enrollments, setEnrollments] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [batches, setBatches] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [courseFilter, setCourseFilter] = useState('');
@@ -21,6 +24,9 @@ export default function EnrollmentsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedEnrollment, setSelectedEnrollment] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [expandedRow, setExpandedRow] = useState(null);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [pendingBatchUpdate, setPendingBatchUpdate] = useState(null);
 
     useEffect(() => {
         fetchEnrollments();
@@ -38,6 +44,7 @@ export default function EnrollmentsPage() {
             setEnrollments(data.data || []);
         } catch (err) {
             console.error('Error fetching enrollments:', err);
+            toast.error('Failed to fetch enrollments');
         } finally {
             setLoading(false);
         }
@@ -46,7 +53,7 @@ export default function EnrollmentsPage() {
     const fetchCourses = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}/courses/admin/all?limit=100`, {
+            const res = await fetch(`${API_URL}/courses`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -56,11 +63,79 @@ export default function EnrollmentsPage() {
         }
     };
 
+    const fetchBatchesForCourse = async (courseId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/batches/course/${courseId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            setBatches(data.data || []);
+            return data.data || [];
+        } catch (err) {
+            console.error('Error fetching batches:', err);
+            return [];
+        }
+    };
+
+    const toggleRow = async (enrollId, courseId) => {
+        if (expandedRow === enrollId) {
+            setExpandedRow(null);
+        } else {
+            setExpandedRow(enrollId);
+            if (courseId) {
+                await fetchBatchesForCourse(courseId);
+            }
+        }
+    };
+
+    const handleUpdateBatch = (enrollId, batchId) => {
+        if (!batchId) return;
+        setPendingBatchUpdate({ enrollId, batchId });
+        setShowConfirmModal(true);
+    };
+
+    const handleConfirmUpdate = async () => {
+        if (!pendingBatchUpdate) return;
+        const { enrollId, batchId } = pendingBatchUpdate;
+
+        try {
+            setSubmitting(true);
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/enrollments/admin/${enrollId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ batch: batchId })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                toast.success('Batch updated successfully');
+                fetchEnrollments();
+                setShowConfirmModal(false);
+                setPendingBatchUpdate(null);
+            } else {
+                toast.error(data.message || 'Failed to update batch');
+            }
+        } catch (err) {
+            console.error('Error updating batch:', err);
+            toast.error('Internal server error');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     // Filter enrollments
     const filteredEnrollments = enrollments.filter(enroll => {
+        const student = enroll.student || enroll.user;
+        const studentName = `${student?.firstName || ''} ${student?.lastName || ''}`.toLowerCase();
+
         const matchesSearch =
-            enroll.student?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            enroll.student?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            studentName.includes(searchTerm.toLowerCase()) ||
+            student?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             enroll.course?.title?.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesStatus = !statusFilter || enroll.status === statusFilter;
@@ -290,8 +365,8 @@ export default function EnrollmentsPage() {
                             <tr>
                                 <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Student</th>
                                 <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Course</th>
-                                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Enrolled Date</th>
-                                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Progress</th>
+                                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Batch</th>
+                                <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Enrolled At</th>
                                 <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Status</th>
                                 <th className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Actions</th>
                             </tr>
@@ -314,72 +389,156 @@ export default function EnrollmentsPage() {
                                 </tr>
                             ) : (
                                 paginatedEnrollments.map((enroll) => (
-                                    <tr key={enroll._id} className={`${isDark ? 'hover:bg-slate-700/50' : 'hover:bg-gray-50'} transition-colors`}>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                {enroll.student?.avatar ? (
-                                                    <img src={enroll.student.avatar} alt={enroll.student.name} className="w-10 h-10 rounded-full object-cover" />
-                                                ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
-                                                        {enroll.student?.name?.charAt(0) || enroll.user?.firstName?.charAt(0) || 'U'}
+                                    <React.Fragment key={enroll._id}>
+                                        <tr
+                                            onClick={() => toggleRow(enroll._id, enroll.course?._id)}
+                                            className={`${isDark ? 'hover:bg-slate-700/50' : 'hover:bg-gray-50'} transition-colors cursor-pointer ${expandedRow === enroll._id ? (isDark ? 'bg-slate-700/30' : 'bg-indigo-50/30') : ''}`}
+                                        >
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`transition-transform duration-200 ${expandedRow === enroll._id ? 'rotate-180' : ''}`}>
+                                                        <FiChevronDown className={isDark ? 'text-gray-500' : 'text-gray-400'} />
                                                     </div>
-                                                )}
-                                                <div>
-                                                    <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                                                        {enroll.student?.name || `${enroll.user?.firstName || ''} ${enroll.user?.lastName || ''}`.trim() || 'Unknown'}
-                                                    </p>
-                                                    <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                                        {enroll.student?.email || enroll.user?.email || 'N/A'}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 max-w-[250px]">
-                                                {enroll.course?.thumbnail && (
-                                                    <img src={enroll.course.thumbnail} alt={enroll.course.title} className="w-12 h-8 rounded object-cover" />
-                                                )}
-                                                <span className={`text-sm font-normal truncate ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                                                    {enroll.course?.title || 'N/A'}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <FiCalendar className={isDark ? 'text-gray-400' : 'text-gray-500'} size={14} />
-                                                <span className={`text-sm font-normal ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                                                    {formatDate(enroll.enrolledAt)}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex-1 max-w-[100px]">
-                                                    <div className={`w-full h-2 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-200'}`}>
-                                                        <div className={`h-full rounded-full transition-all ${enroll.progress >= 100 ? 'bg-green-500' : 'bg-indigo-500'}`}
-                                                            style={{ width: `${Math.min(enroll.progress || 0, 100)}%` }} />
+                                                    {enroll.student?.avatar || enroll.user?.avatar ? (
+                                                        <img src={enroll.student?.avatar || enroll.user?.avatar} alt="Avatar" className="w-10 h-10 rounded-full object-cover" />
+                                                    ) : (
+                                                        <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
+                                                            {(enroll.student?.firstName || enroll.user?.firstName || 'U').charAt(0)}
+                                                        </div>
+                                                    )}
+                                                    <div>
+                                                        <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                                            {enroll.student ? `${enroll.student.firstName} ${enroll.student.lastName}` : (enroll.user ? `${enroll.user.firstName} ${enroll.user.lastName}` : 'N/A')}
+                                                        </p>
+                                                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                                                            {enroll.student?.email || enroll.user?.email || 'N/A'}
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{enroll.progress || 0}%</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2.5 py-1 text-xs font-medium rounded-full capitalize ${getStatusBadge(enroll.status)}`}>
-                                                {enroll.status || 'active'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center justify-end">
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <span className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                                                        {enroll.course?.title || 'N/A'}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-2">
+                                                    <FiUsers className={isDark ? 'text-gray-400' : 'text-gray-500'} size={14} />
+                                                    <span className={`text-sm font-medium ${enroll.batch ? (isDark ? 'text-indigo-400' : 'text-indigo-600') : (isDark ? 'text-gray-500' : 'text-gray-400')}`}>
+                                                        {enroll.batch?.batchName || 'Not Assigned'}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-2 text-sm text-gray-500">
+                                                    <FiCalendar size={14} />
+                                                    <span>{formatDate(enroll.enrolledAt)}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2.5 py-1 text-xs font-medium rounded-full capitalize ${getStatusBadge(enroll.status)}`}>
+                                                    {enroll.status || 'active'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
                                                 <button
-                                                    onClick={() => openDetails(enroll)}
+                                                    onClick={(e) => { e.stopPropagation(); openDetails(enroll); }}
                                                     className={`p-2 rounded-md transition-colors ${isDark ? 'hover:bg-slate-600 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
-                                                    title="View Details"
+                                                    title="View Full Details"
                                                 >
                                                     <FiEye size={16} />
                                                 </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                        {/* Expanded Details Row */}
+                                        {expandedRow === enroll._id && (
+                                            <tr>
+                                                <td colSpan={6} className={`px-6 py-6 border-b ${isDark ? 'bg-slate-800/50' : 'bg-gray-50/50'}`}>
+                                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in slide-in-from-top-2 duration-300">
+                                                        {/* Student Detailed Info */}
+                                                        <div>
+                                                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Student info</h4>
+                                                            <div className="space-y-3">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-700' : 'bg-white'}`}>
+                                                                        <FiMail className="text-indigo-500" size={14} />
+                                                                    </div>
+                                                                    <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{enroll.student?.email || enroll.user?.email || 'N/A'}</span>
+                                                                </div>
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-700' : 'bg-white'}`}>
+                                                                        <FiPhone className="text-indigo-500" size={14} />
+                                                                    </div>
+                                                                    <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{enroll.student?.phone || 'N/A'}</span>
+                                                                </div>
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-700' : 'bg-white'}`}>
+                                                                        <FiCalendar className="text-indigo-500" size={14} />
+                                                                    </div>
+                                                                    <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Joined: {formatDate(enroll.enrolledAt)}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Course & Progress */}
+                                                        <div>
+                                                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Course & Progress</h4>
+                                                            <div className="p-4 rounded-xl border border-dashed border-indigo-500/30 bg-indigo-500/5">
+                                                                <p className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{enroll.course?.title}</p>
+                                                                <div className="flex items-center gap-3 mb-3">
+                                                                    <div className="flex-1 h-2 rounded-full bg-gray-200 dark:bg-slate-700 overflow-hidden">
+                                                                        <div className="h-full bg-indigo-500 transition-all" style={{ width: `${enroll.progress || 0}%` }} />
+                                                                    </div>
+                                                                    <span className="text-xs font-bold text-indigo-500">{enroll.progress || 0}%</span>
+                                                                </div>
+                                                                <p className="text-xs text-gray-500">ID: {enroll.course?.courseId || enroll.course?._id?.slice(-8)}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Batch Management */}
+                                                        <div>
+                                                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Manage Batch</h4>
+                                                            <div className="space-y-4">
+                                                                <div>
+                                                                    <label className={`block text-xs mb-1.5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Assign to Batch</label>
+                                                                    <div className="flex gap-2">
+                                                                        <select
+                                                                            defaultValue={enroll.batch?._id || ''}
+                                                                            onChange={(e) => handleUpdateBatch(enroll._id, e.target.value)}
+                                                                            className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDark
+                                                                                ? 'bg-slate-700 border-slate-600 text-white'
+                                                                                : 'bg-white border-gray-200 text-gray-900'
+                                                                                }`}
+                                                                        >
+                                                                            <option value="">Select Batch</option>
+                                                                            {batches.map(batch => (
+                                                                                <option key={batch._id} value={batch._id}>
+                                                                                    {batch.batchName} ({batch.batchCode})
+                                                                                </option>
+                                                                            ))}
+                                                                        </select>
+                                                                        {submitting && (
+                                                                            <div className="flex items-center justify-center p-2">
+                                                                                <FiRefreshCw className="animate-spin text-indigo-500" size={16} />
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Status:</span>
+                                                                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase ${getStatusBadge(enroll.status)}`}>
+                                                                        {enroll.status}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </React.Fragment>
                                 ))
                             )}
                         </tbody>
@@ -493,16 +652,45 @@ export default function EnrollmentsPage() {
                                                 {selectedEnrollment.course?.title || 'N/A'}
                                             </p>
                                             <p className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                                {selectedEnrollment.course?.courseType || 'online'} • {selectedEnrollment.course?.level || 'beginner'}
+                                                {selectedEnrollment.course?.courseId || 'N/A'} • {selectedEnrollment.course?.courseType || 'online'}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            {/* Batch & Status */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 className={`text-sm font-semibold mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Assigned Batch</h4>
+                                    <div className={`p-4 rounded-md border flex items-center justify-between ${isDark ? 'bg-slate-700/50 border-slate-600' : 'bg-gray-50 border-gray-200'}`}>
+                                        <div className="flex items-center gap-2">
+                                            <FiUsers className="text-indigo-500" size={16} />
+                                            <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                                {selectedEnrollment.batch?.batchName || 'Not Assigned'}
+                                            </span>
+                                        </div>
+                                        <button
+                                            onClick={() => { setShowDetailsModal(false); openBatchModal(selectedEnrollment); }}
+                                            className="text-xs text-indigo-500 hover:underline font-medium"
+                                        >
+                                            Change
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className={`text-sm font-semibold mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Status</h4>
+                                    <div className={`p-4 rounded-md border ${isDark ? 'bg-slate-700/50 border-slate-600' : 'bg-gray-50 border-gray-200'}`}>
+                                        <span className={`px-2.5 py-1 text-xs font-medium rounded-full capitalize ${getStatusBadge(selectedEnrollment.status)}`}>
+                                            {selectedEnrollment.status || 'active'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Enrollment Details */}
                             <div>
-                                <h4 className={`text-sm font-semibold mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Enrollment Details</h4>
+                                <h4 className={`text-sm font-semibold mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>History & Stats</h4>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className={`p-4 rounded-md border ${isDark ? 'bg-slate-700/50 border-slate-600' : 'bg-gray-50 border-gray-200'}`}>
                                         <div className="flex items-center gap-2 mb-1">
@@ -518,50 +706,6 @@ export default function EnrollmentsPage() {
                                         </div>
                                         <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{formatDate(selectedEnrollment.lastAccessedAt)}</p>
                                     </div>
-                                    <div className={`p-4 rounded-md border ${isDark ? 'bg-slate-700/50 border-slate-600' : 'bg-gray-50 border-gray-200'}`}>
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <FiTrendingUp className={isDark ? 'text-gray-400' : 'text-gray-500'} size={14} />
-                                            <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Progress</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className={`flex-1 h-2 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-200'}`}>
-                                                <div className="h-full rounded-full bg-indigo-500" style={{ width: `${selectedEnrollment.progress || 0}%` }} />
-                                            </div>
-                                            <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedEnrollment.progress || 0}%</span>
-                                        </div>
-                                    </div>
-                                    <div className={`p-4 rounded-md border ${isDark ? 'bg-slate-700/50 border-slate-600' : 'bg-gray-50 border-gray-200'}`}>
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <FiBook className={isDark ? 'text-gray-400' : 'text-gray-500'} size={14} />
-                                            <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Lessons Completed</span>
-                                        </div>
-                                        <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                                            {selectedEnrollment.completedLessons || 0} / {selectedEnrollment.totalLessons || 0}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Status & Certificate */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1">
-                                    <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Status</span>
-                                    <div className="mt-1">
-                                        <span className={`px-3 py-1.5 text-sm font-medium rounded-full capitalize ${getStatusBadge(selectedEnrollment.status)}`}>
-                                            {selectedEnrollment.status || 'active'}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex-1">
-                                    <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Certificate</span>
-                                    <div className="mt-1">
-                                        <span className={`px-3 py-1.5 text-sm font-medium rounded-full ${selectedEnrollment.certificateEligible
-                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                            : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-                                            }`}>
-                                            {selectedEnrollment.certificateEligible ? 'Eligible' : 'Not Eligible'}
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -576,6 +720,41 @@ export default function EnrollmentsPage() {
                                     }`}
                             >
                                 Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Confirmation Modal */}
+            {showConfirmModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                    <div className={`w-full max-w-sm rounded-xl shadow-2xl overflow-hidden ${isDark ? 'bg-slate-800 border border-slate-700' : 'bg-white'}`}>
+                        <div className="p-6 text-center">
+                            <div className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-4">
+                                <FiAlertCircle className="text-amber-600 dark:text-amber-500" size={32} />
+                            </div>
+                            <h3 className={`text-xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Confirm Batch Change</h3>
+                            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                                Are you sure you want to change the batch for this student? This will update their class schedule and access.
+                            </p>
+                        </div>
+                        <div className={`flex items-center gap-3 p-4 ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'}`}>
+                            <button
+                                onClick={() => { setShowConfirmModal(false); setPendingBatchUpdate(null); fetchEnrollments(); }}
+                                className={`flex-1 px-4 py-2.5 rounded-lg font-semibold transition-colors ${isDark
+                                    ? 'bg-slate-700 text-gray-300 hover:bg-slate-600'
+                                    : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                            >
+                                No, Cancel
+                            </button>
+                            <button
+                                onClick={handleConfirmUpdate}
+                                disabled={submitting}
+                                className="flex-1 px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+                            >
+                                {submitting ? <FiRefreshCw className="animate-spin" size={18} /> : <FiCheckCircle size={18} />}
+                                Yes, Change It
                             </button>
                         </div>
                     </div>

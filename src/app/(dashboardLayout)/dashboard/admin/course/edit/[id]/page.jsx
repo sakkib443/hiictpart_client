@@ -38,6 +38,7 @@ const courseValidationSchema = z.object({
   jobOpportunities: z.array(z.string()).optional(),
   softwareWeLearn: z.array(z.string()).optional(),
   previewVideo: z.string().url().optional().or(z.literal('')),
+  sampleVideoUrl: z.string().url().optional().or(z.literal('')),
   totalDuration: z.coerce.number().min(0).optional(),
   totalLessons: z.coerce.number().min(0).optional(),
   totalModules: z.coerce.number().min(0).optional(),
@@ -71,7 +72,8 @@ export default function EditCoursePage() {
       targetAudience: [''],
       jobOpportunities: [''],
       softwareWeLearn: [''],
-      tags: [''],
+      previewVideo: '',
+      sampleVideoUrl: '',
       isFeatured: false,
       isPopular: false,
     }
@@ -119,6 +121,7 @@ export default function EditCoursePage() {
           softwareWeLearn: course.softwareWeLearn?.length ? course.softwareWeLearn : [''],
           tags: course.tags?.length ? course.tags : [''],
           previewVideo: course.previewVideo || '',
+          sampleVideoUrl: course.sampleVideoUrl || '',
           bannerImage: course.bannerImage || '',
           shortDescription: course.shortDescription || '',
           shortDescriptionBn: course.shortDescriptionBn || '',
@@ -371,18 +374,26 @@ export default function EditCoursePage() {
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className={labelClass}>Search Tags</label>
-                    <button type="button" onClick={() => tagsFields.append('')} className="text-[10px] font-bold text-emerald-600">+ Add Tag</button>
+                  <label className={labelClass}>Sample Lesson Video URL</label>
+                  <div className="relative">
+                    <FiVideo className="absolute left-3 top-3.5 text-slate-400" size={16} />
+                    <input {...register('sampleVideoUrl')} className={`${inputClass} pl-10`} placeholder="YouTube/Vimeo" />
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {tagsFields.fields.map((field, idx) => (
-                      <div key={field.id} className="group relative">
-                        <input {...register(`tags.${idx}`)} className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-xs border border-slate-200 dark:border-slate-800 outline-none focus:border-emerald-300 w-24" placeholder="tag" />
-                        <button type="button" onClick={() => tagsFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
-                      </div>
-                    ))}
-                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className={labelClass}>Search Tags</label>
+                  <button type="button" onClick={() => tagsFields.append('')} className="text-[10px] font-bold text-emerald-600">+ Add Tag</button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {tagsFields.fields.map((field, idx) => (
+                    <div key={field.id} className="group relative">
+                      <input {...register(`tags.${idx}`)} className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-xs border border-slate-200 dark:border-slate-800 outline-none focus:border-emerald-300 w-24" placeholder="tag" />
+                      <button type="button" onClick={() => tagsFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

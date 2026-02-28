@@ -65,6 +65,7 @@ const courseValidationSchema = z.object({
     jobOpportunities: z.array(z.string()).optional(),
     softwareWeLearn: z.array(z.string()).optional(),
     previewVideo: z.string().url().optional().or(z.literal('')),
+    sampleVideoUrl: z.string().url().optional().or(z.literal('')),
     totalDuration: z.coerce.number().min(0).optional(),
     totalLessons: z.coerce.number().min(0).optional(),
     totalModules: z.coerce.number().min(0).optional(),
@@ -97,6 +98,8 @@ const CourseCreateTab = ({ onSuccess }) => {
             tags: [''],
             price: 0,
             currency: 'BDT',
+            previewVideo: '',
+            sampleVideoUrl: '',
             totalDuration: 0,
             totalLessons: 0,
             totalModules: 0,
@@ -241,9 +244,14 @@ const CourseCreateTab = ({ onSuccess }) => {
                                     <input {...register('bannerImage')} className={inputBase} placeholder="https://..." />
                                 </FormField>
                             </div>
-                            <FormField label="Preview Video URL (YouTube/Vimeo)" icon={FiVideo} error={errors.previewVideo}>
-                                <input {...register('previewVideo')} className={inputBase} placeholder="https://..." />
-                            </FormField>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <FormField label="Preview Video URL (YouTube/Vimeo)" icon={FiVideo} error={errors.previewVideo}>
+                                    <input {...register('previewVideo')} className={inputBase} placeholder="https://..." />
+                                </FormField>
+                                <FormField label="Sample Lesson Video URL" icon={FiVideo} error={errors.sampleVideoUrl}>
+                                    <input {...register('sampleVideoUrl')} className={inputBase} placeholder="https://..." />
+                                </FormField>
+                            </div>
                         </div>
                     </div>
 
