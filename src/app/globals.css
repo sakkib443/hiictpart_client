@@ -467,6 +467,72 @@ body.font-bengali .font-icon {
   animation: flip 0.3s ease-in-out;
 }
 
+@keyframes riverWave {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes enrollJump {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.enroll-wave-btn {
+  background-image: linear-gradient(90deg,
+      #E62D26 0%,
+      #38a89d 50%,
+      #E62D26 100%) !important;
+  background-size: 200% auto !important;
+  animation: riverWave 8s ease-in-out infinite !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 10px 25px rgba(230, 45, 38, 0.4) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.enroll-jump-icon {
+  animation: enrollJump 1.5s ease-in-out infinite !important;
+  display: inline-block !important;
+}
+
+.special-enroll-btn {
+  background: linear-gradient(90deg,
+      #E62D26,
+      #38a89d,
+      #f79952,
+      #e07832,
+      #E62D26) !important;
+  background-size: 400% 100% !important;
+  animation: riverWave 10s linear infinite !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(230, 45, 38, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.special-enroll-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 15px 30px rgba(230, 45, 38, 0.4) !important;
+}
+
 @keyframes shine {
   0% {
     left: -100%;

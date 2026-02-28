@@ -99,6 +99,7 @@ const SingleCourse = () => {
     }
   }, [reduxCourse]);
 
+
   useEffect(() => {
     if (courses && courses.length > 0) {
       setPopularCourses(courses.filter((c) => (c._id !== id && c.id !== id)).slice(0, 3));
@@ -331,19 +332,13 @@ const SingleCourse = () => {
                   </div>
                   <motion.button
                     onClick={handleBuyNow}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    animate={{
-                      boxShadow: ["0px 0px 0px rgba(239, 68, 68, 0)", "0px 0px 20px rgba(239, 68, 68, 0.4)", "0px 0px 0px rgba(239, 68, 68, 0)"]
-                    }}
-                    transition={{
-                      boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                    }}
-                    className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-200 dark:shadow-none flex items-center justify-center gap-3 animate-shine poppins group"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`w-full py-4 text-white font-bold rounded-xl flex items-center justify-center gap-3 enroll-wave-btn shadow-lg group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
                   >
-                    <LuZap className="text-amber-300 animate-pulse" size={18} />
-                    <span>Enroll Now</span>
-                    <FaArrowRight size={14} className="animate-bounce-x" />
+                    <LuZap className="enroll-jump-icon text-white" size={24} />
+                    <span className="uppercase tracking-widest text-lg">{t("courseDetails.enrollNow")}</span>
+                    <FaArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </motion.button>
                 </div>
               </div>
@@ -773,19 +768,13 @@ const SingleCourse = () => {
                     <div className="space-y-2.5">
                       <motion.button
                         onClick={handleBuyNow}
-                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        animate={{
-                          boxShadow: ["0px 0px 0px rgba(239, 68, 68, 0)", "0px 0px 15px rgba(239, 68, 68, 0.5)", "0px 0px 0px rgba(239, 68, 68, 0)"]
-                        }}
-                        transition={{
-                          boxShadow: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
-                        }}
-                        className="w-full py-4 bg-gradient-to-r from-red-600 via-red-500 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white font-bold rounded-xl shadow-xl shadow-red-100 dark:shadow-none transition-all flex items-center justify-center gap-3 animate-shine poppins tracking-wide"
+                        className={`w-full py-5 text-white font-bold rounded-xl shadow-xl flex items-center justify-center gap-4 enroll-wave-btn tracking-widest group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
                       >
-                        <LuZap className="text-amber-300 animate-pulse" size={18} />
-                        <span className="text-base uppercase tracking-wider">Enroll Now</span>
-                        <FaArrowRight size={14} className="animate-bounce-x" />
+                        <LuZap className="enroll-jump-icon text-white" size={26} />
+                        <span className="text-xl uppercase">{t("courseDetails.enrollNow")}</span>
+                        <FaArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </motion.button>
                       <button
                         onClick={handleAddToCart}
