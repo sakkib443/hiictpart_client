@@ -329,9 +329,22 @@ const SingleCourse = () => {
                     <span className="text-2xl font-bold text-gray-900 outfit">৳{price.toLocaleString()}</span>
                     {discountPrice && <span className="text-gray-400 line-through text-sm">৳{(price + 2000).toLocaleString()}</span>}
                   </div>
-                  <button onClick={handleBuyNow} className="w-full py-3 bg-red-500 text-white font-semibold rounded-md active:scale-[0.98] transition-transform poppins">
-                    Purchase Now
-                  </button>
+                  <motion.button
+                    onClick={handleBuyNow}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    animate={{
+                      boxShadow: ["0px 0px 0px rgba(239, 68, 68, 0)", "0px 0px 20px rgba(239, 68, 68, 0.4)", "0px 0px 0px rgba(239, 68, 68, 0)"]
+                    }}
+                    transition={{
+                      boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-200 dark:shadow-none flex items-center justify-center gap-3 animate-shine poppins group"
+                  >
+                    <LuZap className="text-amber-300 animate-pulse" size={18} />
+                    <span>Purchase Now</span>
+                    <FaArrowRight size={14} className="animate-bounce-x" />
+                  </motion.button>
                 </div>
               </div>
 
@@ -758,12 +771,22 @@ const SingleCourse = () => {
 
                     {/* Buttons */}
                     <div className="space-y-2.5">
-                      <button
+                      <motion.button
                         onClick={handleBuyNow}
-                        className="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2 poppins"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        animate={{
+                          boxShadow: ["0px 0px 0px rgba(239, 68, 68, 0)", "0px 0px 15px rgba(239, 68, 68, 0.5)", "0px 0px 0px rgba(239, 68, 68, 0)"]
+                        }}
+                        transition={{
+                          boxShadow: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
+                        }}
+                        className="w-full py-4 bg-gradient-to-r from-red-600 via-red-500 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white font-bold rounded-xl shadow-xl shadow-red-100 dark:shadow-none transition-all flex items-center justify-center gap-3 animate-shine poppins tracking-wide"
                       >
-                        Enroll Now <FaArrowRight size={12} />
-                      </button>
+                        <LuZap className="text-amber-300 animate-pulse" size={18} />
+                        <span className="text-base uppercase tracking-wider">Enroll Now</span>
+                        <FaArrowRight size={14} className="animate-bounce-x" />
+                      </motion.button>
                       <button
                         onClick={handleAddToCart}
                         className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-md hover:border-red-400 hover:text-red-600 transition-colors poppins"

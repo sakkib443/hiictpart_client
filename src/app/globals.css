@@ -434,6 +434,22 @@ body.font-bengali .font-icon {
   }
 }
 
+@keyframes bounce-x {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-bounce-x {
+  animation: bounce-x 1s infinite;
+}
+
 /* Animation Classes */
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -449,6 +465,36 @@ body.font-bengali .font-icon {
 
 .animate-flip {
   animation: flip 0.3s ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+.animate-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  transform: rotate(45deg);
+  animation: shine 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* Animation Delays */
