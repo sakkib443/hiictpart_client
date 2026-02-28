@@ -342,7 +342,7 @@ const SingleCourse = () => {
                     className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-200 dark:shadow-none flex items-center justify-center gap-3 animate-shine poppins group"
                   >
                     <LuZap className="text-amber-300 animate-pulse" size={18} />
-                    <span>Purchase Now</span>
+                    <span>Enroll Now</span>
                     <FaArrowRight size={14} className="animate-bounce-x" />
                   </motion.button>
                 </div>
