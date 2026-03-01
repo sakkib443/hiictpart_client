@@ -674,16 +674,31 @@ const SingleCourse = () => {
                               </div>
                             </div>
                             <div className="flex-1 space-y-4">
-                              <div className="flex items-center gap-3">
-                                <h3 className="text-2xl font-bold outfit text-gray-900">{instructor.name}</h3>
-                                <MdVerified className="text-blue-500 text-xl" />
+                              <div className="flex items-center gap-3 bg-red-50/50 dark:bg-slate-900/50 p-4 rounded-2xl border border-red-100 dark:border-slate-800 shadow-sm">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="text-2xl font-bold outfit text-gray-900 dark:text-white leading-tight">{instructor.name}</h3>
+                                    <MdVerified className="text-blue-500 text-xl" />
+                                  </div>
+                                  <p className="text-red-500 font-bold poppins text-sm uppercase tracking-wide">
+                                    {instructor.designation}
+                                  </p>
+                                  {instructor.specialization?.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                      {instructor.specialization.map((spec, sIdx) => (
+                                        <span key={sIdx} className="text-[10px] font-bold bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-slate-700 px-2 py-0.5 rounded-full poppins">
+                                          {spec}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                              <p className="text-red-600 font-semibold poppins text-base">{instructor.designation} {instructor.specialization?.length > 0 && `• ${instructor.specialization.join(', ')}`}</p>
-                              <p className="text-gray-600 poppins text-sm leading-relaxed">
-                                {instructor.bio || 'Professional instructor with years of industry experience.'}
-                              </p>
-                              <div className="flex gap-3 pt-2">
-                                <Link href="#" className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-md hover:bg-red-50 hover:border-teal-200 transition-colors text-gray-700 text-xs font-bold poppins">VIEW PROFILE</Link>
+
+                              <div className="p-1 px-4">
+                                <p className="text-gray-700 dark:text-gray-300 poppins text-[15px] leading-relaxed italic border-l-4 border-red-500/20 pl-4">
+                                  {instructor.bio || 'Professional instructor with years of industry experience. Passionate about teaching and sharing knowledge with the community.'}
+                                </p>
                               </div>
                             </div>
                           </div>

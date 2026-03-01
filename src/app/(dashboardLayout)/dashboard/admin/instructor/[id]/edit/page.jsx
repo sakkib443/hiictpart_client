@@ -5,26 +5,26 @@ import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FiSave, FiX, FiUser, FiLink, FiCheckCircle, FiInfo, FiMail, FiPhone, FiBriefcase } from 'react-icons/fi';
+import { FiSave, FiX, FiUser, FiLink, FiCheckCircle, FiInfo, FiMail, FiPhone, FiBriefcase, FiAlertCircle } from 'react-icons/fi';
 import { useTheme } from '@/providers/ThemeProvider';
 import { API_BASE_URL } from '@/config/api';
 
 const instructorSchema = z.object({
-    name: z.string().min(3, 'Name must be at least 3 characters'),
-    designation: z.string().min(2, 'Designation is required'),
-    bio: z.string().optional(),
-    image: z.string().url('Must be a valid URL').optional().or(z.literal('')),
-    email: z.string().email('Invalid email address').optional().or(z.literal('')),
-    phone: z.string().optional(),
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    designation: z.string().optional().or(z.literal('')),
+    bio: z.string().optional().or(z.literal('')),
+    image: z.string().optional().or(z.literal('')),
+    email: z.string().optional().or(z.literal('')),
+    phone: z.string().optional().or(z.literal('')),
     socialLinks: z.object({
-        facebook: z.string().url().optional().or(z.literal('')),
-        twitter: z.string().url().optional().or(z.literal('')),
-        linkedin: z.string().url().optional().or(z.literal('')),
-        github: z.string().url().optional().or(z.literal('')),
+        facebook: z.string().optional().or(z.literal('')),
+        twitter: z.string().optional().or(z.literal('')),
+        linkedin: z.string().optional().or(z.literal('')),
+        github: z.string().optional().or(z.literal('')),
     }).optional(),
-    specialization: z.string().optional(),
+    specialization: z.string().optional().or(z.literal('')),
     isActive: z.boolean().default(true),
-    user: z.string().optional(),
+    user: z.string().optional().nullable(),
 });
 
 export default function EditInstructorPage() {
@@ -34,6 +34,7 @@ export default function EditInstructorPage() {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [users, setUsers] = useState([]);
+    const [submitError, setSubmitError] = useState('');
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: zodResolver(instructorSchema),
@@ -84,11 +85,13 @@ export default function EditInstructorPage() {
     const onSubmit = async (data) => {
         try {
             setLoading(true);
+            setSubmitError('');
             const token = localStorage.getItem('token');
 
             const payload = {
                 ...data,
-                specialization: data.specialization ? data.specialization.split(',').map(s => s.trim()) : []
+                user: data.user && data.user !== '' ? data.user : null,
+                specialization: data.specialization ? data.specialization.split(',').map(s => s.trim()).filter(s => s !== '') : []
             };
 
             const res = await fetch(`${API_BASE_URL}/instructors/${id}`, {
@@ -105,11 +108,13 @@ export default function EditInstructorPage() {
                 alert('Instructor updated successfully');
                 router.push('/dashboard/admin/instructor');
             } else {
-                alert(result.message || 'Failed to update instructor');
+                // If the backend returns detailed validation errors, show the first one or the general message
+                const errorMsg = result.errorMessages?.[0]?.message || result.message || 'Failed to update instructor';
+                setSubmitError(errorMsg);
             }
         } catch (error) {
             console.error('Error updating instructor:', error);
-            alert('Something went wrong');
+            setSubmitError('Something went wrong. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -150,6 +155,12 @@ export default function EditInstructorPage() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {submitError && (
+                    <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400">
+                        <FiAlertCircle size={20} />
+                        <span className="text-sm font-medium">{submitError}</span>
+                    </div>
+                )}
                 <div className={`p-8 rounded-3xl border ${isDark ? 'bg-slate-900 border-slate-800 shadow-2xl shadow-indigo-500/5' : 'bg-white border-slate-200 shadow-xl shadow-indigo-500/5'}`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div>

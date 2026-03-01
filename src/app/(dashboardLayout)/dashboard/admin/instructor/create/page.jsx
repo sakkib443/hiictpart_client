@@ -12,20 +12,20 @@ import { API_BASE_URL } from '@/config/api';
 // Relaxed validation - only name is required
 const instructorSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
-    designation: z.string().optional(),
-    bio: z.string().optional(),
-    image: z.string().optional(),
-    email: z.string().email('Invalid email format').optional().or(z.literal('')),
-    phone: z.string().optional(),
+    designation: z.string().optional().or(z.literal('')),
+    bio: z.string().optional().or(z.literal('')),
+    image: z.string().optional().or(z.literal('')),
+    email: z.string().optional().or(z.literal('')),
+    phone: z.string().optional().or(z.literal('')),
     socialLinks: z.object({
-        facebook: z.string().optional(),
-        twitter: z.string().optional(),
-        linkedin: z.string().optional(),
-        github: z.string().optional(),
+        facebook: z.string().optional().or(z.literal('')),
+        twitter: z.string().optional().or(z.literal('')),
+        linkedin: z.string().optional().or(z.literal('')),
+        github: z.string().optional().or(z.literal('')),
     }).optional(),
-    specialization: z.string().optional(),
+    specialization: z.string().optional().or(z.literal('')),
     isActive: z.boolean().default(true),
-    user: z.string().optional(),
+    user: z.string().optional().nullable(),
 });
 
 export default function CreateInstructorPage() {
@@ -76,7 +76,7 @@ export default function CreateInstructorPage() {
                 ...(data.image && { image: data.image }),
                 ...(data.email && { email: data.email }),
                 ...(data.phone && { phone: data.phone }),
-                ...(data.user && { user: data.user }),
+                user: data.user && data.user !== '' ? data.user : null,
                 isActive: data.isActive,
                 specialization: data.specialization ? data.specialization.split(',').map(s => s.trim()).filter(s => s) : [],
                 socialLinks: {
