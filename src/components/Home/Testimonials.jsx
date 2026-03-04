@@ -21,7 +21,7 @@ const Testimonials = () => {
                 : 'I wanted to place a review since their support helped me within a day or so, which is nice! Thanks and 5 stars!',
             name: language === 'bn' ? 'রাকিব হাসান' : 'Rakib Hasan',
             designation: language === 'bn' ? 'ডেভেলপার, ঢাকা' : 'Developer, Dhaka',
-            avatar: 'https://ui-avatars.com/api/?name=Rakib+Hasan&background=E62D26&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/rakib.png',
         },
         {
             id: 2,
@@ -32,7 +32,7 @@ const Testimonials = () => {
                 : "HiictPark deserves 5 star for course features, design quality, flexibility, and support service!",
             name: language === 'bn' ? 'ফাতেমা আক্তার' : 'Fatema Akter',
             designation: language === 'bn' ? 'ডিজাইনার, চট্টগ্রাম' : 'Designer, Chattogram',
-            avatar: 'https://ui-avatars.com/api/?name=Fatema+Akter&background=3B82F6&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/fatema.png',
         },
         {
             id: 3,
@@ -43,7 +43,7 @@ const Testimonials = () => {
                 : 'Very good and fast support during the week. They know what you need, exactly when you need it.',
             name: language === 'bn' ? 'আরিফ রহমান' : 'Arif Rahman',
             designation: language === 'bn' ? 'ফ্রিল্যান্সার, রাজশাহী' : 'Freelancer, Rajshahi',
-            avatar: 'https://ui-avatars.com/api/?name=Arif+Rahman&background=10B981&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/arif.png',
         },
         {
             id: 4,
@@ -54,7 +54,7 @@ const Testimonials = () => {
                 : 'The courses are beautifully crafted. Every lesson is easy to understand and practical.',
             name: language === 'bn' ? 'নুসরাত জাহান' : 'Nusrat Jahan',
             designation: language === 'bn' ? 'শিক্ষার্থী, সিলেট' : 'Student, Sylhet',
-            avatar: 'https://ui-avatars.com/api/?name=Nusrat+Jahan&background=F59E0B&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/nusrat.png',
         },
         {
             id: 5,
@@ -65,7 +65,7 @@ const Testimonials = () => {
                 : 'Best platform for online learning. All courses are updated and professional.',
             name: language === 'bn' ? 'তানভীর আহমেদ' : 'Tanvir Ahmed',
             designation: language === 'bn' ? 'প্রোগ্রামার, খুলনা' : 'Programmer, Khulna',
-            avatar: 'https://ui-avatars.com/api/?name=Tanvir+Ahmed&background=8B5CF6&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/tanvir.png',
         },
         {
             id: 6,
@@ -76,7 +76,7 @@ const Testimonials = () => {
                 : 'Got certificate right after completing the course. It helped a lot in my career.',
             name: language === 'bn' ? 'শারমিন সুলতানা' : 'Sharmin Sultana',
             designation: language === 'bn' ? 'গ্রাফিক ডিজাইনার, বরিশাল' : 'Graphic Designer, Barishal',
-            avatar: 'https://ui-avatars.com/api/?name=Sharmin+Sultana&background=EC4899&color=fff&size=100&bold=true&font-size=0.4',
+            avatar: '/images/testimonials/sharmin.png',
         },
     ];
 
