@@ -46,7 +46,7 @@ const CTASection = () => {
                             {/* Person 1 - Left */}
                             <div className="absolute left-0 bottom-0 w-28 lg:w-32 h-36 lg:h-44 z-10">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300"
+                                    src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?w=300"
                                     alt="Instructor"
                                     fill
                                     className="object-cover object-top rounded-t-3xl grayscale-[20%] hover:grayscale-0 transition-all"
@@ -55,8 +55,8 @@ const CTASection = () => {
                             {/* Person 2 - Center */}
                             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-32 lg:w-36 h-40 lg:h-52 z-20 shadow-[-20px_0_40px_rgba(0,0,0,0.1)]">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300"
-                                    alt="Instructor"
+                                    src="https://i.ibb.co.com/DH9dMRWX/Shaikh-Nazmul-Hossain-Picture.jpg"
+                                    alt="Shaikh Nazmul Hossain"
                                     fill
                                     className="object-cover object-top rounded-t-3xl outline outline-8 outline-[#F9F7F3] dark:outline-gray-900"
                                 />
@@ -64,7 +64,7 @@ const CTASection = () => {
                             {/* Person 3 - Right */}
                             <div className="absolute right-0 bottom-0 w-28 lg:w-32 h-36 lg:h-44 z-10">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300"
+                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"
                                     alt="Instructor"
                                     fill
                                     className="object-cover object-top rounded-t-3xl grayscale-[20%] hover:grayscale-0 transition-all"

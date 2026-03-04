@@ -19,9 +19,9 @@ const Testimonials = () => {
             review: language === 'bn'
                 ? t("home_sections.testimonials.testimonial1")
                 : 'I wanted to place a review since their support helped me within a day or so, which is nice! Thanks and 5 stars!',
-            name: language === 'bn' ? t("home_sections.testimonials.oliver") : 'Oliver Beddows',
-            designation: language === 'bn' ? t("home_sections.testimonials.designerManchester") : 'Designer, Manchester',
-            avatar: 'https://i.pravatar.cc/100?img=11',
+            name: language === 'bn' ? 'রাকিব হাসান' : 'Rakib Hasan',
+            designation: language === 'bn' ? 'ডেভেলপার, ঢাকা' : 'Developer, Dhaka',
+            avatar: 'https://ui-avatars.com/api/?name=Rakib+Hasan&background=E62D26&color=fff&size=100&bold=true&font-size=0.4',
         },
         {
             id: 2,
@@ -29,10 +29,10 @@ const Testimonials = () => {
             titleColor: 'text-blue-600',
             review: language === 'bn'
                 ? t("home_sections.testimonials.testimonial2")
-                : "ThemeMove deserves 5 star for theme's features, design quality, flexibility, and support service!",
-            name: language === 'bn' ? t("home_sections.testimonials.madley") : 'Madley Pondor',
-            designation: language === 'bn' ? t("home_sections.testimonials.reporterSanDiego") : 'Reporter, San Diego',
-            avatar: 'https://i.pravatar.cc/100?img=12',
+                : "HiictPark deserves 5 star for course features, design quality, flexibility, and support service!",
+            name: language === 'bn' ? 'ফাতেমা আক্তার' : 'Fatema Akter',
+            designation: language === 'bn' ? 'ডিজাইনার, চট্টগ্রাম' : 'Designer, Chattogram',
+            avatar: 'https://ui-avatars.com/api/?name=Fatema+Akter&background=3B82F6&color=fff&size=100&bold=true&font-size=0.4',
         },
         {
             id: 3,
@@ -41,42 +41,42 @@ const Testimonials = () => {
             review: language === 'bn'
                 ? t("home_sections.testimonials.testimonial3")
                 : 'Very good and fast support during the week. They know what you need, exactly when you need it.',
-            name: language === 'bn' ? t("home_sections.testimonials.mina") : 'Mina Hollace',
-            designation: language === 'bn' ? t("home_sections.testimonials.reporterLondon") : 'Reporter, London',
-            avatar: 'https://i.pravatar.cc/100?img=13',
+            name: language === 'bn' ? 'আরিফ রহমান' : 'Arif Rahman',
+            designation: language === 'bn' ? 'ফ্রিল্যান্সার, রাজশাহী' : 'Freelancer, Rajshahi',
+            avatar: 'https://ui-avatars.com/api/?name=Arif+Rahman&background=10B981&color=fff&size=100&bold=true&font-size=0.4',
         },
         {
             id: 4,
-            title: language === 'bn' ? '??????? ????????!' : 'Amazing Experience!',
+            title: language === 'bn' ? 'অসাধারণ অভিজ্ঞতা!' : 'Amazing Experience!',
             titleColor: 'text-orange-500',
             review: language === 'bn'
-                ? '????????? ???? ?????????? ????? ??????? ???? ???? ??????? ??? ????????????????'
+                ? 'কোর্সগুলো অনেক সুন্দরভাবে সাজানো। প্রতিটি লেসন সহজ এবং বাস্তবমুখী।'
                 : 'The courses are beautifully crafted. Every lesson is easy to understand and practical.',
-            name: 'James Wilson',
-            designation: language === 'bn' ? '????????, ??? ??????' : 'Developer, New York',
-            avatar: 'https://i.pravatar.cc/100?img=14',
+            name: language === 'bn' ? 'নুসরাত জাহান' : 'Nusrat Jahan',
+            designation: language === 'bn' ? 'শিক্ষার্থী, সিলেট' : 'Student, Sylhet',
+            avatar: 'https://ui-avatars.com/api/?name=Nusrat+Jahan&background=F59E0B&color=fff&size=100&bold=true&font-size=0.4',
         },
         {
             id: 5,
-            title: language === 'bn' ? '???? ???????????' : 'Best Platform',
+            title: language === 'bn' ? 'সেরা প্ল্যাটফর্ম' : 'Best Platform',
             titleColor: 'text-blue-600',
             review: language === 'bn'
-                ? '?????? ??????? ?? ???? ???? ???????????? ?? ????? ??????? ??? ??????????'
+                ? 'অনলাইন শিক্ষার জন্য এটাই সেরা প্ল্যাটফর্ম। সব কোর্স আপডেটেড এবং প্রফেশনাল।'
                 : 'Best platform for online learning. All courses are updated and professional.',
-            name: 'Sophie Chen',
-            designation: language === 'bn' ? '?????????, ?????????' : 'Student, Singapore',
-            avatar: 'https://i.pravatar.cc/100?img=15',
+            name: language === 'bn' ? 'তানভীর আহমেদ' : 'Tanvir Ahmed',
+            designation: language === 'bn' ? 'প্রোগ্রামার, খুলনা' : 'Programmer, Khulna',
+            avatar: 'https://ui-avatars.com/api/?name=Tanvir+Ahmed&background=8B5CF6&color=fff&size=100&bold=true&font-size=0.4',
         },
         {
             id: 6,
-            title: language === 'bn' ? '????? ???????????' : 'Quick Certificate',
+            title: language === 'bn' ? 'দ্রুত সার্টিফিকেট' : 'Quick Certificate',
             titleColor: 'text-orange-500',
             review: language === 'bn'
-                ? '????? ??? ???? ????? ??????????? ????? ????? ??? ???? ??????????? ???? ???? ??????'
+                ? 'কোর্স শেষ করার সাথে সাথে সার্টিফিকেট পেয়ে গেছি। এটা আমার ক্যারিয়ারে অনেক কাজে লেগেছে।'
                 : 'Got certificate right after completing the course. It helped a lot in my career.',
-            name: 'Ahmed Hassan',
-            designation: language === 'bn' ? '?????????????, ?????' : 'Freelancer, Dubai',
-            avatar: 'https://i.pravatar.cc/100?img=16',
+            name: language === 'bn' ? 'শারমিন সুলতানা' : 'Sharmin Sultana',
+            designation: language === 'bn' ? 'গ্রাফিক ডিজাইনার, বরিশাল' : 'Graphic Designer, Barishal',
+            avatar: 'https://ui-avatars.com/api/?name=Sharmin+Sultana&background=EC4899&color=fff&size=100&bold=true&font-size=0.4',
         },
     ];
 
