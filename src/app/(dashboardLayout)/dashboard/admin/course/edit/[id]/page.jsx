@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
   FiArrowLeft, FiSave, FiLoader, FiImage, FiBookOpen,
-  FiPlus, FiTrash2, FiDollarSign, FiVideo, FiTag, FiBriefcase, FiTool
+  FiPlus, FiTrash2, FiDollarSign, FiVideo, FiTag, FiBriefcase, FiTool, FiHelpCircle
 } from 'react-icons/fi';
 import Link from 'next/link';
 import { useTheme } from '@/providers/ThemeProvider';
@@ -37,6 +37,10 @@ const courseValidationSchema = z.object({
   targetAudience: z.array(z.string()).optional(),
   jobOpportunities: z.array(z.string()).optional(),
   softwareWeLearn: z.array(z.string()).optional(),
+  faq: z.array(z.object({
+    question: z.string().optional().or(z.literal('')),
+    answer: z.string().optional().or(z.literal('')),
+  })).optional(),
   previewVideo: z.string().url().optional().or(z.literal('')),
   sampleVideoUrl: z.string().url().optional().or(z.literal('')),
   totalDuration: z.coerce.number().min(0).optional(),
@@ -72,6 +76,7 @@ export default function EditCoursePage() {
       targetAudience: [''],
       jobOpportunities: [''],
       softwareWeLearn: [''],
+      faq: [{ question: '', answer: '' }],
       previewVideo: '',
       sampleVideoUrl: '',
       isFeatured: false,
@@ -86,6 +91,7 @@ export default function EditCoursePage() {
   const jobFields = useFieldArray({ control, name: 'jobOpportunities' });
   const softwareFields = useFieldArray({ control, name: 'softwareWeLearn' });
   const tagsFields = useFieldArray({ control, name: 'tags' });
+  const faqFields = useFieldArray({ control, name: 'faq' });
 
   const fetchData = useCallback(async () => {
     const BASE_URL = API_BASE_URL;
@@ -119,6 +125,7 @@ export default function EditCoursePage() {
           targetAudience: course.targetAudience?.length ? course.targetAudience : [''],
           jobOpportunities: course.jobOpportunities?.length ? course.jobOpportunities : [''],
           softwareWeLearn: course.softwareWeLearn?.length ? course.softwareWeLearn : [''],
+          faq: course.faq?.length ? course.faq : [{ question: '', answer: '' }],
           tags: course.tags?.length ? course.tags : [''],
           previewVideo: course.previewVideo || '',
           sampleVideoUrl: course.sampleVideoUrl || '',
@@ -340,6 +347,29 @@ export default function EditCoursePage() {
                       <button type="button" onClick={() => softwareFields.remove(idx)} className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={10} /></button>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* FAQ Section */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <label className={`${labelClass} flex items-center gap-2`}><FiHelpCircle className="text-violet-500" size={14} /> FAQ (Frequently Asked Questions)</label>
+                  <button type="button" onClick={() => faqFields.append({ question: '', answer: '' })} className="text-xs font-medium text-violet-600 hover:text-violet-700">+ Add FAQ</button>
+                </div>
+                <div className="space-y-4">
+                  {faqFields.fields.map((field, idx) => (
+                    <div key={field.id} className={`p-4 rounded-xl border space-y-3 relative group ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-violet-500 uppercase tracking-wider">FAQ #{idx + 1}</span>
+                        <button type="button" onClick={() => faqFields.remove(idx)} className="text-rose-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity"><FiTrash2 size={12} /></button>
+                      </div>
+                      <input {...register(`faq.${idx}.question`)} className={inputClass} placeholder="Question — e.g. Is there any certificate?" />
+                      <textarea {...register(`faq.${idx}.answer`)} rows={2} className={`${inputClass} resize-none`} placeholder="Answer — e.g. Yes, you will get a certificate after completion." />
+                    </div>
+                  ))}
+                  {faqFields.fields.length === 0 && (
+                    <p className={`text-center text-sm py-4 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>No FAQ added yet. Click + Add FAQ to add one.</p>
+                  )}
                 </div>
               </div>
             </div>

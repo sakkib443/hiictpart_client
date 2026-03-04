@@ -10,7 +10,7 @@ import { addToCart } from "@/redux/cartSlice";
 import {
   LuDownload, LuExternalLink, LuClock, LuTrophy,
   LuLayoutGrid, LuEye, LuPackage, LuShieldCheck,
-  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers, LuCalendar, LuTimer, LuGraduationCap, LuChevronDown, LuChevronUp, LuListVideo
+  LuSettings, LuFileCode, LuGlobe, LuCheck, LuSparkles, LuCode, LuZap, LuImage, LuX, LuBookOpen, LuMonitor, LuVideo, LuUsers, LuCalendar, LuTimer, LuGraduationCap, LuChevronDown, LuChevronUp, LuListVideo, LuCircleHelp
 } from "react-icons/lu";
 import { FaHeart, FaRegHeart, FaStar, FaArrowRight } from "react-icons/fa";
 import { MdVerified, MdOutlineMenuBook, MdPlayCircleOutline } from "react-icons/md";
@@ -122,6 +122,7 @@ const SingleCourse = () => {
 
   const [expandedModule, setExpandedModule] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [expandedFaq, setExpandedFaq] = useState(null);
 
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
 
@@ -412,9 +413,9 @@ const SingleCourse = () => {
               </div>
 
               {/* Tabs */}
-              <div className="bg-white rounded-md border border-gray-200 overflow-hidden shadow-sm">
-                {/* Tab Headers */}
-                <div className="flex border-b border-gray-100 bg-gray-50/80">
+              <div className="bg-white rounded-md border border-gray-200 overflow-visible shadow-sm">
+                {/* Tab Headers - Sticky on mobile only */}
+                <div className="sticky top-0 z-30 lg:static flex border-b border-gray-100 bg-gray-50/95 backdrop-blur-md lg:backdrop-blur-none lg:bg-gray-50/80 shadow-sm lg:shadow-none rounded-t-md">
                   {[
                     { id: "overview", label: "Overview", icon: LuLayoutGrid },
                     { id: "curriculum", label: "Curriculum", icon: MdOutlineMenuBook },
@@ -425,8 +426,8 @@ const SingleCourse = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all border-b-2 -mb-[1px] poppins ${activeTab === tab.id
-                        ? "text-red-600 border-red-500 bg-white"
+                      className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-[1px] poppins ${activeTab === tab.id
+                        ? "text-red-600 border-red-500 bg-white/80 lg:bg-white"
                         : "text-gray-500 border-transparent hover:text-gray-700"
                         }`}
                     >
@@ -506,6 +507,69 @@ const SingleCourse = () => {
                                     <LuGraduationCap className="text-white" size={18} />
                                   </div>
                                   <span className="text-gray-800 font-semibold text-sm poppins">{job}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* FAQ Section */}
+                        {currentCourse.faq?.length > 0 && (
+                          <div className="mt-8">
+                            <h2 className="text-lg font-bold outfit text-gray-900 dark:text-white mb-5 flex items-center gap-2">
+                              <span className="w-1 h-5 bg-red-500 rounded-full"></span>
+                              Frequently Asked Questions
+                            </h2>
+                            <div className="space-y-3">
+                              {currentCourse.faq.map((item, idx) => (
+                                <div
+                                  key={idx}
+                                  className={`border rounded-xl overflow-hidden transition-all duration-300 ${expandedFaq === idx
+                                    ? 'border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50/50 to-rose-50/30 dark:from-red-950/30 dark:to-rose-950/20 shadow-sm'
+                                    : 'border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-red-100 dark:hover:border-red-900'
+                                    }`}
+                                >
+                                  <button
+                                    onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                                    className="w-full flex items-center justify-between p-4 text-left transition-colors"
+                                  >
+                                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${expandedFaq === idx
+                                        ? 'bg-gradient-to-br from-red-500 to-rose-600 shadow-md shadow-red-200 dark:shadow-none'
+                                        : 'bg-red-50 dark:bg-red-900/30'
+                                        }`}>
+                                        <LuCircleHelp className={`${expandedFaq === idx ? 'text-white' : 'text-red-600 dark:text-red-400'}`} size={16} />
+                                      </div>
+                                      <span className={`font-semibold text-sm poppins transition-colors ${expandedFaq === idx ? 'text-red-700 dark:text-red-300' : 'text-gray-800 dark:text-gray-200'
+                                        }`}>
+                                        {item.question}
+                                      </span>
+                                    </div>
+                                    <div className={`flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0 ml-3 transition-all ${expandedFaq === idx
+                                      ? 'bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-300 rotate-180'
+                                      : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-gray-500'
+                                      }`}>
+                                      <LuChevronDown size={14} />
+                                    </div>
+                                  </button>
+
+                                  <AnimatePresence>
+                                    {expandedFaq === idx && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        className="overflow-hidden"
+                                      >
+                                        <div className="px-4 pb-4 pt-0 pl-[60px]">
+                                          <p className="text-gray-600 dark:text-gray-400 text-[14px] poppins leading-relaxed whitespace-pre-line">
+                                            {item.answer}
+                                          </p>
+                                        </div>
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
                                 </div>
                               ))}
                             </div>

@@ -9,7 +9,7 @@ import { API_BASE_URL } from '@/config/api';
 import {
     FiPlus, FiTrash2, FiSave, FiImage, FiVideo,
     FiBookOpen, FiDollarSign, FiGlobe, FiLayers, FiCheck,
-    FiTarget, FiList, FiAward, FiTag, FiSearch, FiLayout, FiArrowRight, FiBriefcase, FiTool
+    FiTarget, FiList, FiAward, FiTag, FiSearch, FiLayout, FiArrowRight, FiBriefcase, FiTool, FiHelpCircle
 } from 'react-icons/fi';
 
 // Style constants - moved outside component to prevent re-creation
@@ -64,6 +64,10 @@ const courseValidationSchema = z.object({
     targetAudience: z.array(z.string()).optional(),
     jobOpportunities: z.array(z.string()).optional(),
     softwareWeLearn: z.array(z.string()).optional(),
+    faq: z.array(z.object({
+        question: z.string().optional().or(z.literal('')),
+        answer: z.string().optional().or(z.literal('')),
+    })).optional(),
     previewVideo: z.string().url().optional().or(z.literal('')),
     sampleVideoUrl: z.string().url().optional().or(z.literal('')),
     totalDuration: z.coerce.number().min(0).optional(),
@@ -95,6 +99,7 @@ const CourseCreateTab = ({ onSuccess }) => {
             targetAudience: [''],
             jobOpportunities: [''],
             softwareWeLearn: [''],
+            faq: [{ question: '', answer: '' }],
             tags: [''],
             price: 0,
             currency: 'BDT',
@@ -115,6 +120,7 @@ const CourseCreateTab = ({ onSuccess }) => {
     const jobFields = useFieldArray({ control, name: 'jobOpportunities' });
     const softwareFields = useFieldArray({ control, name: 'softwareWeLearn' });
     const tagsFields = useFieldArray({ control, name: 'tags' });
+    const faqFields = useFieldArray({ control, name: 'faq' });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -373,6 +379,29 @@ const CourseCreateTab = ({ onSuccess }) => {
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    </div>
+
+                    {/* FAQ Section */}
+                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="px-5 py-4 bg-gradient-to-r from-violet-50 to-purple-50 border-b border-slate-100 flex justify-between items-center">
+                            <h3 className="text-sm font-bold text-slate-700 flex items-center gap-2"><FiHelpCircle className="text-violet-500" /> FAQ (Frequently Asked Questions)</h3>
+                            <button type="button" onClick={() => faqFields.append({ question: '', answer: '' })} className="p-1.5 bg-violet-600 text-white rounded-lg hover:bg-violet-700"><FiPlus size={14} /></button>
+                        </div>
+                        <div className="p-5 space-y-4">
+                            {faqFields.fields.map((field, index) => (
+                                <div key={field.id} className="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-3 relative group">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs font-bold text-violet-500 uppercase tracking-wider">FAQ #{index + 1}</span>
+                                        <button type="button" onClick={() => faqFields.remove(index)} className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><FiTrash2 size={14} /></button>
+                                    </div>
+                                    <input {...register(`faq.${index}.question`)} className={inputBase} placeholder="Question — e.g. Is there any certificate?" />
+                                    <textarea {...register(`faq.${index}.answer`)} rows={2} className={inputBase} placeholder="Answer — e.g. Yes, you will get a certificate after completion." />
+                                </div>
+                            ))}
+                            {faqFields.fields.length === 0 && (
+                                <p className="text-center text-slate-400 text-sm py-4">No FAQ added yet. Click + to add one.</p>
+                            )}
                         </div>
                     </div>
                 </div>
