@@ -413,9 +413,9 @@ const SingleCourse = () => {
               </div>
 
               {/* Tabs */}
-              <div className="bg-white rounded-md border border-gray-200 overflow-visible shadow-sm">
-                {/* Tab Headers - Sticky on mobile only */}
-                <div className="sticky top-0 z-30 lg:static flex border-b border-gray-100 bg-gray-50/95 backdrop-blur-md lg:backdrop-blur-none lg:bg-gray-50/80 shadow-sm lg:shadow-none rounded-t-md">
+              {/* Tab Headers - Sticky on mobile, normal on desktop */}
+              <div className="sticky top-[60px] z-30 lg:static lg:z-auto">
+                <div className="flex border border-gray-200 lg:border-b-0 bg-white/95 backdrop-blur-md lg:backdrop-blur-none lg:bg-gray-50/80 shadow-md lg:shadow-sm rounded-lg lg:rounded-b-none lg:rounded-t-md">
                   {[
                     { id: "overview", label: "Overview", icon: LuLayoutGrid },
                     { id: "curriculum", label: "Curriculum", icon: MdOutlineMenuBook },
@@ -427,7 +427,7 @@ const SingleCourse = () => {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-[1px] poppins ${activeTab === tab.id
-                        ? "text-red-600 border-red-500 bg-white/80 lg:bg-white"
+                        ? "text-red-600 border-red-500 bg-white"
                         : "text-gray-500 border-transparent hover:text-gray-700"
                         }`}
                     >
@@ -446,7 +446,10 @@ const SingleCourse = () => {
                     </button>
                   ))}
                 </div>
+              </div>
 
+              {/* Tab Content Card */}
+              <div className="bg-white rounded-b-md lg:rounded-md border border-gray-200 border-t-0 lg:border-t overflow-hidden shadow-sm -mt-0 lg:mt-0">
                 {/* Tab Content */}
                 <div className="p-6 lg:p-8">
                   <AnimatePresence mode="wait">
