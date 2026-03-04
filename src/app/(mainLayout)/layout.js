@@ -4,7 +4,7 @@ import Footer from '@/components/sheard/Footer';
 import Navbar from '@/components/sheard/Navbar';
 import TopHeader from '@/components/sheard/TopHeader';
 import ScrollToTop from '@/components/sheard/ScrollToTop';
-import FloatingSeminarButton from '@/components/sheard/FloatingSeminarButton';
+// import FloatingSeminarButton from '@/components/sheard/FloatingSeminarButton';
 import FloatingLanguageButton from '@/components/sheard/FloatingLanguageButton';
 import FloatingWhatsAppButton from '@/components/sheard/FloatingWhatsAppButton';
 import { AdminEditProvider } from '@/providers/AdminEditProvider';
@@ -19,7 +19,7 @@ const MainLayout = ({ children }) => {
                 {children}
                 <Footer />
                 <ScrollToTop />
-                <FloatingSeminarButton />
+                {/* <FloatingSeminarButton /> */}
                 <FloatingWhatsAppButton />
             </div>
         </AdminEditProvider>
