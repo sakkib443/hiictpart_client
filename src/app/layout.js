@@ -11,7 +11,9 @@ import ReduxProviderWrapper from "@/components/ReduxProvaiderWrapper";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 import { Toaster } from "react-hot-toast";
-import GoogleTagManager, { GoogleTagManagerNoscript } from "@/components/sheard/GoogleTagManager";
+import { GoogleTagManager } from "@next/third-parties/google";
+import { Suspense } from "react";
+import GTMPageViewTracker from "@/components/sheard/GoogleTagManager";
 
 // Google Fonts
 const poppins = Poppins({
@@ -41,11 +43,11 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <GoogleTagManager />
-      </head>
+      <GoogleTagManager gtmId="GTM-MJ8GRP2J" />
       <body className="antialiased" suppressHydrationWarning>
-        <GoogleTagManagerNoscript />
+        <Suspense fallback={null}>
+          <GTMPageViewTracker />
+        </Suspense>
         <Preloader />
         <ReduxProviderWrapper>
           <LanguageProvider>
