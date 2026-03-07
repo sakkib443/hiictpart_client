@@ -38,7 +38,7 @@ const FeaturesBar = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-[#0066CC] dark:bg-[#004C99] py-6"
+            className="bg-red-600 dark:bg-red-700 py-6"
         >
             <div className="container mx-auto px-4 lg:px-16">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">

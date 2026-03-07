@@ -11,6 +11,8 @@ import ReduxProviderWrapper from "@/components/ReduxProvaiderWrapper";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 import { Toaster } from "react-hot-toast";
+import MetaPixel from "@/components/sheard/MetaPixel";
+import { Suspense } from "react";
 
 // Google Fonts
 const poppins = Poppins({
@@ -45,6 +47,10 @@ export default function RootLayout({ children }) {
         <ReduxProviderWrapper>
           <LanguageProvider>
             <Toaster position="top-center" reverseOrder={false} />
+
+            <Suspense fallback={null}>
+              <MetaPixel />
+            </Suspense>
 
             {children}
           </LanguageProvider>

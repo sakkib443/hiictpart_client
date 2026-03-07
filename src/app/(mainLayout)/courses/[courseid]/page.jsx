@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ReviewsSection from "@/components/Reviews/ReviewsSection";
 import { API_URL } from "@/config/api";
+import { fbEvent } from "@/components/sheard/MetaPixel";
 
 // Animated Counter - matching Website Details
 const AnimatedCounter = ({ value }) => {
@@ -155,6 +156,15 @@ const SingleCourse = () => {
       if (reduxCourse.instructor) {
         setInstructor(reduxCourse.instructor);
       }
+
+      // Track ViewContent for Meta Pixel
+      fbEvent("ViewContent", {
+        content_name: reduxCourse.title,
+        content_ids: [reduxCourse._id || reduxCourse.id],
+        content_type: 'product',
+        value: reduxCourse.discountPrice > 0 ? reduxCourse.discountPrice : reduxCourse.price,
+        currency: 'BDT'
+      });
     }
   }, [reduxCourse]);
 
@@ -167,16 +177,36 @@ const SingleCourse = () => {
 
   const handleAddToCart = () => {
     if (!currentCourse) return;
+
+    const calculatedPrice = currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price;
+
+    // Meta Pixel Event
+    fbEvent("AddToCart", {
+      content_name: currentCourse.title,
+      content_ids: [currentCourse._id || currentCourse.id],
+      value: calculatedPrice,
+      currency: "BDT"
+    });
+
     dispatch(addToCart({
       id: currentCourse._id,
       title: currentCourse.title,
-      price: currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price,
+      price: calculatedPrice,
       image: currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png",
       type: 'course'
     }));
   };
 
   const handleBuyNow = () => {
+    // InitiateCheckout Event
+    const calculatedPrice = currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price;
+    fbEvent("InitiateCheckout", {
+      content_name: currentCourse.title,
+      content_ids: [currentCourse._id || currentCourse.id],
+      value: calculatedPrice,
+      currency: "BDT"
+    });
+
     handleAddToCart();
     router.push('/cart');
   };
@@ -607,7 +637,7 @@ const SingleCourse = () => {
                                   </span>
                                   <div className="text-left">
                                     <h3 className="font-semibold text-gray-900 text-base">{module.moduleTitle}</h3>
-                                    <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons • {module.totalDuration} min</p>
+                                    <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons</p>
                                   </div>
                                 </div>
                                 <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${expandedModule === idx ? 'bg-red-50 text-red-500' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}>
@@ -640,9 +670,7 @@ const SingleCourse = () => {
                                             <span className="text-sm font-medium text-gray-600 poppins group-hover:text-red-600">{lesson.title}</span>
                                             {lesson.isFree && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded border border-red-100">FREE</span>}
                                           </div>
-                                          {lesson.videoDuration > 0 && (
-                                            <span className="text-[11px] font-medium text-gray-400 poppins">{lesson.videoDuration}s</span>
-                                          )}
+                                          {/* Duration removed as requested */}
                                         </div>
                                       ))}
                                       {(!module.lessons || module.lessons.length === 0) && (

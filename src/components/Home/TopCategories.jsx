@@ -88,7 +88,7 @@ const TopCategories = () => {
     ];
 
     return (
-        <section className="py-12 lg:py-16 bg-[#f8f9fa] dark:bg-[#0a0a0a]">
+        <section className="py-12 lg:py-16 bg-[#EEF2FF] dark:bg-[#0a0a0a]">
             <div className="container mx-auto px-4 lg:px-16">
                 {/* Categories Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
