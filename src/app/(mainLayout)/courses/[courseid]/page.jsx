@@ -18,7 +18,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ReviewsSection from "@/components/Reviews/ReviewsSection";
 import { API_URL } from "@/config/api";
-import { fbEvent } from "@/components/sheard/MetaPixel";
 
 // Animated Counter - matching Website Details
 const AnimatedCounter = ({ value }) => {
@@ -156,15 +155,6 @@ const SingleCourse = () => {
       if (reduxCourse.instructor) {
         setInstructor(reduxCourse.instructor);
       }
-
-      // Track ViewContent for Meta Pixel
-      fbEvent("ViewContent", {
-        content_name: reduxCourse.title,
-        content_ids: [reduxCourse._id || reduxCourse.id],
-        content_type: 'product',
-        value: reduxCourse.discountPrice > 0 ? reduxCourse.discountPrice : reduxCourse.price,
-        currency: 'BDT'
-      });
     }
   }, [reduxCourse]);
 
@@ -177,36 +167,16 @@ const SingleCourse = () => {
 
   const handleAddToCart = () => {
     if (!currentCourse) return;
-
-    const calculatedPrice = currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price;
-
-    // Meta Pixel Event
-    fbEvent("AddToCart", {
-      content_name: currentCourse.title,
-      content_ids: [currentCourse._id || currentCourse.id],
-      value: calculatedPrice,
-      currency: "BDT"
-    });
-
     dispatch(addToCart({
       id: currentCourse._id,
       title: currentCourse.title,
-      price: calculatedPrice,
+      price: currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price,
       image: currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png",
       type: 'course'
     }));
   };
 
   const handleBuyNow = () => {
-    // InitiateCheckout Event
-    const calculatedPrice = currentCourse.discountPrice && currentCourse.discountPrice > 0 ? currentCourse.discountPrice : currentCourse.price;
-    fbEvent("InitiateCheckout", {
-      content_name: currentCourse.title,
-      content_ids: [currentCourse._id || currentCourse.id],
-      value: calculatedPrice,
-      currency: "BDT"
-    });
-
     handleAddToCart();
     router.push('/cart');
   };
