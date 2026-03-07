@@ -6,21 +6,22 @@ import Script from "next/script";
 
 const FB_PIXEL_ID = "1224264679775845";
 
-// Pageview Tracker functions
+// Pageview Tracker functions (Temporarily Disabled)
 export const pageview = () => {
-    if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", "PageView");
-    }
+    // if (typeof window !== "undefined" && window.fbq) {
+    //     window.fbq("track", "PageView");
+    // }
 };
 
-// Custom Event Tracker function
+// Custom Event Tracker function (Temporarily Disabled)
 export const fbEvent = (name, options = {}) => {
-    if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", name, options);
-    }
+    // if (typeof window !== "undefined" && window.fbq) {
+    //     window.fbq("track", name, options);
+    // }
 };
 
 export default function MetaPixel() {
+    /* 
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
@@ -28,8 +29,9 @@ export default function MetaPixel() {
         // Fire the pageview event on route change
         pageview();
     }, [pathname, searchParams]);
+    */
 
-    return (
+    return null; /*
         <>
             <Script
                 id="fb-pixel"
@@ -60,4 +62,5 @@ export default function MetaPixel() {
             </noscript>
         </>
     );
+    */
 }
