@@ -45,6 +45,17 @@ export default function RootLayout({ children }) {
     >
       <GoogleTagManager gtmId="GTM-MJ8GRP2J" />
       <body className="antialiased" suppressHydrationWarning>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MJ8GRP2J"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <Suspense fallback={null}>
           <GTMPageViewTracker />
         </Suspense>
