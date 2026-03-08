@@ -219,7 +219,10 @@ const CheckoutContent = () => {
                     if (orderResult.errorMessages && Array.isArray(orderResult.errorMessages)) {
                         const newErrors = {};
                         orderResult.errorMessages.forEach(err => {
-                            if (err.path) newErrors[err.path] = err.message;
+                            if (err.path) {
+                                const key = err.path.includes('.') ? err.path.split('.').pop() : err.path;
+                                newErrors[key] = err.message;
+                            }
                         });
                         setFormErrors(prev => ({ ...prev, ...newErrors }));
                     }
@@ -242,7 +245,10 @@ const CheckoutContent = () => {
                         if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {
                             const newErrors = {};
                             errorData.errorMessages.forEach(err => {
-                                if (err.path) newErrors[err.path] = err.message;
+                                if (err.path) {
+                                    const key = err.path.includes('.') ? err.path.split('.').pop() : err.path;
+                                    newErrors[key] = err.message;
+                                }
                             });
                             setFormErrors(prev => ({ ...prev, ...newErrors }));
                         }
@@ -290,7 +296,10 @@ const CheckoutContent = () => {
                     if (guestResult.errorMessages && Array.isArray(guestResult.errorMessages)) {
                         const newErrors = {};
                         guestResult.errorMessages.forEach(err => {
-                            if (err.path) newErrors[err.path] = err.message;
+                            if (err.path) {
+                                const key = err.path.includes('.') ? err.path.split('.').pop() : err.path;
+                                newErrors[key] = err.message;
+                            }
                         });
                         setFormErrors(prev => ({ ...prev, ...newErrors }));
                     }
