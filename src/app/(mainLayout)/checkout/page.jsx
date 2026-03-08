@@ -294,18 +294,24 @@ const CheckoutContent = () => {
                 });
 
                 const guestResult = await guestRes.json();
+                console.log('📦 Guest checkout response:', JSON.stringify(guestResult, null, 2));
+
                 if (!guestRes.ok) {
-                    if (guestResult.errorMessages && Array.isArray(guestResult.errorMessages)) {
+                    // Show each validation error as a separate toast
+                    if (guestResult.errorMessages && Array.isArray(guestResult.errorMessages) && guestResult.errorMessages.length > 0) {
                         const newErrors = {};
                         guestResult.errorMessages.forEach(err => {
-                            if (err.path) {
-                                const key = err.path.includes('.') ? err.path.split('.').pop() : err.path;
-                                newErrors[key] = err.message;
-                            }
+                            const key = err.path ? (err.path.includes('.') ? err.path.split('.').pop() : err.path) : '';
+                            if (key) newErrors[key] = err.message;
+                            // Show each error as a toast
+                            toast.error(`❌ ${key ? key + ': ' : ''}${err.message}`, { duration: 5000 });
                         });
                         setFormErrors(prev => ({ ...prev, ...newErrors }));
+                    } else {
+                        toast.error(guestResult.message || 'Checkout failed');
                     }
-                    throw new Error(guestResult.message || 'Checkout failed');
+                    setLoading(false);
+                    return; // Don't throw, just stop
                 }
 
                 // Auto-login: save token and user data
@@ -325,7 +331,7 @@ const CheckoutContent = () => {
             }
 
         } catch (error) {
-            console.error('Payment error:', error);
+            console.error('💥 Payment error:', error);
             toast.error(error.message || 'Payment failed');
         } finally {
             setLoading(false);
