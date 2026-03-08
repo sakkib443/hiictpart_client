@@ -438,20 +438,17 @@ const CheckoutContent = () => {
 
                                         <button
                                             type="button"
-                                            onClick={() => setPaymentMethod('direct')}
-                                            className={`p-5 rounded-md border-2 flex items-center gap-4 transition-all ${paymentMethod === 'direct'
-                                                ? 'border-slate-800 dark:border-white bg-slate-800 dark:bg-white/20'
-                                                : 'border-slate-100 dark:border-white/10 bg-white dark:bg-white/5 hover:border-slate-200'
-                                                }`}
+                                            disabled
+                                            className="p-5 rounded-md border-2 flex items-center gap-4 transition-all border-slate-100 dark:border-white/10 bg-white dark:bg-white/5 opacity-50 cursor-not-allowed relative"
                                         >
-                                            <div className={`w-10 h-10 rounded-md flex items-center justify-center ${paymentMethod === 'direct' ? 'bg-white text-slate-800' : 'bg-slate-800 text-white dark:bg-white/10'}`}>
+                                            <div className="w-10 h-10 rounded-md flex items-center justify-center bg-slate-800 text-white dark:bg-white/10">
                                                 <LuLock size={20} />
                                             </div>
                                             <div className="text-left">
-                                                <p className={`font-bold uppercase tracking-tight text-xs ${paymentMethod === 'direct' ? 'text-white' : 'text-slate-800 dark:text-white'}`}>
+                                                <p className="font-bold uppercase tracking-tight text-xs text-slate-800 dark:text-white">
                                                     {language === 'bn' ? 'অনলাইন' : 'Online'}
                                                 </p>
-                                                <p className="text-[9px] font-normal text-slate-400 uppercase tracking-widest">Automatic</p>
+                                                <p className="text-[9px] font-normal text-slate-400 uppercase tracking-widest">Coming Soon</p>
                                             </div>
                                         </button>
                                     </div>
