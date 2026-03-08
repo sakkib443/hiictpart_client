@@ -72,9 +72,9 @@ const CheckoutContent = () => {
                             id: course._id || course.id,
                             title: course.title,
                             type: 'course',
-                            price: (course.discountPrice && course.discountPrice > 0)
+                            price: Number((course.discountPrice && course.discountPrice > 0)
                                 ? course.discountPrice
-                                : (course.price || (parseInt(course.fee?.replace(/[^\d]/g, '') || 0))),
+                                : (course.price || (parseInt(course.fee?.replace(/[^\d]/g, '') || '0')))) || 0,
                             image: course.thumbnail || course.image
                         };
                         setCheckoutItems([item]);
@@ -270,10 +270,10 @@ const CheckoutContent = () => {
                     address: formData.address,
                     items: checkoutItems.map(item => ({
                         productId: item.id,
-                        productType: item.type,
+                        productType: item.type || 'course',
                         title: item.title,
-                        price: item.price,
-                        image: item.image
+                        price: Number(item.price) || 0,
+                        image: item.image || ''
                     })),
                     paymentMethod: paymentMethod === 'manual' ? 'manual' : 'direct',
                     manualMethod,
@@ -284,6 +284,8 @@ const CheckoutContent = () => {
                     discountAmount: discountAmount || 0,
                     couponCode: appliedCoupon?.code || ''
                 };
+
+                console.log('🔍 Guest checkout data:', JSON.stringify(guestData, null, 2));
 
                 const guestRes = await fetch(`${BASE_URL}/orders/guest-checkout`, {
                     method: 'POST',
