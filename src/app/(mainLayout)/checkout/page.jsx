@@ -51,14 +51,12 @@ const CheckoutContent = () => {
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [discountAmount, setDiscountAmount] = useState(0);
 
-    // Auth Check
+    // Check if user is logged in (but don't redirect - allow guest checkout)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (!token) {
-            toast.error("Please login to proceed with payment");
-            router.push(`/login?redirect=/checkout${courseId ? `?courseId=${courseId}` : ''}`);
-        }
-    }, [router, courseId]);
+        if (token) setIsLoggedIn(true);
+    }, []);
 
     // Handle single course or cart items
     useEffect(() => {
@@ -184,74 +182,103 @@ const CheckoutContent = () => {
         const BASE_URL = API_URL;
 
         try {
-            // Step 1: Create Order
-            const orderData = {
-                items: checkoutItems.map(item => ({
-                    productId: item.id,
-                    productType: item.type,
-                    title: item.title,
-                    price: item.price,
-                    image: item.image
-                })),
-                paymentMethod: paymentMethod === 'manual' ? 'manual' : 'direct',
-                paymentStatus: 'pending',
-                discountAmount: discountAmount || 0,
-                couponCode: appliedCoupon?.code || ''
-            };
-
-            const orderRes = await fetch(`${BASE_URL}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(orderData)
-            });
-
-            const orderResult = await orderRes.json();
-
-            if (!orderRes.ok) {
-                throw new Error(orderResult.message || 'Failed to create order');
-            }
-
-            const orderId = orderResult.data._id;
-
-            if (paymentMethod === 'manual') {
-                const manualPaymentData = {
-                    method: manualMethod,
-                    ...paymentDetails
+            if (token) {
+                // LOGGED IN USER - use existing flow
+                const orderData = {
+                    items: checkoutItems.map(item => ({
+                        productId: item.id,
+                        productType: item.type,
+                        title: item.title,
+                        price: item.price,
+                        image: item.image
+                    })),
+                    paymentMethod: paymentMethod === 'manual' ? 'manual' : 'direct',
+                    paymentStatus: 'pending',
+                    discountAmount: discountAmount || 0,
+                    couponCode: appliedCoupon?.code || ''
                 };
 
-                const manualRes = await fetch(`${BASE_URL}/orders/${orderId}/manual-payment`, {
-                    method: 'PATCH',
+                const orderRes = await fetch(`${BASE_URL}/orders`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(manualPaymentData)
+                    body: JSON.stringify(orderData)
                 });
 
-                if (!manualRes.ok) {
-                    const errorData = await manualRes.json();
-                    throw new Error(errorData.message || 'Failed to submit manual payment details');
+                const orderResult = await orderRes.json();
+                if (!orderRes.ok) throw new Error(orderResult.message || 'Failed to create order');
+
+                const orderId = orderResult.data._id;
+
+                if (paymentMethod === 'manual') {
+                    const manualRes = await fetch(`${BASE_URL}/orders/${orderId}/manual-payment`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ method: manualMethod, ...paymentDetails })
+                    });
+                    if (!manualRes.ok) {
+                        const errorData = await manualRes.json();
+                        throw new Error(errorData.message || 'Failed to submit manual payment details');
+                    }
                 }
 
                 toast.success('Payment submitted for verification! 🚀');
                 setIsSuccess(true);
                 if (!courseId) dispatch(clearCart());
-
-                setTimeout(() => {
-                    router.push('/dashboard/user/courses');
-                }, 3000);
+                setTimeout(() => { router.push('/dashboard/user/courses'); }, 3000);
 
             } else {
-                toast.success('Order placed! Redirecting...');
+                // GUEST USER - use guest-checkout API
+                const guestData = {
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address: formData.address,
+                    items: checkoutItems.map(item => ({
+                        productId: item.id,
+                        productType: item.type,
+                        title: item.title,
+                        price: item.price,
+                        image: item.image
+                    })),
+                    paymentMethod: paymentMethod === 'manual' ? 'manual' : 'direct',
+                    manualMethod,
+                    senderNumber: paymentDetails.senderNumber,
+                    transactionId: paymentDetails.transactionId,
+                    time: paymentDetails.time,
+                    date: paymentDetails.date,
+                    discountAmount: discountAmount || 0,
+                    couponCode: appliedCoupon?.code || ''
+                };
+
+                const guestRes = await fetch(`${BASE_URL}/orders/guest-checkout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(guestData)
+                });
+
+                const guestResult = await guestRes.json();
+                if (!guestRes.ok) throw new Error(guestResult.message || 'Checkout failed');
+
+                // Auto-login: save token and user data
+                if (guestResult.data?.tokens?.accessToken) {
+                    localStorage.setItem('token', guestResult.data.tokens.accessToken);
+                    localStorage.setItem('refreshToken', guestResult.data.tokens.refreshToken);
+                    localStorage.setItem('user', JSON.stringify(guestResult.data.user));
+                }
+
+                const msg = guestResult.data?.isNewUser
+                    ? 'অর্ডার সফল! আপনার অ্যাকাউন্ট তৈরি হয়েছে 🚀'
+                    : 'Payment submitted for verification! 🚀';
+                toast.success(msg);
                 setIsSuccess(true);
                 if (!courseId) dispatch(clearCart());
-
-                setTimeout(() => {
-                    router.push('/dashboard/user/courses');
-                }, 3000);
+                setTimeout(() => { router.push('/dashboard/user/courses'); }, 3000);
             }
 
         } catch (error) {

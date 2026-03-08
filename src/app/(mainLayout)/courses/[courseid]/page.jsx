@@ -177,8 +177,7 @@ const SingleCourse = () => {
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    router.push('/cart');
+    router.push(`/checkout?courseId=${currentCourse._id}`);
   };
 
   const handleToggleLike = async () => {
