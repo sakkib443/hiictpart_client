@@ -104,6 +104,7 @@ const CheckoutContent = () => {
         phone: '',
         address: ''
     });
+    const [formErrors, setFormErrors] = useState({});
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -119,10 +120,16 @@ const CheckoutContent = () => {
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (formErrors[e.target.name]) {
+            setFormErrors(prev => ({ ...prev, [e.target.name]: '' }));
+        }
     };
 
     const handlePaymentDetailChange = (e) => {
         setPaymentDetails({ ...paymentDetails, [e.target.name]: e.target.value });
+        if (formErrors[e.target.name]) {
+            setFormErrors(prev => ({ ...prev, [e.target.name]: '' }));
+        }
     };
 
     // Apply Coupon Handler
@@ -208,7 +215,16 @@ const CheckoutContent = () => {
                 });
 
                 const orderResult = await orderRes.json();
-                if (!orderRes.ok) throw new Error(orderResult.message || 'Failed to create order');
+                if (!orderRes.ok) {
+                    if (orderResult.errorMessages && Array.isArray(orderResult.errorMessages)) {
+                        const newErrors = {};
+                        orderResult.errorMessages.forEach(err => {
+                            if (err.path) newErrors[err.path] = err.message;
+                        });
+                        setFormErrors(prev => ({ ...prev, ...newErrors }));
+                    }
+                    throw new Error(orderResult.message || 'Failed to create order');
+                }
 
                 const orderId = orderResult.data._id;
 
@@ -223,6 +239,13 @@ const CheckoutContent = () => {
                     });
                     if (!manualRes.ok) {
                         const errorData = await manualRes.json();
+                        if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {
+                            const newErrors = {};
+                            errorData.errorMessages.forEach(err => {
+                                if (err.path) newErrors[err.path] = err.message;
+                            });
+                            setFormErrors(prev => ({ ...prev, ...newErrors }));
+                        }
                         throw new Error(errorData.message || 'Failed to submit manual payment details');
                     }
                 }
@@ -263,7 +286,16 @@ const CheckoutContent = () => {
                 });
 
                 const guestResult = await guestRes.json();
-                if (!guestRes.ok) throw new Error(guestResult.message || 'Checkout failed');
+                if (!guestRes.ok) {
+                    if (guestResult.errorMessages && Array.isArray(guestResult.errorMessages)) {
+                        const newErrors = {};
+                        guestResult.errorMessages.forEach(err => {
+                            if (err.path) newErrors[err.path] = err.message;
+                        });
+                        setFormErrors(prev => ({ ...prev, ...newErrors }));
+                    }
+                    throw new Error(guestResult.message || 'Checkout failed');
+                }
 
                 // Auto-login: save token and user data
                 if (guestResult.data?.tokens?.accessToken) {
@@ -382,9 +414,10 @@ const CheckoutContent = () => {
                                             <LuUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                             <input
                                                 type="text" required name="fullName" value={formData.fullName} onChange={handleInputChange}
-                                                className="w-full pl-12 pr-6 py-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10 outline-none transition-all font-normal text-slate-700 dark:text-white"
+                                                className={`w-full pl-12 pr-6 py-4 outline-none transition-all font-normal text-slate-700 dark:text-white rounded-md ${formErrors.fullName ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10'}`}
                                             />
                                         </div>
+                                        {formErrors.fullName && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.fullName}</p>}
                                     </div>
                                     <div>
                                         <label className={`text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-widest ${bengaliClass}`}>
@@ -394,9 +427,10 @@ const CheckoutContent = () => {
                                             <LuMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                             <input
                                                 type="email" required name="email" value={formData.email} onChange={handleInputChange}
-                                                className="w-full pl-12 pr-6 py-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10 outline-none transition-all font-normal text-slate-700 dark:text-white"
+                                                className={`w-full pl-12 pr-6 py-4 outline-none transition-all font-normal text-slate-700 dark:text-white rounded-md ${formErrors.email ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10'}`}
                                             />
                                         </div>
+                                        {formErrors.email && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.email}</p>}
                                     </div>
                                     <div>
                                         <label className={`text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-widest ${bengaliClass}`}>
@@ -406,9 +440,10 @@ const CheckoutContent = () => {
                                             <LuPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                             <input
                                                 type="text" required name="phone" value={formData.phone} onChange={handleInputChange}
-                                                className="w-full pl-12 pr-6 py-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10 outline-none transition-all font-normal text-slate-700 dark:text-white"
+                                                className={`w-full pl-12 pr-6 py-4 outline-none transition-all font-normal text-slate-700 dark:text-white rounded-md ${formErrors.phone ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26] focus:bg-white dark:focus:bg-white/10'}`}
                                             />
                                         </div>
+                                        {formErrors.phone && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.phone}</p>}
                                     </div>
                                 </div>
 
@@ -503,8 +538,9 @@ const CheckoutContent = () => {
                                                     </label>
                                                     <input
                                                         type="text" required name="senderNumber" value={paymentDetails.senderNumber} onChange={handlePaymentDetailChange}
-                                                        className="w-full px-5 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] outline-none transition-all font-normal text-slate-700 dark:text-white text-sm"
+                                                        className={`w-full px-5 py-3 outline-none transition-all font-normal text-slate-700 dark:text-white text-sm rounded-md ${formErrors.senderNumber ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26]'}`}
                                                     />
+                                                    {formErrors.senderNumber && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.senderNumber}</p>}
                                                 </div>
                                                 <div>
                                                     <label className={`text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-widest ${bengaliClass}`}>
@@ -512,8 +548,9 @@ const CheckoutContent = () => {
                                                     </label>
                                                     <input
                                                         type="text" required name="transactionId" value={paymentDetails.transactionId} onChange={handlePaymentDetailChange}
-                                                        className="w-full px-5 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] outline-none transition-all font-normal text-slate-700 dark:text-white text-sm"
+                                                        className={`w-full px-5 py-3 outline-none transition-all font-normal text-slate-700 dark:text-white text-sm rounded-md ${formErrors.transactionId ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26]'}`}
                                                     />
+                                                    {formErrors.transactionId && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.transactionId}</p>}
                                                 </div>
                                                 <div>
                                                     <label className={`text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-widest ${bengaliClass}`}>
@@ -521,8 +558,9 @@ const CheckoutContent = () => {
                                                     </label>
                                                     <input
                                                         type="time" required name="time" value={paymentDetails.time} onChange={handlePaymentDetailChange}
-                                                        className="w-full px-5 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] outline-none transition-all font-normal text-slate-700 dark:text-white text-sm"
+                                                        className={`w-full px-5 py-3 outline-none transition-all font-normal text-slate-700 dark:text-white text-sm rounded-md ${formErrors.time ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26]'}`}
                                                     />
+                                                    {formErrors.time && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.time}</p>}
                                                 </div>
                                                 <div>
                                                     <label className={`text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-widest ${bengaliClass}`}>
@@ -530,8 +568,9 @@ const CheckoutContent = () => {
                                                     </label>
                                                     <input
                                                         type="date" required name="date" value={paymentDetails.date} onChange={handlePaymentDetailChange}
-                                                        className="w-full px-5 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-md focus:border-[#E62D26] outline-none transition-all font-normal text-slate-700 dark:text-white text-sm"
+                                                        className={`w-full px-5 py-3 outline-none transition-all font-normal text-slate-700 dark:text-white text-sm rounded-md ${formErrors.date ? 'border-2 border-red-500 bg-red-50 dark:bg-red-500/10 focus:border-red-600' : 'bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-[#E62D26]'}`}
                                                     />
+                                                    {formErrors.date && <p className="text-red-500 text-xs mt-1 font-medium">{formErrors.date}</p>}
                                                 </div>
                                             </div>
                                         </div>
