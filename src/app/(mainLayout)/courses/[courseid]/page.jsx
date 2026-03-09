@@ -232,6 +232,7 @@ const SingleCourse = () => {
 
   const price = currentCourse.price || 0;
   const discountPrice = currentCourse.discountPrice;
+  const priceLabel = currentCourse.priceLabel;
 
   return (
     <div className="min-h-screen bg-[#FAFBFC] dark:bg-slate-950">
@@ -385,8 +386,14 @@ const SingleCourse = () => {
                 <img src={currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png"} alt={currentCourse.title} className="w-full aspect-video object-cover" />
                 <div className="p-5">
                   <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-bold text-gray-900 outfit">৳{price.toLocaleString()}</span>
-                    {discountPrice && <span className="text-gray-400 line-through text-sm">৳{(price + 2000).toLocaleString()}</span>}
+                    {priceLabel ? (
+                      <span className="text-2xl font-bold text-gray-900 outfit">{priceLabel}</span>
+                    ) : (
+                      <>
+                        <span className="text-2xl font-bold text-gray-900 outfit">৳{(discountPrice || price).toLocaleString()}</span>
+                        {discountPrice && <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>}
+                      </>
+                    )}
                   </div>
                   <div className="flex flex-col gap-3">
                     <motion.button
@@ -903,9 +910,15 @@ const SingleCourse = () => {
                     {/* Price */}
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">৳{(discountPrice || price).toLocaleString()}</span>
-                        {discountPrice && (
-                          <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>
+                        {priceLabel ? (
+                          <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">{priceLabel}</span>
+                        ) : (
+                          <>
+                            <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">৳{(discountPrice || price).toLocaleString()}</span>
+                            {discountPrice && (
+                              <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>
+                            )}
+                          </>
                         )}
                       </div>
                       <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">Full Lifetime Access</p>

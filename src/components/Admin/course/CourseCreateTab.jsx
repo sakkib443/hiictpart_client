@@ -54,6 +54,7 @@ const courseValidationSchema = z.object({
     instructor: z.string().optional(),
     price: z.coerce.number().min(0, "Price must be positive"),
     discountPrice: z.coerce.number().min(0).optional(),
+    priceLabel: z.string().max(100).optional().or(z.literal('')),
     courseType: z.enum(['online', 'offline', 'recorded']),
     level: z.enum(['beginner', 'intermediate', 'advanced']),
     language: z.enum(['bangla', 'english', 'both']),
@@ -102,6 +103,7 @@ const CourseCreateTab = ({ onSuccess }) => {
             faq: [{ question: '', answer: '' }],
             tags: [''],
             price: 0,
+            priceLabel: '',
             currency: 'BDT',
             previewVideo: '',
             sampleVideoUrl: '',
@@ -415,15 +417,19 @@ const CourseCreateTab = ({ onSuccess }) => {
                         <div className="space-y-4">
                             <FormField label="Regular Price (BDT)" required>
                                 <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">?</span>
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">৳</span>
                                     <input type="number" {...register('price')} className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-indigo-500 transition-all" />
                                 </div>
                             </FormField>
                             <FormField label="Discount Price (Optional)">
                                 <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">?</span>
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">৳</span>
                                     <input type="number" {...register('discountPrice')} className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-emerald-500 transition-all" />
                                 </div>
+                            </FormField>
+                            <FormField label="Price Label (Custom Text)">
+                                <input {...register('priceLabel')} className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-amber-500 transition-all" placeholder="e.g. ফ্রি, যোগাযোগ করুন, মাত্র ৫০০০ টাকা!" />
+                                <p className="text-xs text-slate-500 mt-1">খালি রাখলে শুধু টাকার অ্যামাউন্ট দেখাবে</p>
                             </FormField>
                         </div>
                     </div>

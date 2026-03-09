@@ -35,6 +35,7 @@ const CourseCard = ({ course, view = "grid" }) => {
   const thumbnail = course.thumbnail || course.image || "/placeholder-course.jpg";
   const price = course.price !== undefined ? course.price : (parseInt(course.fee?.replace(/[^\d]/g, '') || 0));
   const discountPrice = course.discountPrice;
+  const priceLabel = course.priceLabel;
   const type = course.courseType || course.type || "Recorded";
   const totalLessons = course.totalLessons || course.totalVideos || 10;
   const lessons = `${totalLessons} Lessons`;
@@ -62,7 +63,7 @@ const CourseCard = ({ course, view = "grid" }) => {
   // List View Rendering
   if (view === "list") {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -2 }}
@@ -125,7 +126,7 @@ const CourseCard = ({ course, view = "grid" }) => {
           </div>
 
           <div className="text-3xl font-bold text-[#E62D26] font-outfit mb-1">
-            ৳{(discountPrice || price).toLocaleString()}
+            {priceLabel || `৳${(discountPrice || price).toLocaleString()}`}
           </div>
 
           <div className="flex text-amber-500 gap-0.5 text-xs mb-1">
@@ -160,7 +161,7 @@ const CourseCard = ({ course, view = "grid" }) => {
 
   // Grid View Rendering - Enhanced
   return (
-    <motion.div 
+    <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ y: -8 }}
@@ -168,7 +169,7 @@ const CourseCard = ({ course, view = "grid" }) => {
       className="group w-full h-full flex flex-col"
     >
       <div className={`relative h-full bg-white dark:bg-[#0d0d0d] rounded-2xl border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-slate-200/60 dark:hover:shadow-black/30 hover:border-[#E62D26]/30 transition-all duration-500 flex flex-col`}>
-        
+
         {/* Gradient Glow Effect on Hover */}
         <div className={`absolute inset-0 bg-gradient-to-br from-[#E62D26]/5 via-transparent to-[#F79952]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
 
@@ -186,13 +187,12 @@ const CourseCard = ({ course, view = "grid" }) => {
 
           {/* Type Badge (Top Left) - Enhanced */}
           <div className="absolute top-4 left-4">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg backdrop-blur-sm ${
-              type.toLowerCase() === 'offline' 
-                ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg backdrop-blur-sm ${type.toLowerCase() === 'offline'
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600'
                 : type.toLowerCase() === 'online'
                   ? 'bg-gradient-to-r from-emerald-500 to-emerald-600'
                   : 'bg-gradient-to-r from-[#F79952] to-[#E62D26]'
-            }`}>
+              }`}>
               <LuSparkles size={12} />
               {type}
             </span>
@@ -205,7 +205,7 @@ const CourseCard = ({ course, view = "grid" }) => {
           </div>
 
           {/* Play Overlay - Enhanced */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isHovered ? 1 : 0 }}
             className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/60 via-black/20 to-transparent backdrop-blur-[2px] rounded-xl m-3"
@@ -264,9 +264,9 @@ const CourseCard = ({ course, view = "grid" }) => {
               <p className="text-[9px] text-slate-400 font-medium mb-0.5 uppercase tracking-wider">Course Fee</p>
               <div className="flex items-center gap-1.5">
                 <span className="text-lg font-bold bg-gradient-to-r from-[#E62D26] to-[#F79952] bg-clip-text text-transparent font-outfit">
-                  ৳{(discountPrice || price).toLocaleString()}
+                  {priceLabel || `৳${(discountPrice || price).toLocaleString()}`}
                 </span>
-                {discountPrice && (
+                {!priceLabel && discountPrice && (
                   <span className="text-[10px] text-slate-300 dark:text-slate-500 line-through">৳{price.toLocaleString()}</span>
                 )}
               </div>
@@ -290,11 +290,10 @@ const CourseCard = ({ course, view = "grid" }) => {
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
               disabled={isAdded}
-              className={`flex items-center justify-center gap-1.5 py-2.5 border-2 rounded-lg text-xs font-semibold transition-all ${
-                isAdded 
-                  ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20' 
+              className={`flex items-center justify-center gap-1.5 py-2.5 border-2 rounded-lg text-xs font-semibold transition-all ${isAdded
+                  ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20'
                   : 'bg-white dark:bg-transparent border-slate-200 dark:border-white/20 text-slate-700 dark:text-white hover:border-[#E62D26] hover:text-[#E62D26] dark:hover:border-[#E62D26] dark:hover:text-[#E62D26]'
-              }`}
+                }`}
             >
               {isAdded ? <LuCheck size={14} /> : <LuShoppingCart size={14} />}
               {isAdded ? 'Added!' : 'Add'}
