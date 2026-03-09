@@ -6,7 +6,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { LuBrain, LuAward, LuTarget, LuUsers } from "react-icons/lu";
 
 
@@ -219,139 +218,144 @@ const Hero = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Content - 3D Illustration */}
+                    {/* Right Content - Image Mockup Formation */}
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative flex justify-center lg:justify-end"
                     >
-                        {/* Hanging Lamps - Top Center */}
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 flex gap-12 z-20">
-                            <motion.div
-                                className="flex flex-col items-center"
-                                animate={{ y: [0, 5, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                                <div className="w-[2px] h-14 bg-gray-300 dark:bg-gray-600" />
-                                <div className="w-8 h-6 bg-gradient-to-b from-[#E62D26] to-red-600 rounded-b-full shadow-lg shadow-red-500/30" />
-                            </motion.div>
-                            <motion.div
-                                className="flex flex-col items-center"
-                                animate={{ y: [0, 5, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                            >
-                                <div className="w-[2px] h-20 bg-gray-300 dark:bg-gray-600" />
-                                <div className="w-6 h-5 bg-gradient-to-b from-pink-400 to-pink-500 rounded-b-full shadow-lg shadow-pink-500/30" />
-                            </motion.div>
-                        </div>
+                        <div className="relative w-full max-w-xl lg:max-w-2xl">
+                            {/* Main Grid Layout - 3 Images */}
+                            <div className="grid grid-cols-12 gap-4 relative">
 
-                        {/* Floating Shapes - Around Lottie */}
-                        <motion.div
-                            className="absolute top-[20%] left-[5%] w-5 h-5 bg-[#E62D26] rounded-full z-30"
-                            animate={{ y: [0, -12, 0], scale: [1, 1.1, 1] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <motion.div
-                            className="absolute top-[40%] left-[2%] w-3 h-3 bg-amber-400 rounded-full z-30"
-                            animate={{ y: [0, 10, 0] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                        />
-                        <motion.div
-                            className="absolute top-[12%] right-[8%] w-4 h-4 bg-amber-500 rounded-full z-30"
-                            animate={{ y: [0, 12, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <motion.div
-                            className="absolute top-[55%] right-[3%] w-4 h-4 border-2 border-[#E62D26] rounded-full z-30"
-                            animate={{ scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <motion.div
-                            className="absolute bottom-[25%] right-[6%] w-3 h-3 bg-pink-400 rounded-full z-30"
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                        />
+                                {/* Main Large Image - Left */}
+                                <motion.div
+                                    className="col-span-7 relative group"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.7 }}
+                                >
+                                    <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10">
+                                        <img
+                                            src="/images/57462951_2085649778223584_3709857119512559616_n.jpg"
+                                            alt="Hi ICT Park Classroom - Students Learning"
+                                            className="w-full h-[320px] lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                        {/* Gradient Overlay */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                                        {/* Badge on image */}
+                                        <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
+                                            <p className="text-[10px] font-bold text-primary uppercase tracking-widest">Live Class</p>
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">50+ Students</p>
+                                        </div>
+                                    </div>
+                                </motion.div>
 
-                        {/* Main Illustration - Lottie Animation (BIGGER) */}
-                        <div className="relative w-full max-w-xl lg:max-w-2xl xl:max-w-3xl">
-                            <DotLottieReact
-                                src="https://lottie.host/5d2337e1-5416-4301-8c92-413589acb46d/rceP6tR6sX.lottie"
-                                loop
-                                autoplay
-                                className="w-full h-auto scale-110 lg:scale-125"
-                            />
+                                {/* Right Column - 2 Stacked Images */}
+                                <div className="col-span-5 flex flex-col gap-4">
+                                    {/* Top Right Image */}
+                                    <motion.div
+                                        className="relative group"
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.6, duration: 0.7 }}
+                                    >
+                                        <div className="relative overflow-hidden rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10">
+                                            <img
+                                                src="/images/58068385_2070681143053781_5367478869567733760_n.jpg"
+                                                alt="Hi ICT Park Seminar - Knowledge Sharing"
+                                                className="w-full h-[150px] lg:h-[190px] object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                                            <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+                                                <div className="w-6 h-6 bg-[#E62D26] rounded-full flex items-center justify-center">
+                                                    <span className="text-white text-[10px]">🎓</span>
+                                                </div>
+                                                <span className="text-white text-[10px] font-bold drop-shadow-lg">Seminar</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
 
-                            {/* Chat Bubble - Top Right */}
-                            <motion.div
-                                className="absolute top-[8%] right-[10%] bg-white dark:bg-gray-800 rounded-2xl px-4 py-2.5 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1, duration: 0.5 }}
-                            >
-                                <div className="flex gap-1.5 items-center">
-                                    <span className="text-lg">👋</span>
-                                    <span className="text-gray-400 text-sm">Hello!</span>
+                                    {/* Bottom Right Image */}
+                                    <motion.div
+                                        className="relative group"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.8, duration: 0.7 }}
+                                    >
+                                        <div className="relative overflow-hidden rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10">
+                                            <img
+                                                src="/images/58383539_2073583652763530_1902712555562860544_n.jpg"
+                                                alt="Hi ICT Park Exam - Student Assessment"
+                                                className="w-full h-[150px] lg:h-[190px] object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                                            <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+                                                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
+                                                    <span className="text-white text-[10px]">📝</span>
+                                                </div>
+                                                <span className="text-white text-[10px] font-bold drop-shadow-lg">Exam Hall</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
                                 </div>
-                            </motion.div>
+                            </div>
 
-                            {/* Emoji Bubble - Right Side */}
+                            {/* Floating Decorative Elements */}
                             <motion.div
-                                className="absolute top-[35%] right-[5%] bg-white dark:bg-gray-800 rounded-2xl px-3 py-2 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
+                                className="absolute -top-4 -left-4 bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
                                 initial={{ opacity: 0, scale: 0 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 1.2, duration: 0.5 }}
                             >
-                                <div className="flex items-center gap-1">
-                                    <span className="text-lg">🎓</span>
-                                    <span className="text-lg">✨</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                        <span className="text-green-500 text-sm font-bold">✓</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] text-gray-400 font-medium">Success Rate</p>
+                                        <p className="font-bold text-sm text-gray-800 dark:text-white">98%</p>
+                                    </div>
                                 </div>
                             </motion.div>
 
-                            {/* Stats Badge - Bottom Right */}
+                            {/* Floating Rating Badge */}
                             <motion.div
-                                className="absolute bottom-[12%] right-[8%] bg-white dark:bg-gray-800 rounded-2xl px-4 py-2.5 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
+                                className="absolute -bottom-3 right-[30%] bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 1.5, duration: 0.5 }}
                             >
-                                <div className="flex items-center gap-2.5">
-                                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                                        <span className="text-green-500 text-sm">✓</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="flex -space-x-2">
+                                        <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">S</div>
+                                        <div className="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">A</div>
+                                        <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">R</div>
                                     </div>
                                     <div>
-                                        <p className="text-[10px] text-gray-400">Active Users</p>
-                                        <p className="font-bold text-sm text-gray-800 dark:text-white">50K+</p>
+                                        <p className="text-[10px] text-gray-400 font-medium">Students</p>
+                                        <p className="font-bold text-xs text-gray-800 dark:text-white">50k+ Enrolled</p>
                                     </div>
                                 </div>
                             </motion.div>
 
-                            {/* Book Icon - Bottom Left */}
+                            {/* Floating Dots */}
                             <motion.div
-                                className="absolute bottom-[18%] left-[8%] bg-white dark:bg-gray-800 rounded-xl p-2.5 shadow-xl z-20"
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1.8, duration: 0.5 }}
-                            >
-                                <span className="text-xl">📚</span>
-                            </motion.div>
-
-                            {/* Decorative Plant - Bottom Left Corner */}
-                            <motion.div
-                                className="absolute bottom-[2%] left-[3%] z-10"
-                                animate={{ rotate: [-2, 2, -2] }}
+                                className="absolute top-[20%] -right-3 w-4 h-4 bg-[#E62D26] rounded-full z-10"
+                                animate={{ y: [0, -10, 0], scale: [1, 1.2, 1] }}
                                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                                <svg className="w-16 h-20" viewBox="0 0 60 80" fill="none">
-                                    <ellipse cx="30" cy="75" rx="12" ry="4" fill="#e5e7eb" />
-                                    <path d="M30 70 Q25 50 15 40 Q10 35 5 40" stroke="#22c55e" strokeWidth="2.5" fill="none" />
-                                    <path d="M30 70 Q35 45 45 35 Q50 30 55 35" stroke="#22c55e" strokeWidth="2.5" fill="none" />
-                                    <path d="M30 70 Q30 45 25 30 Q23 20 30 15" stroke="#16a34a" strokeWidth="2.5" fill="none" />
-                                    <circle cx="15" cy="38" r="6" fill="#22c55e" opacity="0.5" />
-                                    <circle cx="45" cy="33" r="6" fill="#22c55e" opacity="0.5" />
-                                    <circle cx="28" cy="18" r="5" fill="#16a34a" opacity="0.6" />
-                                </svg>
-                            </motion.div>
+                            />
+                            <motion.div
+                                className="absolute top-[50%] -left-3 w-3 h-3 bg-amber-400 rounded-full z-10"
+                                animate={{ y: [0, 8, 0] }}
+                                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                            />
+                            <motion.div
+                                className="absolute bottom-[15%] -right-2 w-3 h-3 border-2 border-[#E62D26] rounded-full z-10"
+                                animate={{ scale: [1, 1.4, 1] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            />
                         </div>
                     </motion.div>
                 </div>

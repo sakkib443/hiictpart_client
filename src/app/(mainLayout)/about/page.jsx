@@ -100,46 +100,99 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 lg:px-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-stretch">
 
-            {/* Left Image Grid - Flexbox Implementation for Perfect Alignment */}
+            {/* Left Image Grid - 3 Image Mockup Formation */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex gap-4 h-[400px] lg:h-[536px] w-full"
+              className="relative flex gap-4 h-[400px] lg:h-[536px] w-full"
             >
               {/* Large Left Image - Takes 50% width and full height */}
-              <div className="relative w-1/2 h-full rounded-2xl overflow-hidden shadow-lg group">
-                <Image
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
-                  alt="Team Group Photo"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+              <div className="relative w-1/2 h-full rounded-2xl overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10 group">
+                <img
+                  src="/images/57462951_2085649778223584_3709857119512559616_n.jpg"
+                  alt="Hi ICT Park Classroom - Students Learning"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
+                  <p className="text-[10px] font-bold text-[#E62D26] uppercase tracking-widest">Live Class</p>
+                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">50+ Students</p>
+                </div>
               </div>
 
               {/* Right Column - Takes 50% width and contains 2 stacked images */}
               <div className="w-1/2 flex flex-col gap-4 h-full">
-                {/* Top Right Image - Flexible height */}
-                <div className="relative flex-1 rounded-2xl overflow-hidden shadow-lg group">
-                  <Image
-                    src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&q=80"
-                    alt="Classroom Session"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                {/* Top Right Image */}
+                <div className="relative flex-1 rounded-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10 group">
+                  <img
+                    src="/images/58068385_2070681143053781_5367478869567733760_n.jpg"
+                    alt="Hi ICT Park Seminar - Knowledge Sharing"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+                    <div className="w-6 h-6 bg-[#E62D26] rounded-full flex items-center justify-center">
+                      <span className="text-white text-[10px]">🎓</span>
+                    </div>
+                    <span className="text-white text-[10px] font-bold drop-shadow-lg">Seminar</span>
+                  </div>
                 </div>
 
-                {/* Bottom Right Image - Flexible height */}
-                <div className="relative flex-1 rounded-2xl overflow-hidden shadow-lg group">
-                  <Image
-                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80"
-                    alt="Student Learning"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                {/* Bottom Right Image */}
+                <div className="relative flex-1 rounded-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 border-2 border-white/60 dark:border-white/10 group">
+                  <img
+                    src="/images/58383539_2073583652763530_1902712555562860544_n.jpg"
+                    alt="Hi ICT Park Exam - Student Assessment"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+                    <div className="w-6 h-6 bg-[#F79952] rounded-full flex items-center justify-center">
+                      <span className="text-white text-[10px]">📝</span>
+                    </div>
+                    <span className="text-white text-[10px] font-bold drop-shadow-lg">Exam Hall</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Floating Success Rate Badge */}
+              <motion.div
+                className="absolute -top-4 -left-4 bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.2, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <span className="text-green-500 text-sm font-bold">✓</span>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-medium">Success Rate</p>
+                    <p className="font-bold text-sm text-gray-800 dark:text-white">98%</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Floating Enrolled Badge */}
+              <motion.div
+                className="absolute -bottom-3 left-[30%] bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <div className="w-7 h-7 rounded-full bg-[#E62D26] flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">S</div>
+                    <div className="w-7 h-7 rounded-full bg-[#F79952] flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">A</div>
+                    <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold border-2 border-white dark:border-gray-800">R</div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-medium">Students</p>
+                    <p className="font-bold text-xs text-gray-800 dark:text-white">50k+ Enrolled</p>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Right Content - Fixed Height with Centered Content */}
