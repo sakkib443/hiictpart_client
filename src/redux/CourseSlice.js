@@ -17,12 +17,18 @@ export const fetchCoursesData = createAsyncThunk(
 // Fetch single course by ID
 export const fetchSingleCourse = createAsyncThunk(
   "courses/fetchSingleCourse",
-  async (id) => {
+  async (idOrSlug) => {
     const token = localStorage.getItem("token");
     const headers = { "Content-Type": "application/json" };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const response = await fetch(`${API_BASE_URL}/courses/${id}`, {
+    // Support both MongoDB ObjectId and human-readable slug in the URL
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(idOrSlug);
+    const endpoint = isObjectId
+      ? `${API_BASE_URL}/courses/${idOrSlug}`
+      : `${API_BASE_URL}/courses/slug/${idOrSlug}`;
+
+    const response = await fetch(endpoint, {
       cache: "no-store",
       headers,
     });

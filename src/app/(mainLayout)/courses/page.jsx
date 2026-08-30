@@ -108,6 +108,7 @@ const CourseContent = () => {
     const searchMatch =
       q === "" ||
       (course.title && course.title.toLowerCase().includes(q)) ||
+      (course.titleBn && course.titleBn.toLowerCase().includes(q)) ||
       (course.technology && course.technology.toLowerCase().includes(q)) ||
       getCategoryName(course.category).toLowerCase().includes(q);
 

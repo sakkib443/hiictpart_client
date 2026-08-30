@@ -68,7 +68,7 @@ const ContactPage = () => {
       buttonText: 'Chat on WhatsApp',
       buttonTextBn: 'হোয়াটসঅ্যাপে চ্যাট করুন'
     },
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.8986834879085!2d90.41723!3d23.7656976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c754583dd209%3A0xdd0c5fcc7d2d3836!2sDaisy%20Garden!5e0!3m2!1sen!2sbd!4v1704532086149!5m2!1sen!2sbd'
+    mapEmbedUrl: 'https://maps.google.com/maps?q=Dhaka,Bangladesh&z=12&output=embed'
   });
 
   // Fetch dynamic content
@@ -367,7 +367,7 @@ const ContactPage = () => {
                   </div>
                 </div>
                 <iframe
-                  src={content.mapEmbedUrl}
+                  src={content.mapEmbedUrl || 'https://maps.google.com/maps?q=Dhaka,Bangladesh&z=12&output=embed'}
                   width="100%"
                   height="250"
                   className="border-0"

@@ -53,7 +53,7 @@ export default function LessonTextContent({ textContent = '', textContentBn = ''
                                     : 'text-slate-500 hover:text-slate-700'
                                 }`}
                         >
-                            ?????
+                            বাংলা
                         </button>
                     </div>
                 </div>

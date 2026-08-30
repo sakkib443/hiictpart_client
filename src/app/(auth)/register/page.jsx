@@ -130,9 +130,9 @@ const Register = () => {
   };
 
   const features = [
-    { icon: FiBookOpen, text: language === "bn" ? "??+ ????????? ?????" : "50+ Professional Courses" },
-    { icon: FiUsers, text: language === "bn" ? "?,???+ ??? ??????????" : "4,200+ Successful Students" },
-    { icon: FiAward, text: language === "bn" ? "??????????? ???????????" : "Industry Certificates" },
+    { icon: FiBookOpen, text: language === "bn" ? "৫০+ প্রফেশনাল কোর্স" : "50+ Professional Courses" },
+    { icon: FiUsers, text: language === "bn" ? "৪,২০০+ সফল শিক্ষার্থী" : "4,200+ Successful Students" },
+    { icon: FiAward, text: language === "bn" ? "ইন্ডাস্ট্রি সার্টিফিকেট" : "Industry Certificates" },
   ];
 
   return (
@@ -154,11 +154,11 @@ const Register = () => {
                 {/* Welcome Message */}
                 <div className="mb-10">
                   <h2 className={`text-3xl font-bold mb-3 outfit ${bengaliClass}`}>
-                    {language === "bn" ? "????? ?????????? ???? ????" : "Start Your Career Journey"}
+                    {language === "bn" ? "আপনার ক্যারিয়ার যাত্রা শুরু করুন" : "Start Your Career Journey"}
                   </h2>
                   <p className={`text-white/80 text-sm leading-relaxed ${bengaliClass}`}>
                     {language === "bn"
-                      ? "???? ?????????? ???? ???? ??? ?????????? ?????, ???? ????? ??? ?????????? ??????? ????????? ?????"
+                      ? "একটি অ্যাকাউন্ট তৈরি করুন এবং প্রিমিয়াম কোর্স, লাইভ ক্লাস ও ক্যারিয়ার সাপোর্টের অ্যাক্সেস পান।"
                       : "Create an account and get access to premium courses, live classes, and career support."}
                   </p>
                 </div>
@@ -184,13 +184,13 @@ const Register = () => {
                     <div>
                       <p className="text-3xl font-bold outfit">92%</p>
                       <p className={`text-xs text-white/70 ${bengaliClass}`}>
-                        {language === "bn" ? "?????????? ???" : "Placement Rate"}
+                        {language === "bn" ? "প্লেসমেন্ট রেট" : "Placement Rate"}
                       </p>
                     </div>
                     <div>
                       <p className="text-3xl font-bold outfit">4.9?</p>
                       <p className={`text-xs text-white/70 ${bengaliClass}`}>
-                        {language === "bn" ? "?????????? ?????" : "Student Rating"}
+                        {language === "bn" ? "স্টুডেন্ট রেটিং" : "Student Rating"}
                       </p>
                     </div>
                   </div>
@@ -203,10 +203,10 @@ const Register = () => {
               <div className="max-w-md mx-auto">
                 <div className="mb-8">
                   <h3 className={`text-2xl font-bold text-gray-800 mb-2 outfit ${bengaliClass}`}>
-                    {language === "bn" ? "?????????? ???? ????" : "Create Account"}
+                    {language === "bn" ? "অ্যাকাউন্ট তৈরি করুন" : "Create Account"}
                   </h3>
                   <p className={`text-gray-500 text-sm ${bengaliClass}`}>
-                    {language === "bn" ? "???? ?? ????? ???? ?????!" : "It only takes a minute!"}
+                    {language === "bn" ? "মাত্র এক মিনিট লাগবে!" : "It only takes a minute!"}
                   </p>
                 </div>
 
@@ -217,7 +217,7 @@ const Register = () => {
                       <FiUser className="absolute left-4 top-3.5 text-gray-400" size={18} />
                       <input
                         name="firstName"
-                        placeholder={language === "bn" ? "????? ???" : "First name"}
+                        placeholder={language === "bn" ? "প্রথম নাম" : "First name"}
                         value={formData.firstName}
                         onChange={handleChange}
                         required
@@ -228,7 +228,7 @@ const Register = () => {
                       <FiUser className="absolute left-4 top-3.5 text-gray-400" size={18} />
                       <input
                         name="lastName"
-                        placeholder={language === "bn" ? "??? ???" : "Last name"}
+                        placeholder={language === "bn" ? "শেষ নাম" : "Last name"}
                         value={formData.lastName}
                         onChange={handleChange}
                         required
@@ -243,7 +243,7 @@ const Register = () => {
                     <input
                       name="email"
                       type="email"
-                      placeholder={language === "bn" ? "????? ??????" : "Email address"}
+                      placeholder={language === "bn" ? "ইমেইল ঠিকানা" : "Email address"}
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -256,7 +256,7 @@ const Register = () => {
                     <FiPhone className="absolute left-4 top-3.5 text-gray-400" size={18} />
                     <input
                       name="phoneNumber"
-                      placeholder={language === "bn" ? "??? ????? (??????)" : "Phone number (optional)"}
+                      placeholder={language === "bn" ? "ফোন নম্বর (ঐচ্ছিক)" : "Phone number (optional)"}
                       value={formData.phoneNumber}
                       onChange={handleChange}
                       className={`w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:border-[#E62D26] focus:ring-2 focus:ring-[#E62D26]/20 outline-none transition ${bengaliClass}`}
@@ -271,7 +271,7 @@ const Register = () => {
                         <input
                           name="password"
                           type={showPassword ? "text" : "password"}
-                          placeholder={language === "bn" ? "??????????" : "Password"}
+                          placeholder={language === "bn" ? "পাসওয়ার্ড" : "Password"}
                           value={formData.password}
                           onChange={handleChange}
                           required
@@ -303,7 +303,7 @@ const Register = () => {
                       <input
                         name="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
-                        placeholder={language === "bn" ? "?????????? ??????? ????" : "Confirm password"}
+                        placeholder={language === "bn" ? "পাসওয়ার্ড নিশ্চিত করুন" : "Confirm password"}
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required
@@ -338,15 +338,15 @@ const Register = () => {
                       className="hidden"
                     />
                     <span className={`text-sm text-gray-600 ${bengaliClass}`}>
-                      {language === "bn" ? "??? " : "I agree to the "}
+                      {language === "bn" ? "আমি সম্মত আছি " : "I agree to the "}
                       <Link href="/terms" className="text-[#E62D26] font-medium hover:underline">
-                        {language === "bn" ? "????????" : "Terms & Conditions"}
+                        {language === "bn" ? "শর্তাবলী" : "Terms & Conditions"}
                       </Link>
-                      {language === "bn" ? " ??? " : " and "}
+                      {language === "bn" ? " এবং " : " and "}
                       <Link href="/privacy" className="text-[#E62D26] font-medium hover:underline">
-                        {language === "bn" ? "????????? ????" : "Privacy Policy"}
+                        {language === "bn" ? "প্রাইভেসি পলিসি" : "Privacy Policy"}
                       </Link>
-                      {language === "bn" ? " ???? ???????" : "."}
+                      {language === "bn" ? "." : "."}
                     </span>
                   </label>
 
@@ -362,18 +362,18 @@ const Register = () => {
                     {loading ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></span>
-                        {language === "bn" ? "???? ?????..." : "Creating..."}
+                        {language === "bn" ? "তৈরি হচ্ছে..." : "Creating..."}
                       </span>
                     ) : (
-                      language === "bn" ? "?????????? ???? ????" : "Create Account"
+                      language === "bn" ? "অ্যাকাউন্ট তৈরি করুন" : "Create Account"
                     )}
                   </button>
 
                   {/* Login Link */}
                   <p className={`text-sm text-gray-500 text-center ${bengaliClass}`}>
-                    {language === "bn" ? "??? ????? ?????????? ???? " : "Already have an account? "}
+                    {language === "bn" ? "ইতিমধ্যে অ্যাকাউন্ট আছে? " : "Already have an account? "}
                     <Link href="/login" className="text-[#E62D26] font-semibold hover:underline">
-                      {language === "bn" ? "???? ????" : "Sign in"}
+                      {language === "bn" ? "সাইন ইন" : "Sign in"}
                     </Link>
                   </p>
                 </form>

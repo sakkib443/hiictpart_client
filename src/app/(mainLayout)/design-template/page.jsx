@@ -1,334 +1,115 @@
 "use client";
-import { API_URL } from '@/config/api';
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
+
+import React from "react";
 import { motion } from "framer-motion";
-import {
-    LuPalette,
-    LuSearch,
-    LuFilter,
-    LuGrid3X3,
-    LuLayoutGrid,
-    LuStar,
-    LuEye,
-    LuDownload,
-    LuArrowRight,
-    LuSparkles,
-    LuHeart,
-    LuShoppingCart
-} from "react-icons/lu";
+import { LuGlobe, LuSparkles, LuArrowRight } from "react-icons/lu";
+import { FaFacebookF, FaPhone } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 
+// Contact details for custom website enquiries
+const PHONE = "01711946614";
+const FACEBOOK_URL = "https://www.facebook.com/extrainweb";
+
 const DesignTemplatePage = () => {
-    const { language } = useLanguage();
-    const bengaliClass = language === "bn" ? "hind-siliguri" : "";
-    const [isVisible, setIsVisible] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("all");
-    const [viewMode, setViewMode] = useState("grid");
-    const [templates, setTemplates] = useState([]);
-    const [categories, setCategories] = useState([
-        { value: "all", label: language === "bn" ? "সব" : "All" }
-    ]);
+  const { language } = useLanguage();
+  const isBn = language === "bn";
+  const bengaliClass = isBn ? "hind-siliguri" : "";
 
-    // Fetch design templates from API
-    useEffect(() => {
-        const fetchTemplates = async () => {
-            try {
-                setLoading(true);
-                const res = await fetch(`${API_URL}/design-templates?limit=50`);
-                const data = await res.json();
-                if (data.success) {
-                    setTemplates(data.data || []);
-                }
-            } catch (error) {
-                console.error('Error fetching templates:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+  return (
+    <section className="relative overflow-hidden min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#fff5f4] via-[#fef7f0] to-[#fff5f4] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-20">
+      {/* Background effects */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-red-400/10 dark:from-red-500/5 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-amber-400/10 dark:bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-24 right-[12%] w-20 h-20 border-2 border-red-500/20 rounded-2xl rotate-12 animate-float" />
+      <div className="absolute bottom-28 left-[10%] w-16 h-16 border-2 border-orange-500/20 rounded-full animate-float" style={{ animationDelay: "1s" }} />
 
-        const fetchCategories = async () => {
-            try {
-                const res = await fetch(`${API_URL}/categories?type=design`);
-                const data = await res.json();
-                if (data.success && data.data) {
-                    const cats = [
-                        { value: "all", label: language === "bn" ? "সব" : "All" },
-                        ...data.data.map(cat => ({
-                            value: cat._id,
-                            label: cat.name
-                        }))
-                    ];
-                    setCategories(cats);
-                }
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
-        };
+      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 border border-red-100 dark:border-slate-700 shadow-sm mb-6"
+        >
+          <LuSparkles className="text-red-500" size={16} />
+          <span className={`text-sm font-semibold text-gray-700 dark:text-gray-200 ${bengaliClass}`}>
+            {isBn ? "ওয়েবসাইট সার্ভিস" : "Website Service"}
+          </span>
+        </motion.div>
 
-        fetchTemplates();
-        fetchCategories();
-        setIsVisible(true);
-    }, [language]);
+        {/* Icon */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.05 }}
+          className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-200 dark:shadow-none mb-7"
+        >
+          <LuGlobe className="text-white" size={38} />
+        </motion.div>
 
-    const filteredTemplates = templates.filter(template => {
-        const matchesSearch = (template.title || template.name || '').toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = selectedCategory === "all" || 
-            template.category?._id === selectedCategory || 
-            template.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-    });
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className={`text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-5 ${isBn ? "hind-siliguri" : "outfit"}`}
+        >
+          {isBn ? (
+            <>কাস্টম <span className="text-red-600">ওয়েবসাইট</span> তৈরি</>
+          ) : (
+            <>Custom <span className="text-red-600">Website</span> Development</>
+          )}
+        </motion.h1>
 
-    return (
-        <div className="min-h-screen bg-white dark:bg-[#0a0a0a]">
-            {/* Hero Section */}
-            <section className="py-12 lg:py-16 bg-slate-50 dark:bg-[#0a0a0a]">
-                <div className="container mx-auto px-4 lg:px-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center max-w-3xl mx-auto"
-                    >
-                        {/* Badge */}
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-white/5 border border-[#E62D26]/20 rounded-full shadow-sm mb-4">
-                            <span className="flex h-1.5 w-1.5 relative">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E62D26] opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#E62D26]"></span>
-                            </span>
-                            <span className={`text-[10px] font-medium text-slate-600 dark:text-slate-300 ${bengaliClass}`}>
-                                {language === "bn" ? "ডিজাইন টেমপ্লেট" : "Design Templates"}
-                            </span>
-                        </div>
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className={`text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mb-9 ${bengaliClass}`}
+        >
+          {isBn
+            ? "আপনার যেকোনো ধরনের কাস্টম ওয়েবসাইট প্রয়োজন হলে আমরা বিশ্বের সেরা ও সর্বাধুনিক প্রযুক্তি দিয়ে তৈরি করে দিই। আপনার আইডিয়া অনুযায়ী প্রফেশনাল, দ্রুতগতির ও নিরাপদ ওয়েবসাইট বানাতে আজই আমাদের মেসেজ করুন।"
+            : "Need any kind of custom website? We build it for you with the world's latest and best technology. For a professional, fast and secure website tailored to your idea, message us today."}
+        </motion.p>
 
-                        {/* Title */}
-                        <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white mb-3 outfit leading-tight ${bengaliClass}`}>
-                            {language === "bn" ? "প্রিমিয়াম " : "Premium "}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E62D26] to-[#F79952]">
-                                {language === "bn" ? "ডিজাইন টেমপ্লেট" : "Design Templates"}
-                            </span>
-                        </h1>
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3"
+        >
+          <a
+            href={FACEBOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold shadow-lg shadow-red-200 dark:shadow-none hover:scale-[1.03] transition-transform ${bengaliClass}`}
+          >
+            <FaFacebookF size={16} />
+            {isBn ? "মেসেজ করুন" : "Message Us"}
+            <LuArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a
+            href={`tel:${PHONE}`}
+            className={`inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-gray-100 font-semibold hover:border-red-400 hover:text-red-600 transition-colors ${bengaliClass}`}
+          >
+            <FaPhone size={15} />
+            {PHONE}
+          </a>
+        </motion.div>
 
-                        {/* Description */}
-                        <p className={`text-slate-500 dark:text-slate-400 text-xs lg:text-sm max-w-xl mx-auto leading-relaxed mb-8 ${bengaliClass}`}>
-                            {language === "bn"
-                                ? "আপনার প্রজেক্টের জন্য পেশাদার ডিজাইন টেমপ্লেট খুঁজুন। সহজেই কাস্টমাইজ করুন এবং দ্রুত শুরু করুন।"
-                                : "Find professional design templates for your projects. Easily customize and get started quickly."}
-                        </p>
-
-                        {/* Search Bar */}
-                        <div className="max-w-xl mx-auto">
-                            <div className="relative">
-                                <LuSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder={language === "bn" ? "টেমপ্লেট খুঁজুন..." : "Search templates..."}
-                                    className={`w-full pl-12 pr-4 py-3.5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#E62D26]/50 focus:border-[#E62D26] outline-none transition-all text-slate-800 dark:text-white text-sm placeholder-slate-400 ${bengaliClass}`}
-                                />
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Filters & View Toggle */}
-            <section className="py-6 bg-white dark:bg-[#0a0a0a] border-b border-slate-100 dark:border-white/5">
-                <div className="container mx-auto px-4 lg:px-16">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        {/* Category Filters */}
-                        <div className="flex flex-wrap items-center gap-2">
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat.value}
-                                    onClick={() => setSelectedCategory(cat.value)}
-                                    className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${selectedCategory === cat.value
-                                            ? "bg-[#E62D26] text-white shadow-md shadow-[#E62D26]/20"
-                                            : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10"
-                                        } ${bengaliClass}`}
-                                >
-                                    {cat.label}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* View Toggle */}
-                        <div className="flex items-center gap-2 bg-slate-100 dark:bg-white/5 p-1 rounded-lg">
-                            <button
-                                onClick={() => setViewMode("grid")}
-                                className={`p-2 rounded-md transition-all ${viewMode === "grid"
-                                        ? "bg-white dark:bg-white/10 text-[#E62D26] shadow-sm"
-                                        : "text-slate-500"
-                                    }`}
-                            >
-                                <LuGrid3X3 size={18} />
-                            </button>
-                            <button
-                                onClick={() => setViewMode("list")}
-                                className={`p-2 rounded-md transition-all ${viewMode === "list"
-                                        ? "bg-white dark:bg-white/10 text-[#E62D26] shadow-sm"
-                                        : "text-slate-500"
-                                    }`}
-                            >
-                                <LuLayoutGrid size={18} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Templates Grid */}
-            <section className="py-12 lg:py-16 bg-slate-50 dark:bg-[#0d0d0d]">
-                <div className="container mx-auto px-4 lg:px-16">
-                    {loading ? (
-                        <div className="flex items-center justify-center py-20">
-                            <div className="w-10 h-10 border-3 border-[#E62D26]/30 border-t-[#E62D26] rounded-full animate-spin"></div>
-                        </div>
-                    ) : filteredTemplates.length === 0 ? (
-                        <div className="text-center py-20">
-                            <div className="w-20 h-20 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <LuPalette className="text-slate-400" size={32} />
-                            </div>
-                            <h3 className={`text-lg font-bold text-slate-800 dark:text-white mb-2 ${bengaliClass}`}>
-                                {language === "bn" ? "কোন টেমপ্লেট পাওয়া যায়নি" : "No templates found"}
-                            </h3>
-                            <p className={`text-sm text-slate-500 ${bengaliClass}`}>
-                                {language === "bn" ? "অন্য কিওয়ার্ড দিয়ে খুঁজুন" : "Try a different search keyword"}
-                            </p>
-                        </div>
-                    ) : (
-                        <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
-                            {filteredTemplates.map((template, idx) => (
-                                <motion.div
-                                    key={template._id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-                                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                    className={`group bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-xl hover:border-[#E62D26]/30 transition-all duration-300 ${viewMode === "list" ? "flex" : ""
-                                        }`}
-                                >
-                                    {/* Image */}
-                                    <div className={`relative overflow-hidden ${viewMode === "list" ? "w-64 flex-shrink-0" : "aspect-[16/10]"}`}>
-                                        <Image
-                                            src={template.thumbnail || template.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600"}
-                                            alt={template.title || template.name}
-                                            fill
-                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                                        {/* Quick Actions */}
-                                        <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-slate-600 hover:text-[#E62D26] transition-colors">
-                                                <LuHeart size={16} />
-                                            </button>
-                                            <button className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-slate-600 hover:text-[#E62D26] transition-colors">
-                                                <LuEye size={16} />
-                                            </button>
-                                        </div>
-
-                                        {/* Category Badge */}
-                                        <div className="absolute bottom-3 left-3">
-                                            <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-bold text-slate-700">
-                                                {template.category?.name || template.category || "Design"}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className={`p-5 ${viewMode === "list" ? "flex-1 flex flex-col justify-between" : ""}`}>
-                                        <div>
-                                            <h3 className={`text-base font-bold text-slate-800 dark:text-white mb-2 group-hover:text-[#E62D26] transition-colors ${bengaliClass}`}>
-                                                {template.title || template.name}
-                                            </h3>
-
-                                            {/* Stats */}
-                                            <div className="flex items-center gap-4 text-slate-500 mb-3">
-                                                <div className="flex items-center gap-1">
-                                                    <LuStar className="text-amber-400" size={14} />
-                                                    <span className="text-xs font-semibold">{template.rating || template.averageRating || 4.5}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <LuDownload size={14} />
-                                                    <span className="text-xs">{template.downloads || template.totalDownloads || 0}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <LuShoppingCart size={14} />
-                                                    <span className="text-xs">{template.sales || template.totalSales || 0}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Price & Action */}
-                                        <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5">
-                                            <div>
-                                                {template.offerPrice ? (
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-lg font-bold text-[#E62D26]">৳{template.offerPrice}</span>
-                                                        <span className="text-sm text-slate-400 line-through">৳{template.price}</span>
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-lg font-bold text-[#E62D26]">৳{template.price || 0}</span>
-                                                )}
-                                            </div>
-                                            <Link
-                                                href={`/design-template/${template._id}`}
-                                                className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-[#E62D26] text-slate-700 dark:text-slate-300 hover:text-white rounded-lg text-xs font-semibold transition-all group/btn"
-                                            >
-                                                <span>{language === "bn" ? "দেখুন" : "View"}</span>
-                                                <LuArrowRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-12 lg:py-16 bg-gradient-to-br from-[#E62D26] to-[#F79952]">
-                <div className="container mx-auto px-4 lg:px-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center max-w-xl mx-auto"
-                    >
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-                            <LuSparkles className="text-white text-xs" />
-                            <span className={`text-[10px] font-medium text-white ${bengaliClass}`}>
-                                {language === "bn" ? "কাস্টম ডিজাইন" : "Custom Design"}
-                            </span>
-                        </div>
-
-                        <h2 className={`text-xl lg:text-2xl font-bold text-white mb-3 outfit ${bengaliClass}`}>
-                            {language === "bn" ? "আপনার নিজস্ব ডিজাইন দরকার?" : "Need a Custom Design?"}
-                        </h2>
-                        <p className={`text-white/80 text-xs mb-6 ${bengaliClass}`}>
-                            {language === "bn"
-                                ? "আমাদের এক্সপার্ট ডিজাইনাররা আপনার জন্য কাস্টম ডিজাইন তৈরি করতে পারে।"
-                                : "Our expert designers can create a custom design tailored to your needs."}
-                        </p>
-
-                        <Link
-                            href="/contact"
-                            className={`inline-flex items-center gap-2 px-6 py-2.5 bg-white text-[#E62D26] text-xs font-bold rounded-lg hover:bg-white/90 transition-all shadow-md ${bengaliClass}`}
-                        >
-                            {language === "bn" ? "যোগাযোগ করুন" : "Contact Us"}
-                            <LuArrowRight size={14} />
-                        </Link>
-                    </motion.div>
-                </div>
-            </section>
-        </div>
-    );
+        {/* small helper line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className={`mt-6 text-sm text-gray-500 dark:text-gray-400 ${bengaliClass}`}
+        >
+          {isBn ? "যেকোনো প্রয়োজনে সরাসরি যোগাযোগ করুন" : "Reach out directly for any requirement"}
+        </motion.p>
+      </div>
+    </section>
+  );
 };
 
 export default DesignTemplatePage;
-

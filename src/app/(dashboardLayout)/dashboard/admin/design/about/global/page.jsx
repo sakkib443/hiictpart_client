@@ -11,9 +11,9 @@ const AboutGlobalDesignPage = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [content, setContent] = useState({
-        badge: { text: 'Global Reach', textBn: '??????????? ????????' },
-        heading: { text: 'Worldwide Impact', textBn: '??????????? ??????' },
-        description: { text: 'Our students are across the globe...', textBn: '?????? ????????????? ???? ??????...' },
+        badge: { text: 'Global Reach', textBn: 'Global Reach' },
+        heading: { text: 'Worldwide Impact', textBn: 'Worldwide Impact' },
+        description: { text: 'Our students are across the globe...', textBn: 'Our students are across the globe...' },
         countries: '50+',
         students: '10K+'
     });

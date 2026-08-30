@@ -43,7 +43,7 @@ const FloatingLanguageButton = () => {
                 style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
               >
                 <span className={`text-base font-bold tracking-wider uppercase whitespace-nowrap ${fontClass}`}>
-                  {language === "bn" ? "???? ?????????" : "Language Program"}
+                  {language === "bn" ? "ল্যাঙ্গুয়েজ প্রোগ্রাম" : "Language Program"}
                 </span>
               </div>
             </Link>

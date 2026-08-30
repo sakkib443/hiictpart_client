@@ -41,7 +41,7 @@
   /* Font Families */
   --font-heading: "Poppins", sans-serif;
   --font-body: "Poppins", sans-serif;
-  --font-bengali: "Poppins", sans-serif;
+  --font-bengali: var(--font-hind-siliguri), "Hind Siliguri", "Poppins", sans-serif;
 }
 
 /* =====================================================

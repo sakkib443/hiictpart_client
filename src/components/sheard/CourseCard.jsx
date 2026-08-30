@@ -18,6 +18,8 @@ const CourseCard = ({ course, view = "grid" }) => {
   const [isAdded, setIsAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const courseId = course._id || course.id;
+  // Prefer human-readable slug in the detail URL, fall back to id
+  const courseLink = course.slug || courseId;
   const { items: categories = [] } = useSelector((state) => state.categories);
   const { t, language } = useLanguage();
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
@@ -30,8 +32,8 @@ const CourseCard = ({ course, view = "grid" }) => {
     return category?.name || categoryData || "General";
   };
 
-  // Field mapping
-  const title = course.title || "Untitled Course";
+  // Field mapping (Bengali fallback to English when available)
+  const title = (language === "bn" && course.titleBn?.trim()) ? course.titleBn : (course.title || "Untitled Course");
   const thumbnail = course.thumbnail || course.image || "/placeholder-course.jpg";
   const price = course.price !== undefined ? course.price : (parseInt(course.fee?.replace(/[^\d]/g, '') || 0));
   const discountPrice = course.discountPrice;
@@ -71,7 +73,7 @@ const CourseCard = ({ course, view = "grid" }) => {
       >
         {/* Left: Image (35%) */}
         <div className="relative w-full md:w-[35%] h-56 md:h-auto shrink-0 overflow-hidden p-3">
-          <Link href={`/courses/${courseId}`} className="block h-full w-full">
+          <Link href={`/courses/${courseLink}`} className="block h-full w-full">
             <Image
               width={400}
               height={300}
@@ -82,7 +84,7 @@ const CourseCard = ({ course, view = "grid" }) => {
           </Link>
           {/* Play Overlay */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[1px]">
-            <Link href={`/courses/${courseId}`} className="w-14 h-14 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 hover:bg-[#E62D26] hover:border-[#E62D26] transition-all hover:scale-110">
+            <Link href={`/courses/${courseLink}`} className="w-14 h-14 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 hover:bg-[#E62D26] hover:border-[#E62D26] transition-all hover:scale-110">
               <LuPlay className="ml-1" size={20} fill="currentColor" />
             </Link>
           </div>
@@ -90,7 +92,7 @@ const CourseCard = ({ course, view = "grid" }) => {
 
         {/* Middle: Content (40%) */}
         <div className="flex-1 p-6 border-r border-slate-50 dark:border-white/5 flex flex-col justify-center">
-          <Link href={`/courses/${courseId}`}>
+          <Link href={`/courses/${courseLink}`}>
             <h3 className={`text-xl font-bold text-slate-800 dark:text-white leading-tight mb-2 hover:text-[#E62D26] transition-colors ${bengaliClass}`}>
               {title}
             </h3>
@@ -148,7 +150,7 @@ const CourseCard = ({ course, view = "grid" }) => {
               {isAdded ? <LuCheck size={20} /> : <LuShoppingCart size={20} />}
             </button>
             <Link
-              href={`/courses/${courseId}`}
+              href={`/courses/${courseLink}`}
               className="flex-1 py-2.5 bg-white dark:bg-white/10 border border-[#E62D26] text-[#E62D26] rounded-xl text-sm font-medium hover:bg-[#E62D26] hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
             >
               Details
@@ -175,7 +177,7 @@ const CourseCard = ({ course, view = "grid" }) => {
 
         {/* Image Section */}
         <div className="relative h-48 w-full overflow-hidden shrink-0 p-3">
-          <Link href={`/courses/${courseId}`} className="block h-full w-full">
+          <Link href={`/courses/${courseLink}`} className="block h-full w-full">
             <Image
               width={400}
               height={250}
@@ -210,7 +212,7 @@ const CourseCard = ({ course, view = "grid" }) => {
             animate={{ opacity: isHovered ? 1 : 0 }}
             className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/60 via-black/20 to-transparent backdrop-blur-[2px] rounded-xl m-3"
           >
-            <Link href={`/courses/${courseId}`} className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border-2 border-white/40 hover:bg-[#E62D26] hover:border-[#E62D26] transition-all hover:scale-110 shadow-2xl">
+            <Link href={`/courses/${courseLink}`} className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border-2 border-white/40 hover:bg-[#E62D26] hover:border-[#E62D26] transition-all hover:scale-110 shadow-2xl">
               <LuPlay className="ml-1" size={24} fill="currentColor" />
             </Link>
           </motion.div>
@@ -240,7 +242,7 @@ const CourseCard = ({ course, view = "grid" }) => {
           </div>
 
           {/* Title */}
-          <Link href={`/courses/${courseId}`} className="mb-2 block group/title">
+          <Link href={`/courses/${courseLink}`} className="mb-2 block group/title">
             <h3 className={`text-base font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover/title:text-[#E62D26] transition-colors ${bengaliClass}`}>
               {title}
             </h3>
@@ -280,7 +282,7 @@ const CourseCard = ({ course, view = "grid" }) => {
           {/* Buttons - Enhanced */}
           <div className="grid grid-cols-2 gap-2 mt-auto">
             <Link
-              href={`/courses/${courseId}`}
+              href={`/courses/${courseLink}`}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-gradient-to-r from-[#E62D26] to-[#E62D26] hover:from-[#c41e18] hover:to-[#d42520] text-white rounded-lg text-xs font-semibold transition-all shadow-md shadow-[#E62D26]/20 hover:shadow-lg hover:shadow-[#E62D26]/30"
             >
               <LuBookOpenCheck size={14} />
