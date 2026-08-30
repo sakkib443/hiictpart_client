@@ -34,19 +34,19 @@ export default function BlogPage() {
     // Translations
     const t = {
         bn: {
-            popular: '????????',
-            recent: '??????????',
-            editorsPick: '????????? ?????',
-            trending: '?????????',
-            aboutUs: '?????? ????????',
-            aboutDesc: '???? ?????????, ?????? ??? ?????????? ???????? ???????? ???????? ???? ???? ?????? ?????? ??? ??????? ???? ???? ????? ?????? ????',
-            popularPosts: '???????? ?????',
-            followUs: '?????? ??? ????',
-            noBlogsFound: '???? ???? ?????? ??????',
-            comingSoon: '?????? ???? ???????? ????!',
-            min: '?????',
-            heroTitle: '????',
-            heroSubtitle: '?????????, ?????? ??? ?????????? ???????? ?????? ???? ???????? ?????',
+            popular: 'জনপ্রিয়',
+            recent: 'সাম্প্রতিক',
+            editorsPick: 'সম্পাদকের পছন্দ',
+            trending: 'ট্রেন্ডিং',
+            aboutUs: 'আমাদের সম্পর্কে',
+            aboutDesc: 'আমরা প্রযুক্তি, ডিজাইন ও ক্যারিয়ার নিয়ে মানসম্পন্ন কনটেন্ট তৈরি করি। আমাদের লক্ষ্য আপনার সাথে সেরা জ্ঞান শেয়ার করা।',
+            popularPosts: 'জনপ্রিয় পোস্ট',
+            followUs: 'আমাদের ফলো করুন',
+            noBlogsFound: 'কোনো ব্লগ পাওয়া যায়নি',
+            comingSoon: 'নতুন কনটেন্ট শীঘ্রই আসছে!',
+            min: 'মিনিট',
+            heroTitle: 'ব্লগ',
+            heroSubtitle: 'প্রযুক্তি, ডিজাইন ও ক্যারিয়ার নিয়ে আমাদের সেরা আর্টিকেলগুলো পড়ুন',
         },
         en: {
             popular: 'Popular',
@@ -140,14 +140,14 @@ export default function BlogPage() {
                         <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20">
                             <FiBookOpen className="text-red-500" size={14} />
                             <span className="text-xs font-semibold text-red-600 dark:text-red-400 uppercase tracking-wide">
-                                {language === 'bn' ? '????' : 'Blog'}
+                                {language === 'bn' ? 'ব্লগ' : 'Blog'}
                             </span>
                         </div>
 
                         {/* Title - Smaller */}
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
-                            {language === 'bn' ? '????? ? ' : 'Knowledge & '}
-                            <span className="text-red-500">{language === 'bn' ? '??????????' : 'Inspiration'}</span>
+                            {language === 'bn' ? 'জ্ঞান ও ' : 'Knowledge & '}
+                            <span className="text-red-500">{language === 'bn' ? 'অনুপ্রেরণা' : 'Inspiration'}</span>
                         </h1>
 
                         {/* Description - Compact */}
@@ -281,7 +281,7 @@ export default function BlogPage() {
                 {/* Blog Cards Section Header */}
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
-                        {language === 'bn' ? '??? ????????' : 'All Articles'}
+                        {language === 'bn' ? 'সব আর্টিকেল' : 'All Articles'}
                     </h2>
                 </div>
 
@@ -326,7 +326,7 @@ export default function BlogPage() {
                                             {/* Category Badge */}
                                             <div className="absolute top-4 left-4">
                                                 <span className="px-3 py-1.5 rounded-lg bg-white/90 dark:bg-black/60 backdrop-blur-md text-xs font-bold text-gray-800 dark:text-white border border-white/20">
-                                                    {blog.category?.name || (language === 'bn' ? '????' : 'Blog')}
+                                                    {blog.category?.name || (language === 'bn' ? 'ব্লগ' : 'Blog')}
                                                 </span>
                                             </div>
 
@@ -369,7 +369,7 @@ export default function BlogPage() {
                                             {/* Read More */}
                                             <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-white/10">
                                                 <span className="text-sm font-semibold text-red-500 group-hover:text-red-600 transition-colors flex items-center gap-2">
-                                                    {language === 'bn' ? '??? ?????' : 'Read More'}
+                                                    {language === 'bn' ? 'আরও পড়ুন' : 'Read More'}
                                                     <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={16} />
                                                 </span>
                                                 <div className="flex items-center gap-1 text-gray-400">

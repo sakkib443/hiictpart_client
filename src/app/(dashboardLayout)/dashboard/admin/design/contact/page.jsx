@@ -16,21 +16,21 @@ const ContactDesignPage = () => {
     const [contactContent, setContactContent] = useState({
         hero: {
             badge: 'Get In Touch',
-            badgeBn: '??????? ????',
+            badgeBn: 'Get In Touch',
             title1: "Let's ",
-            title1Bn: '?????? ???? ',
+            title1Bn: 'চলুন ',
             title2: 'Connect',
-            title2Bn: '??????? ????',
+            title2Bn: 'Connect',
             subtitle: 'Have questions? We would love to hear from you.',
-            subtitleBn: '???? ?????? ???? ?????? ????? ??????'
+            subtitleBn: 'Have questions? We would love to hear from you.'
         },
         contactInfo: {
             email: 'info@ejobsit.com',
             phone: '+880 1829-818616',
-            address: 'Daisy Garden, House 14 (Level-5), Block A, Banasree, Dhaka',
-            addressBn: '????? ???????, ????? ?? (?????-?), ???? ?, ??????, ????',
+            address: 'Dhaka, Bangladesh',
+            addressBn: 'ঢাকা, বাংলাদেশ',
             officeHours: 'Sat - Thu: 10:00 AM - 6:00 PM',
-            officeHoursBn: '??? - ????????: ???? ???? - ??????? ???'
+            officeHoursBn: 'Sat - Thu: 10:00 AM - 6:00 PM'
         },
         socialLinks: {
             facebook: 'https://www.facebook.com/ejobsit',
@@ -41,11 +41,11 @@ const ContactDesignPage = () => {
         },
         whatsappSection: {
             title: 'Need Quick Help?',
-            titleBn: '????? ??????? ??????',
+            titleBn: 'Need Quick Help?',
             description: 'Chat with us on WhatsApp for instant support.',
-            descriptionBn: '????????? ????????? ???? ????????????? ????? ?????',
+            descriptionBn: 'Chat with us on WhatsApp for instant support.',
             buttonText: 'Chat on WhatsApp',
-            buttonTextBn: '????????????? ????? ????'
+            buttonTextBn: 'Chat on WhatsApp'
         },
         mapEmbedUrl: ''
     });
@@ -190,13 +190,13 @@ const ContactDesignPage = () => {
                             />
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Badge (?????)</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Badge (বাংলা)</label>
                             <input
                                 type="text"
                                 value={contactContent.hero?.badgeBn || ''}
                                 onChange={(e) => updateHero('badgeBn', e.target.value)}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                placeholder="??????? ????"
+                                placeholder="ব্যাজ টেক্সট"
                             />
                         </div>
                         <div>
@@ -230,13 +230,13 @@ const ContactDesignPage = () => {
                             />
                         </div>
                         <div className="lg:col-span-2">
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Subtitle (?????)</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Subtitle (বাংলা)</label>
                             <textarea
                                 value={contactContent.hero?.subtitleBn || ''}
                                 onChange={(e) => updateHero('subtitleBn', e.target.value)}
                                 rows={2}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                placeholder="???? ?????? ???? ?????? ????? ?????..."
+                                placeholder="আপনার সাবটাইটেল এখানে লিখুন..."
                             />
                         </div>
                     </div>
@@ -286,7 +286,7 @@ const ContactDesignPage = () => {
                                     value={contactContent.contactInfo?.addressBn || ''}
                                     onChange={(e) => updateContactInfo('addressBn', e.target.value)}
                                     className={`w-full px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                    placeholder="?????? (?????)"
+                                    placeholder="শিরোনাম (বাংলা)"
                                 />
                             </div>
                         </div>
@@ -305,7 +305,7 @@ const ContactDesignPage = () => {
                                     value={contactContent.contactInfo?.officeHoursBn || ''}
                                     onChange={(e) => updateContactInfo('officeHoursBn', e.target.value)}
                                     className={`w-full px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                    placeholder="???? ?????? (?????)"
+                                    placeholder="উপ-শিরোনাম (বাংলা)"
                                 />
                             </div>
                         </div>
@@ -405,13 +405,13 @@ const ContactDesignPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Title (?????)</label>
+                                <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Title (বাংলা)</label>
                                 <input
                                     type="text"
                                     value={contactContent.whatsappSection?.titleBn || ''}
                                     onChange={(e) => updateWhatsappSection('titleBn', e.target.value)}
                                     className={`w-full mt-1 px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                    placeholder="????? ??????? ??????"
+                                    placeholder="সেকশন শিরোনাম লিখুন"
                                 />
                             </div>
                         </div>
@@ -426,13 +426,13 @@ const ContactDesignPage = () => {
                             />
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description (?????)</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description (বাংলা)</label>
                             <textarea
                                 value={contactContent.whatsappSection?.descriptionBn || ''}
                                 onChange={(e) => updateWhatsappSection('descriptionBn', e.target.value)}
                                 rows={2}
                                 className={`w-full mt-1 px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                placeholder="????????? ????????? ???? ????? ????..."
+                                placeholder="এখানে বিবরণ লিখুন..."
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
@@ -447,13 +447,13 @@ const ContactDesignPage = () => {
                                 />
                             </div>
                             <div>
-                                <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Button Text (?????)</label>
+                                <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Button Text (বাংলা)</label>
                                 <input
                                     type="text"
                                     value={contactContent.whatsappSection?.buttonTextBn || ''}
                                     onChange={(e) => updateWhatsappSection('buttonTextBn', e.target.value)}
                                     className={`w-full mt-1 px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 hind-siliguri`}
-                                    placeholder="????????????? ????? ????"
+                                    placeholder="বাটন টেক্সট লিখুন"
                                 />
                             </div>
                         </div>

@@ -21,29 +21,29 @@ const SuccessHistoryPage = () => {
 
   const videoData = {
     journey: [
-      { id: "iqiNOsO7Yp8", title: language === "bn" ? "????? ???? ??????? - ????? ??????" : "From Student to Professional - Sarah's Journey", name: language === "bn" ? "???? ???" : "Sarah Khan" },
-      { id: "_6cBwuHNKgI", title: language === "bn" ? "?????????? ?????????????? - ???? ???????? ????" : "Career Transformation - John's Success Story", name: language === "bn" ? "?? ??" : "John Doe" },
-      { id: "2GqZBsRqaf0", title: language === "bn" ? "????? ??????????? ??????" : "Web Development Journey", name: language === "bn" ? "????? ?????" : "Rifat Hassan" },
-      { id: "5RrnH4paPSg", title: language === "bn" ? "???? ???? ??? - ???????? ????????" : "Learning to Earning - Maria's Experience", name: language === "bn" ? "??????? ??????" : "Maria Akter" },
-      { id: "0_FsHO7u5Pc", title: language === "bn" ? "??????????? ???? ???-???? - ??????? ???????" : "Internship to Full-time - David's Progress", name: language === "bn" ? "????? ?????" : "David Hossain" },
-      { id: "MAesoykAUhc", title: language === "bn" ? "????????????? ??????" : "Freelancing Success", name: language === "bn" ? "???? ??????" : "Karim Uddin" },
+      { id: "iqiNOsO7Yp8", title: language === "bn" ? "From Student to Professional - Sarah's Journey" : "From Student to Professional - Sarah's Journey", name: language === "bn" ? "Sarah Khan" : "Sarah Khan" },
+      { id: "_6cBwuHNKgI", title: language === "bn" ? "Career Transformation - John's Success Story" : "Career Transformation - John's Success Story", name: language === "bn" ? "?? ??" : "John Doe" },
+      { id: "2GqZBsRqaf0", title: language === "bn" ? "Web Development Journey" : "Web Development Journey", name: language === "bn" ? "Rifat Hassan" : "Rifat Hassan" },
+      { id: "5RrnH4paPSg", title: language === "bn" ? "Learning to Earning - Maria's Experience" : "Learning to Earning - Maria's Experience", name: language === "bn" ? "Maria Akter" : "Maria Akter" },
+      { id: "0_FsHO7u5Pc", title: language === "bn" ? "Internship to Full-time - David's Progress" : "Internship to Full-time - David's Progress", name: language === "bn" ? "David Hossain" : "David Hossain" },
+      { id: "MAesoykAUhc", title: language === "bn" ? "Freelancing Success" : "Freelancing Success", name: language === "bn" ? "Karim Uddin" : "Karim Uddin" },
     ],
     feedback: [
-      { id: "ymFUAUDfHIo", title: language === "bn" ? "????? ???????? - ????? ????????" : "Student Feedback - Course Experience", name: language === "bn" ? "??????? ?????" : "Nadia Islam" },
-      { id: "2GqZBsRqaf0", title: language === "bn" ? "????? ????? - ?????? ????????" : "Course Review - Positive Experience", name: language === "bn" ? "????? ?????" : "Sakib Ahmed" },
-      { id: "5HQLWiQP5-E", title: language === "bn" ? "????????? ????????" : "Mentorship Experience", name: language === "bn" ? "?????? ?????" : "Tanvir Rahman" },
+      { id: "ymFUAUDfHIo", title: language === "bn" ? "Student Feedback - Course Experience" : "Student Feedback - Course Experience", name: language === "bn" ? "Nadia Islam" : "Nadia Islam" },
+      { id: "2GqZBsRqaf0", title: language === "bn" ? "Course Review - Positive Experience" : "Course Review - Positive Experience", name: language === "bn" ? "Sakib Ahmed" : "Sakib Ahmed" },
+      { id: "5HQLWiQP5-E", title: language === "bn" ? "Mentorship Experience" : "Mentorship Experience", name: language === "bn" ? "Tanvir Rahman" : "Tanvir Rahman" },
     ],
   };
 
   const stats = [
-    { icon: LuUsers, value: "4,200+", label: language === "bn" ? "??? ??????????" : "Successful Students" },
-    { icon: LuTrophy, value: "92%", label: language === "bn" ? "?????????? ???" : "Placement Rate" },
-    { icon: LuStar, value: "4.9/5", label: language === "bn" ? "????? ?????" : "Student Rating" },
+    { icon: LuUsers, value: "4,200+", label: language === "bn" ? "সফল শিক্ষার্থী" : "Successful Students" },
+    { icon: LuTrophy, value: "92%", label: language === "bn" ? "প্লেসমেন্ট রেট" : "Placement Rate" },
+    { icon: LuStar, value: "4.9/5", label: language === "bn" ? "স্টুডেন্ট রেটিং" : "Student Rating" },
   ];
 
   const filters = [
-    { key: "journey", label: language === "bn" ? "???????? ????" : "Student Stories" },
-    { key: "feedback", label: language === "bn" ? "????? ????????" : "Student Feedback" },
+    { key: "journey", label: language === "bn" ? "শিক্ষার্থীদের গল্প" : "Student Stories" },
+    { key: "feedback", label: language === "bn" ? "শিক্ষার্থীদের মতামত" : "Student Feedback" },
   ];
 
   const activeVideos = videoData[activeFilter];
@@ -66,22 +66,22 @@ const SuccessHistoryPage = () => {
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm">
               <HiOutlineSparkles className="text-[#F79952] text-lg" />
               <span className={`text-sm font-medium text-gray-700 work ${bengaliClass}`}>
-                {language === "bn" ? "?????? ???????? ????" : "Our Success Stories"}
+                {language === "bn" ? "আমাদের সাফল্যের গল্প" : "Our Success Stories"}
               </span>
             </div>
 
             {/* Title */}
             <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-bold outfit text-gray-800 mb-4 ${bengaliClass}`}>
-              {language === "bn" ? "????????????? " : "Student "}
+              {language === "bn" ? "শিক্ষার্থী " : "Student "}
               <span className="bg-gradient-to-r from-[#E62D26] to-[#38a89d] bg-clip-text text-transparent">
-                {language === "bn" ? "???????? ????" : "Success Stories"}
+                {language === "bn" ? "সাফল্যের গল্প" : "Success Stories"}
               </span>
             </h1>
 
             {/* Description */}
             <p className={`text-gray-600 work text-sm sm:text-base leading-relaxed mb-8 ${bengaliClass}`}>
               {language === "bn"
-                ? "ejobs it-? ?????? ???????????? ???? ?????? ????? ??? ?? � ???? ????? ????? ???? ?????? ?????????? ????????-??????? ??????????? ??????? ???? ?????? ??????????? ???? ???????? ???????? ???? ?????? ????"
+                ? "ejobs it-এ আমাদের শিক্ষার্থীরা শুধু স্কিল নয় — তারা সুযোগ অর্জন করে। বাস্তব ক্লায়েন্ট প্রজেক্ট-ভিত্তিক প্রশিক্ষণের মাধ্যমে তারা বাস্তব-জগতের চ্যালেঞ্জের জন্য সম্পূর্ণ প্রস্তুত হয়ে বের হয়।"
                 : "At ejobs it, our students gain more than just skills � they gain opportunities. Through real client project-based training, they graduate fully prepared for real-world challenges."}
             </p>
 
@@ -111,7 +111,7 @@ const SuccessHistoryPage = () => {
                 ))}
               </div>
               <span className={`text-sm text-gray-600 work ${bengaliClass}`}>
-                {language === "bn" ? "???+ ???????? ????" : "500+ Success Stories"}
+                {language === "bn" ? "৫০০+ সাফল্যের গল্প" : "500+ Success Stories"}
               </span>
             </div>
           </div>
@@ -167,8 +167,8 @@ const SuccessHistoryPage = () => {
                   {/* Badge */}
                   <div className={`absolute top-3 left-3 px-3 py-1 bg-[#F79952] text-white text-xs font-medium rounded-lg ${bengaliClass}`}>
                     {activeFilter === "journey"
-                      ? (language === "bn" ? "???????? ????" : "Success Story")
-                      : (language === "bn" ? "????????" : "Feedback")}
+                      ? (language === "bn" ? "সাফল্যের গল্প" : "Success Story")
+                      : (language === "bn" ? "মতামত" : "Feedback")}
                   </div>
 
                   {/* Content */}
@@ -186,18 +186,18 @@ const SuccessHistoryPage = () => {
         <div className={`text-center mt-12 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
           <div className="bg-gradient-to-r from-[#E62D26]/10 via-white to-[#F79952]/10 rounded-2xl p-8 border border-gray-100">
             <h3 className={`text-2xl font-bold text-gray-800 outfit mb-3 ${bengaliClass}`}>
-              {language === "bn" ? "??????? ???????? ???? ????? ??? ????!" : "Your Success Story Could Be Next!"}
+              {language === "bn" ? "পরবর্তী সাফল্যের গল্পটি হতে পারে আপনারই!" : "Your Success Story Could Be Next!"}
             </h3>
             <p className={`text-gray-600 work mb-6 max-w-xl mx-auto ${bengaliClass}`}>
               {language === "bn"
-                ? "??? ?????? ???? ??? ??? ??? ????? ?????????? ?????????????? ???? ?????"
+                ? "আজই আমাদের সাথে যুক্ত হন এবং এক্সপার্ট-পরিচালিত কোর্সের মাধ্যমে আপনার ক্যারিয়ার ট্রান্সফরমেশন যাত্রা শুরু করুন।"
                 : "Join us today and start your career transformation journey with our expert-led courses."}
             </p>
             <Link
               href="/courses"
               className={`inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-[#E62D26] to-[#38a89d] text-white rounded-xl font-semibold work hover:shadow-xl hover:shadow-[#E62D26]/30 transition-all duration-300 group ${bengaliClass}`}
             >
-              <span>{language === "bn" ? "????? ?????" : "Explore Courses"}</span>
+              <span>{language === "bn" ? "কোর্স দেখুন" : "Explore Courses"}</span>
               <LuArrowRight className="transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

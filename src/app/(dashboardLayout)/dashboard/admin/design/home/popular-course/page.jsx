@@ -125,7 +125,7 @@ const PopularCourseDesignPage = () => {
                         label="Badge Text (Bengali)"
                         value={content.badge?.textBn}
                         onChange={(e) => setContent({ ...content, badge: { ...content.badge, textBn: e.target.value } })}
-                        placeholder="???????? ?????"
+                        placeholder="ব্যাজ টেক্সট"
                     />
                 </div>
             </div>
@@ -144,7 +144,7 @@ const PopularCourseDesignPage = () => {
                         label="Text Before Highlight (Bengali)"
                         value={content.heading?.text1Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, text1Bn: e.target.value } })}
-                        placeholder="?????? "
+                        placeholder="লিখুন"
                     />
                     <InputField
                         label="Highlighted Text (English)"
@@ -156,7 +156,7 @@ const PopularCourseDesignPage = () => {
                         label="Highlighted Text (Bengali)"
                         value={content.heading?.highlightBn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, highlightBn: e.target.value } })}
-                        placeholder="???? ?????"
+                        placeholder="শিরোনাম"
                     />
                     <InputField
                         label="Text After Highlight (English)"
@@ -168,7 +168,7 @@ const PopularCourseDesignPage = () => {
                         label="Text After Highlight (Bengali)"
                         value={content.heading?.text2Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, text2Bn: e.target.value } })}
-                        placeholder=" ????"
+                        placeholder="লিখুন"
                     />
                 </div>
             </div>
@@ -187,7 +187,7 @@ const PopularCourseDesignPage = () => {
                         label="Description (Bengali)"
                         value={content.description?.textBn}
                         onChange={(e) => setContent({ ...content, description: { ...content.description, textBn: e.target.value } })}
-                        placeholder="???????? ????????? ?????? ???? ?????????? ??????"
+                        placeholder="এখানে বিবরণ লিখুন..."
                     />
                 </div>
             </div>
@@ -206,7 +206,7 @@ const PopularCourseDesignPage = () => {
                         label="Button Text (Bengali)"
                         value={content.cta?.buttonTextBn}
                         onChange={(e) => setContent({ ...content, cta: { ...content.cta, buttonTextBn: e.target.value } })}
-                        placeholder="?? ????? ?????"
+                        placeholder="সাব-টাইটেল লিখুন"
                     />
                     <InputField
                         label="Footer Text (English)"
@@ -218,7 +218,7 @@ const PopularCourseDesignPage = () => {
                         label="Footer Text (Bengali)"
                         value={content.cta?.footerTextBn}
                         onChange={(e) => setContent({ ...content, cta: { ...content.cta, footerTextBn: e.target.value } })}
-                        placeholder="????? ????? ?????????? ??? ????????"
+                        placeholder="এখানে টেক্সট লিখুন"
                     />
                 </div>
             </div>

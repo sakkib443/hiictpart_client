@@ -36,7 +36,7 @@ const FloatingSeminarButton = () => {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed left-0 top-1/2 -translate-y-1/2 z-50 group"
-          aria-label={language === "bn" ? "???????? ??????" : "Join Seminar"}
+          aria-label={language === "bn" ? "সেমিনারে যোগ দিন" : "Join Seminar"}
         >
           <div className="animated-gradient-btn text-white p-3 rounded-r-lg shadow-lg hover:shadow-xl hover:shadow-[#E62D26]/40 transition-all duration-300">
             <FaCalendarAlt size={20} />
@@ -59,7 +59,7 @@ const FloatingSeminarButton = () => {
               <span
                 className={`text-xs font-bold tracking-wider uppercase whitespace-nowrap ${fontClass}`}
               >
-                {language === "bn" ? "???????? ??????" : "Join our Seminar"}
+                {language === "bn" ? "আমাদের সেমিনারে যোগ দিন" : "Join our Seminar"}
               </span>
             </div>
           </Link>

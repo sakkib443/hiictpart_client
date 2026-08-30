@@ -152,13 +152,13 @@ export default function CreateModulePage() {
                         />
                     </div>
                     <div>
-                        <label className={labelClass}>Module Title (?????)</label>
+                        <label className={labelClass}>Module Title (বাংলা)</label>
                         <input
                             type="text"
                             name="titleBn"
                             value={formData.titleBn}
                             onChange={handleChange}
-                            placeholder="????? ???? ??? ???"
+                            placeholder="মডিউল সম্পর্কে লিখুন"
                             className={inputClass}
                         />
                     </div>

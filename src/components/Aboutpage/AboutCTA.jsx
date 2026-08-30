@@ -32,7 +32,7 @@ const AboutCTA = () => {
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="h-[1px] w-8 bg-red-500" />
                                 <span className={`text-[10px] font-black tracking-[0.4em] uppercase text-red-600 dark:text-red-400 ${headingFont}`}>
-                                    {language === 'bn' ? '??? ???? ????' : 'Get Started Today'}
+                                    {language === 'bn' ? 'Get Started Today' : 'Get Started Today'}
                                 </span>
                             </div>
 
@@ -44,7 +44,7 @@ const AboutCTA = () => {
 
                             <p className={`text-base lg:text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-normal ${bengaliClass} mb-12 max-w-lg`}>
                                 {language === 'bn'
-                                    ? '????? ???????? ????????? ????? ???? ???? ????? ?????? ???? ??? ??? ??? ????? ?????? ?????? ?????'
+                                    ? 'Take the definitive step towards mastering your craft. Join the elite community of high-performers today and build your future.'
                                     : 'Take the definitive step towards mastering your craft. Join the elite community of high-performers today and build your future.'
                                 }
                             </p>
@@ -54,12 +54,12 @@ const AboutCTA = () => {
                                     href="/courses"
                                     className="group relative inline-flex items-center gap-3 bg-red-500 text-white px-8 py-4 rounded-xl font-medium text-base transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-500/20"
                                 >
-                                    <span className="uppercase tracking-tighter font-normal">{language === 'bn' ? '????? ????' : 'ENROLL NOW'}</span>
+                                    <span className="uppercase tracking-tighter font-normal">{language === 'bn' ? 'ENROLL NOW' : 'ENROLL NOW'}</span>
                                     <LuArrowRight className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
 
                                 <button className="inline-flex items-center gap-3 px-8 py-4 rounded-xl border-2 border-gray-100 dark:border-white/10 text-gray-900 dark:text-white font-medium text-base hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all uppercase tracking-tighter">
-                                    {language === 'bn' ? '??????? ????' : 'CONTACT US'}
+                                    {language === 'bn' ? 'CONTACT US' : 'CONTACT US'}
                                 </button>
                             </div>
                         </motion.div>

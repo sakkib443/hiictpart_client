@@ -36,9 +36,9 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
 
     const softwareTypes = [
         { name: 'All', bn: '??' },
-        { name: 'Script', bn: '?????????' },
-        { name: 'Plugin', bn: '???????' },
-        { name: 'Full Software', bn: '??? ?????????' }
+        { name: 'Script', bn: 'স্ক্রিপ্ট' },
+        { name: 'Plugin', bn: 'প্লাগইন' },
+        { name: 'Full Software', bn: 'ফুল সফটওয়্যার' }
     ];
 
     return (
@@ -48,7 +48,7 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
                 <div className="relative">
                     <input
                         type="text"
-                        placeholder={language === 'bn' ? '????????? ??????...' : "Search software..."}
+                        placeholder={language === 'bn' ? 'সফটওয়্যার খুঁজুন...' : "Search software..."}
                         value={searchQuery || ""}
                         onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:border-[#E62D26] focus:bg-white transition-colors work"
@@ -72,7 +72,7 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
                     className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-md text-sm font-medium work hover:bg-red-100 transition-colors"
                 >
                     <LuX className="text-base" />
-                    {language === 'bn' ? '??????? ?????' : 'Clear All Filters'}
+                    {language === 'bn' ? 'Clear All Filters' : 'Clear All Filters'}
                 </button>
             )}
 
@@ -81,7 +81,7 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
                 <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200">
                     <HiOutlineSparkles className="text-[#F79952]" />
                     <h3 className={`font-semibold text-gray-800 outfit text-sm ${bengaliClass}`}>
-                        {language === 'bn' ? '????????? ???' : 'Software Type'}
+                        {language === 'bn' ? 'Software Type' : 'Software Type'}
                     </h3>
                 </div>
                 <div className="p-3 flex flex-wrap gap-2">
@@ -105,7 +105,7 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
                 <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200">
                     <LuFilter className="text-[#E62D26]" />
                     <h3 className={`font-semibold text-gray-800 outfit text-sm ${bengaliClass}`}>
-                        {language === 'bn' ? '?????????' : 'Categories'}
+                        {language === 'bn' ? 'Categories' : 'Categories'}
                     </h3>
                     {selectedCategories.length > 0 && (
                         <span className="ml-auto text-xs bg-[#E62D26] text-white px-2 py-0.5 rounded-full">
@@ -132,7 +132,7 @@ const LeftSoftwareFilter = ({ searchQuery, setSearchQuery, selectedType, setSele
                             )}
                         </div>
                         <span className={`text-sm font-medium work ${bengaliClass}`}>
-                            {language === 'bn' ? '?? ?????????' : 'All Categories'}
+                            {language === 'bn' ? 'All Categories' : 'All Categories'}
                         </span>
                     </label>
 

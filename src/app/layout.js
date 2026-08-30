@@ -1,5 +1,6 @@
 import {
   Poppins,
+  Hind_Siliguri,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/sheard/Navbar";
@@ -22,6 +23,14 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+// Bengali font - applied globally when language is Bengali (body.font-bengali)
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-hind-siliguri",
+  display: "swap",
+});
+
 export const metadata = {
   title: {
     template: "Hi Ict Park | %s",
@@ -40,7 +49,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable}`}
+      className={`${poppins.variable} ${hindSiliguri.variable}`}
       suppressHydrationWarning
     >
       <GoogleTagManager gtmId="GTM-MJ8GRP2J" />

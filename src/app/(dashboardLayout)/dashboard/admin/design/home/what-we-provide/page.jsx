@@ -146,7 +146,7 @@ const WhatWeProvideDesignPage = () => {
                         label="Badge Text (Bengali)"
                         value={content.badge?.textBn}
                         onChange={(e) => setContent({ ...content, badge: { ...content.badge, textBn: e.target.value } })}
-                        placeholder="??? ?????? ???? ?????"
+                        placeholder="এখানে টেক্সট লিখুন"
                     />
                 </div>
             </div>
@@ -165,7 +165,7 @@ const WhatWeProvideDesignPage = () => {
                         label="Text Before Highlight (Bengali)"
                         value={content.heading?.text1Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, text1Bn: e.target.value } })}
-                        placeholder="???? ?? "
+                        placeholder="যেমন "
                     />
                     <InputField
                         label="Highlighted Text (English)"
@@ -177,7 +177,7 @@ const WhatWeProvideDesignPage = () => {
                         label="Highlighted Text (Bengali)"
                         value={content.heading?.highlightBn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, highlightBn: e.target.value } })}
-                        placeholder="?????? ???"
+                        placeholder="লিখুন"
                     />
                 </div>
             </div>
@@ -196,7 +196,7 @@ const WhatWeProvideDesignPage = () => {
                         label="Description (Bengali)"
                         value={content.description?.textBn}
                         onChange={(e) => setContent({ ...content, description: { ...content.description, textBn: e.target.value } })}
-                        placeholder="???? ???? ????? ???????? ?????? ???? ????????????????"
+                        placeholder="এখানে বিবরণ লিখুন..."
                     />
                 </div>
             </div>
@@ -236,7 +236,7 @@ const WhatWeProvideDesignPage = () => {
                                 label="Title (Bengali)"
                                 value={feature.titleBn}
                                 onChange={(e) => updateFeature(index, 'titleBn', e.target.value)}
-                                placeholder="???????? ???????"
+                                placeholder="শিরোনাম লিখুন"
                             />
                             <InputField
                                 label="Description (English)"
@@ -248,7 +248,7 @@ const WhatWeProvideDesignPage = () => {
                                 label="Description (Bengali)"
                                 value={feature.descriptionBn}
                                 onChange={(e) => updateFeature(index, 'descriptionBn', e.target.value)}
-                                placeholder="????? ?? ??????? ???? ???????? ??????? ????"
+                                placeholder="এখানে বিবরণ লিখুন..."
                             />
                             <InputField
                                 label="Emoji"
@@ -275,7 +275,7 @@ const WhatWeProvideDesignPage = () => {
                         label="Button Text (Bengali)"
                         value={content.cta?.textBn}
                         onChange={(e) => setContent({ ...content, cta: { ...content.cta, textBn: e.target.value } })}
-                        placeholder="?????? ???????? ??? ?????"
+                        placeholder="এখানে টেক্সট লিখুন"
                     />
                 </div>
             </div>

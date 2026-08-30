@@ -55,19 +55,19 @@ const SoftwareContent = () => {
                         <div className="inline-flex items-center gap-2 mb-3 px-3 py-1.5 bg-[#E62D26]/10 dark:bg-white/5 border border-[#E62D26]/20 dark:border-white/10 rounded-full">
                             <LuDownload className="text-[#E62D26] text-base" />
                             <span className={`text-xs font-medium text-gray-700 dark:text-gray-300 work ${bengaliClass}`}>
-                                {language === 'bn' ? '????????? ?????????' : 'Premium Software'}
+                                {language === 'bn' ? 'Premium Software' : 'Premium Software'}
                             </span>
                         </div>
 
                         {/* Title */}
                         <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold outfit text-gray-800 dark:text-white mb-2 ${bengaliClass}`}>
-                            {language === 'bn' ? '??????' : 'Our Software '}<span className="text-[#E62D26]">{language === 'bn' ? ' ????????? ???????' : 'Solutions'}</span>
+                            {language === 'bn' ? 'Our Software ' : 'Our Software '}<span className="text-[#E62D26]">{language === 'bn' ? 'Solutions' : 'Solutions'}</span>
                         </h1>
 
                         {/* Description */}
                         <p className={`text-gray-500 dark:text-gray-400 work text-sm leading-relaxed mb-6 max-w-xl mx-auto ${bengaliClass}`}>
                             {language === 'bn'
-                                ? '????? ??????? ???? ?????? ? ????????? ????????? ??????? ?? ????? ???? ??? ? ???????'
+                                ? 'Powerful software designed to streamline your business operations and check productivity.'
                                 : 'Powerful software designed to streamline your business operations and check productivity.'}
                         </p>
 
@@ -79,7 +79,7 @@ const SoftwareContent = () => {
                                 </div>
                                 <div className="text-left">
                                     <p className="text-lg font-bold text-gray-800 dark:text-white outfit">{softwareList.length || '15'}+</p>
-                                    <p className={`text-xs text-gray-500 dark:text-gray-400 work ${bengaliClass}`}>{language === 'bn' ? '?????????' : 'Software'}</p>
+                                    <p className={`text-xs text-gray-500 dark:text-gray-400 work ${bengaliClass}`}>{language === 'bn' ? 'Software' : 'Software'}</p>
                                 </div>
                             </div>
                             <div className="w-px h-10 bg-gray-200 dark:bg-white/10 hidden sm:block"></div>
@@ -89,7 +89,7 @@ const SoftwareContent = () => {
                                 </div>
                                 <div className="text-left">
                                     <p className="text-lg font-bold text-gray-800 dark:text-white outfit">100%</p>
-                                    <p className={`text-xs text-gray-500 dark:text-gray-400 work ${bengaliClass}`}>{language === 'bn' ? '??????' : 'Secure'}</p>
+                                    <p className={`text-xs text-gray-500 dark:text-gray-400 work ${bengaliClass}`}>{language === 'bn' ? 'Secure' : 'Secure'}</p>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@ const SoftwareContent = () => {
                     className={`lg:hidden flex items-center gap-2 mb-4 px-4 py-2 bg-white border border-gray-200 rounded-md shadow-sm w-full justify-center ${bengaliClass}`}
                 >
                     <LuFilter className="text-[#E62D26]" />
-                    <span className="work text-gray-700">{language === 'bn' ? '??????? ? ?????????' : 'Filters & Categories'}</span>
+                    <span className="work text-gray-700">{language === 'bn' ? 'Filters & Categories' : 'Filters & Categories'}</span>
                 </button>
 
                 <div className="flex flex-col lg:flex-row gap-8">

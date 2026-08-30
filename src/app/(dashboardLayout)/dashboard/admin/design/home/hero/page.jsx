@@ -193,13 +193,13 @@ const HeroDesignPage = () => {
                             />
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Badge Text (?????)</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Badge Text (বাংলা)</label>
                             <input
                                 type="text"
                                 value={heroContent.badge?.textBn || ''}
                                 onChange={(e) => setHeroContent(prev => ({ ...prev, badge: { ...prev.badge, textBn: e.target.value } }))}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent hind-siliguri`}
-                                placeholder="????: ?????????? ??????? ???????????"
+                                placeholder="যেমন: শিরোনাম টেক্সট লিখুন"
                             />
                         </div>
                         <div className="flex items-center gap-3">
@@ -234,13 +234,13 @@ const HeroDesignPage = () => {
                             />
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Main Heading (?????) - Big</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Main Heading (বাংলা) - Big</label>
                             <input
                                 type="text"
                                 value={heroContent.heading?.line1Bn || ''}
                                 onChange={(e) => setHeroContent(prev => ({ ...prev, heading: { ...prev.heading, line1Bn: e.target.value } }))}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent text-lg font-semibold hind-siliguri`}
-                                placeholder="????: ????? ??????? ?????"
+                                placeholder="যেমন: টেক্সট লিখুন"
                             />
                         </div>
                         <hr className={`my-2 ${isDark ? 'border-slate-600' : 'border-gray-200'}`} />
@@ -256,13 +256,13 @@ const HeroDesignPage = () => {
                             <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>This text appears before the typing animation</p>
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Text Before Typing (?????) - Smaller</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Text Before Typing (বাংলা) - Smaller</label>
                             <input
                                 type="text"
                                 value={heroContent.heading?.line2Bn || ''}
                                 onChange={(e) => setHeroContent(prev => ({ ...prev, heading: { ...prev.heading, line2Bn: e.target.value } }))}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent hind-siliguri`}
-                                placeholder="????: ?????"
+                                placeholder="যেমন: টেক্সট"
                             />
                         </div>
                     </div>
@@ -314,7 +314,7 @@ const HeroDesignPage = () => {
                             <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
                                 <LuList className="text-white" size={20} />
                             </div>
-                            <h3 className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Typing Animation (?????)</h3>
+                            <h3 className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Typing Animation (বাংলা)</h3>
                         </div>
                         <button
                             onClick={() => addDynamicText('bn')}
@@ -331,7 +331,7 @@ const HeroDesignPage = () => {
                                     value={text}
                                     onChange={(e) => updateDynamicText(index, e.target.value, 'bn')}
                                     className={`flex-1 px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent hind-siliguri`}
-                                    placeholder={`?????? ${index + 1}`}
+                                    placeholder={`আইটেম ${index + 1}`}
                                 />
                                 {heroContent.dynamicTextsBn.length > 1 && (
                                     <button
@@ -366,13 +366,13 @@ const HeroDesignPage = () => {
                             />
                         </div>
                         <div>
-                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description (?????)</label>
+                            <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description (বাংলা)</label>
                             <textarea
                                 value={heroContent.description?.textBn || ''}
                                 onChange={(e) => setHeroContent(prev => ({ ...prev, description: { ...prev.description, textBn: e.target.value } }))}
                                 rows={3}
                                 className={`w-full mt-1 px-4 py-3 rounded-xl ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent hind-siliguri`}
-                                placeholder="?????? ?????..."
+                                placeholder="লিখুন..."
                             />
                         </div>
                         <div>
@@ -470,7 +470,7 @@ const HeroDesignPage = () => {
                                     value={feature.textBn}
                                     onChange={(e) => updateFeature(index, 'textBn', e.target.value)}
                                     className={`flex-1 px-4 py-2.5 rounded-lg ${isDark ? 'bg-slate-700 text-white border-slate-600' : 'bg-gray-50 text-gray-900 border-gray-200'} border focus:ring-2 focus:ring-red-500 focus:border-transparent hind-siliguri`}
-                                    placeholder="????? ??????"
+                                    placeholder="লিখুন"
                                 />
                                 {heroContent.features.length > 1 && (
                                     <button

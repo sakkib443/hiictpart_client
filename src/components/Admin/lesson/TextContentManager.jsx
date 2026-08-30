@@ -8,7 +8,7 @@ import {
 
 /**
  * Text Content Manager Component
- * Rich text blocks ??? ??? manage ???? ????
+ * Rich text blocks ম্যানেজ করার জন্য কম্পোনেন্ট
  */
 export default function TextContentManager({ textBlocks = [], mainContent = '', mainContentBn = '', onChangeBlocks, onChangeMain }) {
     const [showForm, setShowForm] = useState(false);
@@ -90,11 +90,11 @@ export default function TextContentManager({ textBlocks = [], mainContent = '', 
                         />
                     </div>
                     <div>
-                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Content (?????)</label>
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Content (বাংলা)</label>
                         <textarea
                             value={mainContentBn}
                             onChange={(e) => onChangeMain('textContentBn', e.target.value)}
-                            placeholder="??????? ???? ???????? ?????... (HTML ??????? ???)"
+                            placeholder="এখানে টেক্সট কনটেন্ট লিখুন... (HTML সাপোর্টেড)"
                             rows={6}
                             className={`${inputClass} resize-none font-mono text-xs`}
                         />
@@ -196,12 +196,12 @@ export default function TextContentManager({ textBlocks = [], mainContent = '', 
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Title (?????)</label>
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Title (বাংলা)</label>
                             <input
                                 type="text"
                                 value={formData.titleBn}
                                 onChange={(e) => setFormData(prev => ({ ...prev, titleBn: e.target.value }))}
-                                placeholder="??? ?????????"
+                                placeholder="নতুন সেকশন"
                                 className={inputClass}
                             />
                         </div>
@@ -220,11 +220,11 @@ export default function TextContentManager({ textBlocks = [], mainContent = '', 
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Content (?????)</label>
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Content (বাংলা)</label>
                             <textarea
                                 value={formData.contentBn}
                                 onChange={(e) => setFormData(prev => ({ ...prev, contentBn: e.target.value }))}
-                                placeholder="??????? ???????? ?????..."
+                                placeholder="এখানে কনটেন্ট লিখুন..."
                                 rows={8}
                                 className={`${inputClass} resize-none font-mono text-xs`}
                             />

@@ -126,6 +126,24 @@ const SingleCourse = () => {
 
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
 
+  // Bilingual course fields (Bengali when available, else English fallback)
+  const isBn = language === "bn";
+  const courseTitle = (isBn && currentCourse?.titleBn?.trim()) ? currentCourse.titleBn : currentCourse?.title;
+  const courseShortDescription = (isBn && currentCourse?.shortDescriptionBn?.trim()) ? currentCourse.shortDescriptionBn : currentCourse?.shortDescription;
+  const courseDescription = (isBn && currentCourse?.descriptionBn?.trim()) ? currentCourse.descriptionBn : currentCourse?.description;
+  const courseTypeLabel = !isBn
+    ? (currentCourse?.courseType || "Recorded")
+    : ({ online: "অনলাইন", offline: "অফলাইন", recorded: "রেকর্ডেড" }[(currentCourse?.courseType || "recorded").toLowerCase()] || currentCourse?.courseType);
+  const courseLevelLabel = !isBn
+    ? (currentCourse?.level || "Beginner")
+    : ({ beginner: "বিগিনার", intermediate: "ইন্টারমিডিয়েট", advanced: "অ্যাডভান্সড" }[(currentCourse?.level || "beginner").toLowerCase()] || currentCourse?.level);
+  // Bilingual content arrays (Bengali when provided, else English fallback)
+  const pickArr = (bnArr, enArr) => (isBn && Array.isArray(bnArr) && bnArr.length ? bnArr : (enArr || []));
+  const courseFeatures = pickArr(currentCourse?.featuresBn, currentCourse?.features);
+  const courseWhatYouWillLearn = pickArr(currentCourse?.whatYouWillLearnBn, currentCourse?.whatYouWillLearn);
+  const courseJobOpportunities = pickArr(currentCourse?.jobOpportunitiesBn, currentCourse?.jobOpportunities);
+  const courseSoftwareWeLearn = pickArr(currentCourse?.softwareWeLearnBn, currentCourse?.softwareWeLearn);
+
   useEffect(() => {
     dispatch(fetchSingleCourse(id));
     dispatch(fetchCoursesData());
@@ -161,7 +179,7 @@ const SingleCourse = () => {
 
   useEffect(() => {
     if (courses && courses.length > 0) {
-      setPopularCourses(courses.filter((c) => (c._id !== id && c.id !== id)).slice(0, 3));
+      setPopularCourses(courses.filter((c) => (c._id !== id && c.id !== id && c.slug !== id)).slice(0, 3));
     }
   }, [courses, id]);
 
@@ -183,7 +201,7 @@ const SingleCourse = () => {
   const handleToggleLike = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to like this course");
+      alert(t("courseDetails.loginToLike"));
       router.push('/login');
       return;
     }
@@ -193,7 +211,7 @@ const SingleCourse = () => {
       await dispatch(toggleCourseLike(id)).unwrap();
     } catch (err) {
       console.error("Like error:", err);
-      alert(err.message || "Failed to like. Please try again.");
+      alert(err.message || t("courseDetails.likeFailed"));
     } finally {
       setIsLiking(false);
     }
@@ -205,7 +223,7 @@ const SingleCourse = () => {
       <div className="flex items-center justify-center min-h-[60vh] bg-gradient-to-br from-gray-50 to-white dark:from-slate-950 dark:to-slate-900">
         <div className="text-center">
           <div className="w-12 h-12 border-3 border-gray-200 dark:border-slate-700 border-t-red-500 rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-400 dark:text-gray-500 text-sm font-medium tracking-wide poppins">Loading course...</p>
+          <p className="mt-4 text-gray-400 dark:text-gray-500 text-sm font-medium tracking-wide poppins">{t("courseDetails.loadingCourse")}</p>
         </div>
       </div>
     );
@@ -218,13 +236,13 @@ const SingleCourse = () => {
         <div className="w-20 h-20 bg-gray-100 dark:bg-slate-800 rounded-md flex items-center justify-center mb-6">
           <LuBookOpen className="text-gray-300 dark:text-slate-600 text-3xl" />
         </div>
-        <h3 className="text-xl font-bold text-gray-800 dark:text-white outfit mb-2">Course Not Found</h3>
-        <p className="text-gray-500 dark:text-gray-400 poppins text-sm mb-6 text-center max-w-sm">The course you're looking for doesn't exist or has been removed.</p>
+        <h3 className="text-xl font-bold text-gray-800 dark:text-white outfit mb-2">{t("courseDetails.notFound")}</h3>
+        <p className="text-gray-500 dark:text-gray-400 poppins text-sm mb-6 text-center max-w-sm">{t("courseDetails.notFoundDesc")}</p>
         <button
           onClick={() => router.push('/courses')}
           className="px-6 py-2.5 bg-gray-900 dark:bg-red-500 text-white text-sm font-semibold rounded-md hover:bg-red-600 transition-colors"
         >
-          Browse Courses
+          {t("courseDetails.browseCourses")}
         </button>
       </div>
     );
@@ -258,11 +276,11 @@ const SingleCourse = () => {
               animate={{ opacity: 1 }}
               className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 poppins"
             >
-              <Link href="/" className="hover:text-red-600 transition-colors">Home</Link>
+              <Link href="/" className="hover:text-red-600 transition-colors">{t("courseDetails.home")}</Link>
               <span>/</span>
-              <Link href="/courses" className="hover:text-red-600 transition-colors">Courses</Link>
+              <Link href="/courses" className="hover:text-red-600 transition-colors">{t("courseDetails.courses")}</Link>
               <span>/</span>
-              <span className="text-gray-700 dark:text-white font-medium truncate max-w-[200px]">{currentCourse.title}</span>
+              <span className="text-gray-700 dark:text-white font-medium truncate max-w-[200px]">{courseTitle}</span>
             </motion.div>
 
             {/* Badges */}
@@ -272,14 +290,14 @@ const SingleCourse = () => {
               className="flex flex-wrap items-center gap-2 mb-5"
             >
               <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 rounded text-white text-[11px] font-bold uppercase tracking-wider poppins">
-                {currentCourse.courseType || 'Recorded'}
+                {courseTypeLabel}
               </span>
               <span className="px-3 py-1 bg-white/90 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded text-gray-600 dark:text-gray-300 text-[11px] font-bold uppercase tracking-wider poppins">
-                {currentCourse.level || 'Beginner'}
+                {courseLevelLabel}
               </span>
               {currentCourse.isFeatured && (
                 <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded text-white text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-                  <LuSparkles size={10} /> Featured
+                  <LuSparkles size={10} /> {t("courseDetails.featured")}
                 </span>
               )}
             </motion.div>
@@ -291,7 +309,7 @@ const SingleCourse = () => {
               transition={{ delay: 0.05 }}
               className="text-2xl sm:text-3xl lg:text-4xl font-bold outfit leading-[1.2] tracking-tight text-gray-900 dark:text-white mb-4"
             >
-              {currentCourse.title}
+              {courseTitle}
             </motion.h1>
 
             {/* Description */}
@@ -301,7 +319,7 @@ const SingleCourse = () => {
               transition={{ delay: 0.1 }}
               className="text-[15px] lg:text-base text-gray-600 dark:text-gray-400 poppins leading-relaxed mb-6 max-w-2xl"
             >
-              {currentCourse.shortDescription || currentCourse.description?.substring(0, 160)}...
+              {courseShortDescription || courseDescription?.substring(0, 160)}...
             </motion.p>
 
             {/* Stats Row */}
@@ -327,7 +345,7 @@ const SingleCourse = () => {
                 </div>
                 <span className="text-gray-700 font-medium text-sm poppins">
                   <AnimatedCounter value={currentCourse.totalEnrollments || 0} />
-                  <span className="text-gray-400 ml-1">students</span>
+                  <span className="text-gray-400 ml-1">{t("courseDetails.students")}</span>
                 </span>
               </div>
 
@@ -338,7 +356,7 @@ const SingleCourse = () => {
                 </div>
                 <span className="text-gray-700 font-medium text-sm poppins">
                   <AnimatedCounter value={currentCourse.totalLessons || 0} />
-                  <span className="text-gray-400 ml-1">lessons</span>
+                  <span className="text-gray-400 ml-1">{t("courseDetails.lessonsLower")}</span>
                 </span>
               </div>
             </motion.div>
@@ -351,8 +369,8 @@ const SingleCourse = () => {
               className="flex items-center gap-3"
             >
               <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-md border border-gray-200">
-                <span className="text-gray-400 text-sm poppins">Instructor</span>
-                <span className="text-red-600 font-semibold text-sm outfit underline underline-offset-4">{instructor?.name || 'Industry Expert'}</span>
+                <span className="text-gray-400 text-sm poppins">{t("courseDetails.instructor")}</span>
+                <span className="text-red-600 font-semibold text-sm outfit underline underline-offset-4">{instructor?.name || t("courseDetails.industryExpert")}</span>
                 <MdVerified className="text-blue-500" size={16} />
               </div>
 
@@ -411,7 +429,7 @@ const SingleCourse = () => {
                         onClick={() => setShowVideoModal(true)}
                         className="w-full py-3 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 transition-all flex items-center justify-center gap-2 poppins"
                       >
-                        <LuVideo size={18} /> Sample Lesson
+                        <LuVideo size={18} /> {t("courseDetails.sampleLesson")}
                       </button>
                     )}
                   </div>
@@ -423,11 +441,11 @@ const SingleCourse = () => {
               <div className="sticky top-[60px] z-30 lg:static lg:z-auto">
                 <div className="flex border border-gray-200 lg:border-b-0 bg-white/95 backdrop-blur-md lg:backdrop-blur-none lg:bg-gray-50/80 shadow-md lg:shadow-sm rounded-lg lg:rounded-b-none lg:rounded-t-md">
                   {[
-                    { id: "overview", label: "Overview", icon: LuLayoutGrid },
-                    { id: "curriculum", label: "Curriculum", icon: MdOutlineMenuBook },
-                    { id: "whatyoulearn", label: "Learning", icon: LuZap },
-                    { id: "instructor", label: "Instructor", icon: LuUsers },
-                    { id: "reviews", label: "Reviews", icon: FaStar },
+                    { id: "overview", label: t("courseDetails.overview"), icon: LuLayoutGrid },
+                    { id: "curriculum", label: t("courseDetails.curriculum"), icon: MdOutlineMenuBook },
+                    { id: "whatyoulearn", label: t("courseDetails.learning"), icon: LuZap },
+                    { id: "instructor", label: t("courseDetails.instructor"), icon: LuUsers },
+                    { id: "reviews", label: t("courseDetails.reviews"), icon: FaStar },
                   ].map((tab) => (
                     <button
                       key={tab.id}
@@ -472,22 +490,22 @@ const SingleCourse = () => {
                         <div>
                           <h2 className="text-lg font-bold outfit text-gray-900 mb-4 flex items-center gap-2">
                             <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                            Course Description
+                            {t("courseDetails.courseDescription")}
                           </h2>
                           <div className="text-gray-800 poppins text-[15px] leading-7 whitespace-pre-line">
-                            {currentCourse.description || currentCourse.details}
+                            {courseDescription || currentCourse.details}
                           </div>
                         </div>
 
                         {/* Course Features mirroring Tech Stack */}
-                        {currentCourse.features?.length > 0 && (
+                        {courseFeatures.length > 0 && (
                           <div>
                             <h3 className="text-base font-bold outfit text-gray-900 mb-4 flex items-center gap-2">
                               <span className="w-1 h-5 bg-amber-500 rounded-full"></span>
-                              Key Features
+                              {t("courseDetails.keyFeatures")}
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                              {currentCourse.features.map((feature, idx) => (
+                              {courseFeatures.map((feature, idx) => (
                                 <span
                                   key={idx}
                                   className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-gray-700 font-medium text-sm hover:border-teal-300 hover:bg-red-50 transition-colors cursor-default poppins"
@@ -500,14 +518,14 @@ const SingleCourse = () => {
                         )}
 
                         {/* Job Opportunities Section - Moved Here */}
-                        {currentCourse.jobOpportunities?.length > 0 && (
+                        {courseJobOpportunities.length > 0 && (
                           <div className="mt-8">
                             <h2 className="text-lg font-bold outfit text-red-600 mb-5 flex items-center gap-2">
                               <span className="w-1 h-5 bg-orange-500 rounded-full"></span>
-                              Job Opportunities
+                              {t("courseDetails.jobOpportunities")}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {currentCourse.jobOpportunities.map((job, idx) => (
+                              {courseJobOpportunities.map((job, idx) => (
                                 <div
                                   key={idx}
                                   className="flex items-center gap-3 p-4 bg-orange-50 border border-orange-100 rounded-md hover:border-orange-300 hover:bg-orange-100/50 transition-colors"
@@ -527,7 +545,7 @@ const SingleCourse = () => {
                           <div className="mt-8">
                             <h2 className="text-lg font-bold outfit text-gray-900 dark:text-white mb-5 flex items-center gap-2">
                               <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                              Frequently Asked Questions
+                              {t("courseDetails.faqTitle")}
                             </h2>
                             <div className="space-y-3">
                               {currentCourse.faq.map((item, idx) => (
@@ -551,7 +569,7 @@ const SingleCourse = () => {
                                       </div>
                                       <span className={`font-semibold text-sm poppins transition-colors ${expandedFaq === idx ? 'text-red-700 dark:text-red-300' : 'text-gray-800 dark:text-gray-200'
                                         }`}>
-                                        {item.question}
+                                        {(isBn && item.questionBn?.trim()) ? item.questionBn : item.question}
                                       </span>
                                     </div>
                                     <div className={`flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0 ml-3 transition-all ${expandedFaq === idx
@@ -573,7 +591,7 @@ const SingleCourse = () => {
                                       >
                                         <div className="px-4 pb-4 pt-0 pl-[60px]">
                                           <p className="text-gray-600 dark:text-gray-400 text-[14px] poppins leading-relaxed whitespace-pre-line">
-                                            {item.answer}
+                                            {(isBn && item.answerBn?.trim()) ? item.answerBn : item.answer}
                                           </p>
                                         </div>
                                       </motion.div>
@@ -598,7 +616,7 @@ const SingleCourse = () => {
                       >
                         <h2 className="text-lg font-bold outfit text-gray-900 mb-5 flex items-center gap-2">
                           <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                          Learning Modules
+                          {t("courseDetails.learningModules")}
                         </h2>
                         <div className="space-y-4">
                           {currentCourse.curriculum?.map((module, idx) => (
@@ -613,7 +631,7 @@ const SingleCourse = () => {
                                   </span>
                                   <div className="text-left">
                                     <h3 className="font-semibold text-gray-900 text-base">{module.moduleTitle}</h3>
-                                    <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} Lessons</p>
+                                    <p className="text-[10px] text-gray-400 poppins uppercase tracking-wider">{module.totalLessons} {t("courseDetails.lessonsLabel")}</p>
                                   </div>
                                 </div>
                                 <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${expandedModule === idx ? 'bg-red-50 text-red-500' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}>
@@ -644,13 +662,13 @@ const SingleCourse = () => {
                                               <LuBookOpen className="text-emerald-400" size={16} />
                                             )}
                                             <span className="text-sm font-medium text-gray-600 poppins group-hover:text-red-600">{lesson.title}</span>
-                                            {lesson.isFree && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded border border-red-100">FREE</span>}
+                                            {lesson.isFree && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded border border-red-100">{t("courseDetails.free")}</span>}
                                           </div>
                                           {/* Duration removed as requested */}
                                         </div>
                                       ))}
                                       {(!module.lessons || module.lessons.length === 0) && (
-                                        <div className="p-4 pl-12 text-xs text-gray-400 italic poppins">No lessons added yet.</div>
+                                        <div className="p-4 pl-12 text-xs text-gray-400 italic poppins">{t("courseDetails.noLessons")}</div>
                                       )}
                                     </div>
                                   </motion.div>
@@ -658,7 +676,7 @@ const SingleCourse = () => {
                               </AnimatePresence>
                             </div>
                           ))}
-                          {!currentCourse.curriculum?.length && <p className="text-gray-400 text-sm poppins py-10 text-center border border-dashed rounded-md">Curriculum details coming soon.</p>}
+                          {!currentCourse.curriculum?.length && <p className="text-gray-400 text-sm poppins py-10 text-center border border-dashed rounded-md">{t("courseDetails.curriculumSoon")}</p>}
                         </div>
                       </motion.div>
                     )}
@@ -673,12 +691,12 @@ const SingleCourse = () => {
                       >
                         <h2 className="text-lg font-bold outfit text-gray-900 mb-5 flex items-center gap-2">
                           <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                          What You Will Learn
+                          {t("courseDetails.whatYouWillLearn")}
                         </h2>
 
-                        {currentCourse.whatYouWillLearn?.length > 0 ? (
+                        {courseWhatYouWillLearn.length > 0 ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {currentCourse.whatYouWillLearn.map((topic, idx) => (
+                            {courseWhatYouWillLearn.map((topic, idx) => (
                               <div
                                 key={idx}
                                 className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-100 rounded-md hover:border-teal-200 hover:bg-red-50/30 transition-colors"
@@ -693,19 +711,19 @@ const SingleCourse = () => {
                         ) : (
                           <div className="text-center py-12 bg-gray-50 rounded-md border border-dashed border-gray-200">
                             <LuZap className="mx-auto text-2xl text-gray-300 mb-2" />
-                            <p className="text-gray-400 text-sm poppins">Learning topics not listed yet</p>
+                            <p className="text-gray-400 text-sm poppins">{t("courseDetails.noLearningTopics")}</p>
                           </div>
                         )}
 
                         {/* Software We Learn Section */}
-                        {currentCourse.softwareWeLearn?.length > 0 && (
+                        {courseSoftwareWeLearn.length > 0 && (
                           <div className="mt-8">
                             <h2 className="text-lg font-bold outfit text-red-600 mb-5 flex items-center gap-2">
                               <span className="w-1 h-5 bg-cyan-500 rounded-full"></span>
-                              Software We Learn
+                              {t("courseDetails.softwareWeLearn")}
                             </h2>
                             <div className="flex flex-wrap gap-3">
-                              {currentCourse.softwareWeLearn.map((software, idx) => (
+                              {courseSoftwareWeLearn.map((software, idx) => (
                                 <div
                                   key={idx}
                                   className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:border-cyan-400 hover:shadow-sm transition-all"
@@ -733,7 +751,7 @@ const SingleCourse = () => {
                       >
                         <h2 className="text-lg font-bold outfit text-gray-900 mb-6 flex items-center gap-2">
                           <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                          Meet Your Instructor
+                          {t("courseDetails.meetInstructor")}
                         </h2>
 
                         {instructor ? (
@@ -768,7 +786,7 @@ const SingleCourse = () => {
 
                               <div className="p-1 px-4">
                                 <p className="text-gray-700 dark:text-gray-300 poppins text-[15px] leading-relaxed italic border-l-4 border-red-500/20 pl-4">
-                                  {instructor.bio || 'Professional instructor with years of industry experience. Passionate about teaching and sharing knowledge with the community.'}
+                                  {instructor.bio || t("courseDetails.instructorBioFallback")}
                                 </p>
                               </div>
                             </div>
@@ -776,7 +794,7 @@ const SingleCourse = () => {
                         ) : (
                           <div className="text-center py-10 bg-gray-50 rounded-md border border-dashed border-gray-200">
                             <LuUsers className="mx-auto text-2xl text-gray-300 mb-2" />
-                            <p className="text-gray-400 text-sm poppins">Instructor details coming soon</p>
+                            <p className="text-gray-400 text-sm poppins">{t("courseDetails.instructorSoon")}</p>
                           </div>
                         )}
                       </motion.div>
@@ -827,7 +845,7 @@ const SingleCourse = () => {
                               <LuGraduationCap className="text-white" size={24} />
                             </div>
                             <div>
-                              <h4 className="text-base font-bold outfit text-red-600 dark:text-red-400">Admission Going On</h4>
+                              <h4 className="text-base font-bold outfit text-red-600 dark:text-red-400">{t("courseDetails.admissionGoingOn")}</h4>
                               <p className="text-sm text-gray-800 dark:text-gray-300 font-semibold poppins">{batches[0].batchName}</p>
                             </div>
                           </div>
@@ -846,7 +864,7 @@ const SingleCourse = () => {
                                 <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                                   <LuCalendar className="text-red-600 dark:text-red-400" size={16} />
                                 </div>
-                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">Start Date</span>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.startDate")}</span>
                               </div>
                               <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
                                 {new Date(batches[0].startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
@@ -857,7 +875,7 @@ const SingleCourse = () => {
                                 <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                                   <LuTimer className="text-red-600 dark:text-red-400" size={16} />
                                 </div>
-                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">Batch No</span>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.batchNo")}</span>
                               </div>
                               <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
                                 {batches[0].batchCode}
@@ -872,7 +890,7 @@ const SingleCourse = () => {
                                 <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                                   <LuClock className="text-red-600 dark:text-red-400" size={16} />
                                 </div>
-                                <span className="text-sm text-red-600 dark:text-red-400 font-bold poppins uppercase">Class Schedule</span>
+                                <span className="text-sm text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.classSchedule")}</span>
                               </div>
                               <div className="space-y-3">
                                 {batches[0].schedule.map((sch, sIdx) => {
@@ -921,7 +939,7 @@ const SingleCourse = () => {
                           </>
                         )}
                       </div>
-                      <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">Full Lifetime Access</p>
+                      <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">{t("courseDetails.lifetimeAccess")}</p>
                     </div>
 
                     {/* Buttons */}
@@ -940,26 +958,26 @@ const SingleCourse = () => {
                         onClick={handleAddToCart}
                         className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-md hover:border-red-400 hover:text-red-600 transition-colors poppins"
                       >
-                        Add to Cart
+                        {t("courseDetails.addToCart")}
                       </button>
                       <button
                         onClick={() => setShowVideoModal(true)}
                         disabled={!currentCourse.sampleVideoUrl}
                         className={`w-full py-2.5 bg-gray-50 border border-gray-200 text-gray-600 font-medium rounded-md transition-colors flex items-center justify-center gap-2 text-sm poppins ${currentCourse.sampleVideoUrl ? 'hover:border-red-400 hover:text-red-600' : 'opacity-50 cursor-not-allowed'}`}
                       >
-                        <LuVideo size={14} /> Sample Lesson
+                        <LuVideo size={14} /> {t("courseDetails.sampleLesson")}
                       </button>
                     </div>
 
                     {/* What's Included mirroring Website style */}
                     <div className="pt-4 border-t border-gray-100">
-                      <h5 className="text-sm font-bold text-gray-900 mb-3 outfit">Course Includes</h5>
+                      <h5 className="text-sm font-bold text-gray-900 mb-3 outfit">{t("courseDetails.courseIncludes")}</h5>
                       <ul className="space-y-2.5">
                         {[
-                          { icon: LuMonitor, text: `${currentCourse.totalLessons || 0}+ Video Lessons` },
-                          { icon: LuClock, text: `${currentCourse.totalDuration || '12 Hours'} Duration` },
-                          { icon: LuTrophy, text: 'Completion Certificate' },
-                          { icon: LuShieldCheck, text: 'Lifetime Updates' },
+                          { icon: LuMonitor, text: `${currentCourse.totalLessons || 0}+ ${t("courseDetails.videoLessons")}` },
+                          { icon: LuClock, text: `${currentCourse.totalDuration || '12 Hours'} ${t("courseDetails.durationLabel")}` },
+                          { icon: LuTrophy, text: t("courseDetails.completionCertificate") },
+                          { icon: LuShieldCheck, text: t("courseDetails.lifetimeUpdates") },
                         ].map((item, i) => (
                           <li key={i} className="flex items-center gap-2.5 text-gray-600 text-sm poppins">
                             <item.icon className="text-red-500" size={15} />
@@ -975,10 +993,10 @@ const SingleCourse = () => {
 
                 {/* Recommended Courses Widget mirroring Website Popular Websites */}
                 <div className="bg-white rounded-md p-5 border border-gray-200 shadow-sm">
-                  <h3 className="text-sm font-bold text-gray-900 mb-4 outfit">Popular Courses</h3>
+                  <h3 className="text-sm font-bold text-gray-900 mb-4 outfit">{t("courseDetails.popularCourses")}</h3>
                   <div className="space-y-4">
                     {popularCourses.map(item => (
-                      <Link href={`/courses/${item._id}`} key={item._id} className="flex gap-3 group">
+                      <Link href={`/courses/${item.slug || item._id}`} key={item._id} className="flex gap-3 group">
                         <div className="w-14 h-14 rounded overflow-hidden flex-shrink-0 bg-gray-100 border border-gray-100">
                           <img
                             src={item.thumbnail || item.image || "/images/placeholder.png"}
@@ -987,7 +1005,7 @@ const SingleCourse = () => {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1 outfit">{item.title}</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1 outfit">{(isBn && item.titleBn?.trim()) ? item.titleBn : item.title}</h4>
                           <div className="flex items-center gap-1 text-amber-400 mt-0.5">
                             <FaStar size={10} />
                             <span className="text-gray-600 text-xs font-medium poppins">{item.averageRating || '5.0'}</span>
@@ -1001,7 +1019,7 @@ const SingleCourse = () => {
                     href="/courses"
                     className="flex items-center justify-center w-full py-2.5 mt-4 text-red-600 font-semibold text-sm border border-dashed border-teal-200 rounded-md hover:bg-red-50 transition-colors poppins"
                   >
-                    View All Courses
+                    {t("courseDetails.viewAllCourses")}
                   </Link>
                 </div>
               </div>

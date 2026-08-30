@@ -11,8 +11,8 @@ const AboutFeaturesDesignPage = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [content, setContent] = useState({
-        badge: { text: 'Why Choose Us', textBn: '??? ?????? ???? ?????' },
-        heading: { text: 'Our Features', textBn: '?????? ?????????' },
+        badge: { text: 'Why Choose Us', textBn: 'Why Choose Us' },
+        heading: { text: 'Our Features', textBn: 'Our Features' },
         features: [
             { title: '', titleBn: '', description: '', descriptionBn: '', emoji: '??' }
         ]

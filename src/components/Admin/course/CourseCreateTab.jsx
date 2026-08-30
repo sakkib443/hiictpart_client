@@ -215,8 +215,8 @@ const CourseCreateTab = ({ onSuccess }) => {
                                 <FormField label="Course Title (English)" error={errors.title} required>
                                     <input {...register('title')} autoComplete="off" className={inputBase} placeholder="e.g. Complete Video Editing Masterclass" />
                                 </FormField>
-                                <FormField label="Course Title (?????)" error={errors.titleBn}>
-                                    <input {...register('titleBn')} className={inputBase} placeholder="????? ????????? ????? ?????? ?????" />
+                                <FormField label="Course Title (বাংলা)" error={errors.titleBn}>
+                                    <input {...register('titleBn')} className={inputBase} placeholder="কোর্সের বাংলা শিরোনাম লিখুন" />
                                 </FormField>
                             </div>
 
@@ -224,8 +224,8 @@ const CourseCreateTab = ({ onSuccess }) => {
                                 <FormField label="Short Description (English)" error={errors.shortDescription}>
                                     <textarea {...register('shortDescription')} rows={2} className={inputBase} placeholder="A brief one-liner summary..." />
                                 </FormField>
-                                <FormField label="Short Description (?????)" error={errors.shortDescriptionBn}>
-                                    <textarea {...register('shortDescriptionBn')} rows={2} className={inputBase} placeholder="????? ???????? ??? ???? ?????..." />
+                                <FormField label="Short Description (বাংলা)" error={errors.shortDescriptionBn}>
+                                    <textarea {...register('shortDescriptionBn')} rows={2} className={inputBase} placeholder="সংক্ষিপ্ত বিবরণ (বাংলা) লিখুন" />
                                 </FormField>
                             </div>
 
@@ -233,8 +233,8 @@ const CourseCreateTab = ({ onSuccess }) => {
                                 <FormField label="Full Description (English)" error={errors.description} required>
                                     <textarea {...register('description')} rows={5} className={inputBase} placeholder="Write detailed course description..." />
                                 </FormField>
-                                <FormField label="Full Description (?????)" error={errors.descriptionBn}>
-                                    <textarea {...register('descriptionBn')} rows={5} className={inputBase} placeholder="??????? ????????? ???? ?????..." />
+                                <FormField label="Full Description (বাংলা)" error={errors.descriptionBn}>
+                                    <textarea {...register('descriptionBn')} rows={5} className={inputBase} placeholder="বিস্তারিত বিবরণ (বাংলা) লিখুন" />
                                 </FormField>
                             </div>
                         </div>

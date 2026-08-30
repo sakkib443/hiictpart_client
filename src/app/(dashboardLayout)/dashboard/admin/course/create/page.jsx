@@ -13,9 +13,9 @@ export default function CreateCoursePage() {
   const [activeTab, setActiveTab] = useState('course');
 
   const tabs = [
-    { id: 'course', label: 'Create Course', labelBn: '????? ????', icon: FiBookOpen, color: 'indigo' },
-    { id: 'module', label: 'Create Module', labelBn: '????? ????', icon: FiLayers, color: 'purple' },
-    { id: 'lesson', label: 'Create Lesson', labelBn: '???? ????', icon: FiPlay, color: 'rose' },
+    { id: 'course', label: 'Create Course', labelBn: 'Create Course', icon: FiBookOpen, color: 'indigo' },
+    { id: 'module', label: 'Create Module', labelBn: 'Create Module', icon: FiLayers, color: 'purple' },
+    { id: 'lesson', label: 'Create Lesson', labelBn: 'Create Lesson', icon: FiPlay, color: 'rose' },
   ];
 
   return (
