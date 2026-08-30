@@ -98,7 +98,7 @@ const RightSoftwareDetails = ({ searchQuery, selectedType }) => {
                 <div className="flex items-center gap-2">
                     <HiOutlineSparkles className="text-[#E62D26]" />
                     <span className="text-gray-800 font-semibold outfit">
-                        {sortedSoftware.length} <span className="text-gray-500 font-normal">{language === 'bn' ? '?? ????? ????' : 'products found'}</span>
+                        {sortedSoftware.length} <span className="text-gray-500 font-normal">{language === 'bn' ? 'products found' : 'products found'}</span>
                     </span>
                 </div>
 
@@ -110,10 +110,10 @@ const RightSoftwareDetails = ({ searchQuery, selectedType }) => {
                             onChange={(e) => setSortBy(e.target.value)}
                             className="appearance-none w-full pl-8 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-700 work focus:outline-none focus:border-[#E62D26] cursor-pointer"
                         >
-                            <option value="default">{language === 'bn' ? '???? ????' : 'Sort By'}</option>
-                            <option value="rating">{language === 'bn' ? '?? ?????' : 'Top Rated'}</option>
-                            <option value="price-low">{language === 'bn' ? '???: ?? ???? ????' : 'Price: Low to High'}</option>
-                            <option value="price-high">{language === 'bn' ? '???: ???? ???? ??' : 'Price: High to Low'}</option>
+                            <option value="default">{language === 'bn' ? 'Sort By' : 'Sort By'}</option>
+                            <option value="rating">{language === 'bn' ? 'Top Rated' : 'Top Rated'}</option>
+                            <option value="price-low">{language === 'bn' ? 'Price: Low to High' : 'Price: Low to High'}</option>
+                            <option value="price-high">{language === 'bn' ? 'Price: High to Low' : 'Price: High to Low'}</option>
                         </select>
                         <LuArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
                     </div>
@@ -155,10 +155,10 @@ const RightSoftwareDetails = ({ searchQuery, selectedType }) => {
                         <LuCpu className="w-10 h-10 text-gray-200" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-800 outfit mb-2">
-                        {language === 'bn' ? '???? ???????? ????? ?????' : 'No products found'}
+                        {language === 'bn' ? 'No products found' : 'No products found'}
                     </h3>
                     <p className="text-gray-500 work text-sm">
-                        {language === 'bn' ? '??????? ??? ???????? ????? ????' : 'Try adjusting your search or filter criteria'}
+                        {language === 'bn' ? 'Try adjusting your search or filter criteria' : 'Try adjusting your search or filter criteria'}
                     </p>
                 </div>
             )}

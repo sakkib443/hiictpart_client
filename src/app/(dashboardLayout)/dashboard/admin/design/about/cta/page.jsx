@@ -11,9 +11,9 @@ const AboutCTADesignPage = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [content, setContent] = useState({
-        heading: { text: 'Ready to Start?', textBn: '???? ???? ?????????' },
-        description: { text: 'Join thousands of learners...', textBn: '????? ????? ????????????? ???? ??? ???...' },
-        button: { text: 'Get Started', textBn: '???? ????' },
+        heading: { text: 'Ready to Start?', textBn: 'Ready to Start?' },
+        description: { text: 'Join thousands of learners...', textBn: 'Join thousands of learners...' },
+        button: { text: 'Get Started', textBn: 'শুরু করুন' },
         contactInfo: { phone: '', email: '' }
     });
 

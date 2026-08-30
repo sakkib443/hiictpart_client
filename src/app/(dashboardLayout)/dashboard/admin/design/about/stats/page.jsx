@@ -12,10 +12,10 @@ const AboutStatsDesignPage = () => {
     const [saving, setSaving] = useState(false);
     const [content, setContent] = useState({
         stats: [
-            { value: '10K+', label: 'Happy Students', labelBn: '??? ??????????' },
-            { value: '50+', label: 'Expert Mentors', labelBn: '???????? ??????' },
-            { value: '100+', label: 'Courses', labelBn: '?????' },
-            { value: '95%', label: 'Success Rate', labelBn: '?????? ???' }
+            { value: '10K+', label: 'Happy Students', labelBn: 'Happy Students' },
+            { value: '50+', label: 'Expert Mentors', labelBn: 'Expert Mentors' },
+            { value: '100+', label: 'Courses', labelBn: 'Courses' },
+            { value: '95%', label: 'Success Rate', labelBn: 'Success Rate' }
         ]
     });
 

@@ -8,7 +8,7 @@ import {
 
 /**
  * Professional Document Manager Component
- * Documents/Attachments ??? ??? manage ???? ????
+ * Documents/Attachments ম্যানেজ করার জন্য কম্পোনেন্ট
  */
 export default function DocumentManager({ documents = [], onChange }) {
     const [showForm, setShowForm] = useState(false);
@@ -186,12 +186,12 @@ export default function DocumentManager({ documents = [], onChange }) {
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Title (?????)</label>
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Title (বাংলা)</label>
                             <input
                                 type="text"
                                 value={formData.titleBn}
                                 onChange={(e) => setFormData(prev => ({ ...prev, titleBn: e.target.value }))}
-                                placeholder="????? ?????? ????"
+                                placeholder="ডকুমেন্টের নাম লিখুন"
                                 className={inputClass}
                             />
                         </div>
@@ -266,12 +266,12 @@ export default function DocumentManager({ documents = [], onChange }) {
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Description (?????)</label>
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Description (বাংলা)</label>
                             <input
                                 type="text"
                                 value={formData.descriptionBn}
                                 onChange={(e) => setFormData(prev => ({ ...prev, descriptionBn: e.target.value }))}
-                                placeholder="????????? ??????..."
+                                placeholder="ডকুমেন্ট খুঁজুন..."
                                 className={inputClass}
                             />
                         </div>

@@ -126,7 +126,7 @@ const DigitalProductsDesignPage = () => {
                         label="Badge Text (Bengali)"
                         value={content.badge?.textBn}
                         onChange={(e) => setContent({ ...content, badge: { ...content.badge, textBn: e.target.value } })}
-                        placeholder="??????? ?????????"
+                        placeholder="ব্যাজ টেক্সট"
                     />
                 </div>
             </div>
@@ -145,7 +145,7 @@ const DigitalProductsDesignPage = () => {
                         label="Text Before Highlight (Bengali)"
                         value={content.heading?.text1Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, text1Bn: e.target.value } })}
-                        placeholder="?????? "
+                        placeholder="লিখুন"
                     />
                     <InputField
                         label="Highlighted Text (English)"
@@ -157,7 +157,7 @@ const DigitalProductsDesignPage = () => {
                         label="Highlighted Text (Bengali)"
                         value={content.heading?.highlightBn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, highlightBn: e.target.value } })}
-                        placeholder="??????? ?????????"
+                        placeholder="ব্যাজ টেক্সট"
                     />
                 </div>
             </div>
@@ -176,7 +176,7 @@ const DigitalProductsDesignPage = () => {
                         label="Description (Bengali)"
                         value={content.description?.textBn}
                         onChange={(e) => setContent({ ...content, description: { ...content.description, textBn: e.target.value } })}
-                        placeholder="????? ??????? ???? ?????????? ?????????? ??? ????????? ?????????"
+                        placeholder="এখানে বিবরণ লিখুন..."
                     />
                 </div>
             </div>
@@ -195,7 +195,7 @@ const DigitalProductsDesignPage = () => {
                         label="Software Tab (Bengali)"
                         value={content.tabs?.softwareBn}
                         onChange={(e) => setContent({ ...content, tabs: { ...content.tabs, softwareBn: e.target.value } })}
-                        placeholder="??????????"
+                        placeholder="লিখুন"
                     />
                     <InputField
                         label="Website Tab (English)"
@@ -207,7 +207,7 @@ const DigitalProductsDesignPage = () => {
                         label="Website Tab (Bengali)"
                         value={content.tabs?.websiteBn}
                         onChange={(e) => setContent({ ...content, tabs: { ...content.tabs, websiteBn: e.target.value } })}
-                        placeholder="?????????"
+                        placeholder="লিখুন"
                     />
                 </div>
             </div>
@@ -226,7 +226,7 @@ const DigitalProductsDesignPage = () => {
                         label="View All Button (Bengali)"
                         value={content.cta?.viewAllBn}
                         onChange={(e) => setContent({ ...content, cta: { ...content.cta, viewAllBn: e.target.value } })}
-                        placeholder="?? ?????"
+                        placeholder="সাব-টাইটেল"
                     />
                 </div>
             </div>

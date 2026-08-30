@@ -220,13 +220,13 @@ export default function CreateLessonPage() {
                         />
                     </div>
                     <div>
-                        <label className={labelClass}>Lesson Title (?????)</label>
+                        <label className={labelClass}>Lesson Title (বাংলা)</label>
                         <input
                             type="text"
                             name="titleBn"
                             value={formData.titleBn}
                             onChange={handleChange}
-                            placeholder="????? ????????? ???????"
+                            placeholder="লেসন সম্পর্কে লিখুন"
                             className={inputClass}
                         />
                     </div>
@@ -290,13 +290,13 @@ export default function CreateLessonPage() {
                         />
                     </div>
                     <div>
-                        <label className={labelClass}>Description (?????)</label>
+                        <label className={labelClass}>Description (বাংলা)</label>
                         <textarea
                             name="descriptionBn"
                             value={formData.descriptionBn}
                             onChange={handleChange}
                             rows={3}
-                            placeholder="?????? ?????? ?????..."
+                            placeholder="এখানে বিষয়বস্তু লিখুন..."
                             className={`${inputClass} resize-none`}
                         />
                     </div>

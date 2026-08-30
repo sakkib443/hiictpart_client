@@ -298,16 +298,10 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  // Design Template submenu items
-  const designTemplateSubmenu = [
-    { href: "/website", label: language === 'bn' ? "ওয়েবসাইট" : "Website", icon: LuGlobe },
-    { href: "/design-template", label: language === 'bn' ? "ডিজাইন টেমপ্লেট" : "Design Template", icon: LuPalette },
-  ];
-
   const menu = [
     { href: "/", label: t("navbar.home") },
     { href: "/courses", label: t("navbar.courses") },
-    { href: "#", label: language === 'bn' ? "ডিজাইন টেমপ্লেট" : "Design Template", hasSubmenu: true, submenu: designTemplateSubmenu },
+    { href: "/design-template", label: language === 'bn' ? "ওয়েবসাইট" : "Website" },
     { href: "/blog", label: language === 'bn' ? "ব্লগ" : "Blog" },
     { href: "/about", label: t("navbar.about") },
     { href: "/contact", label: t("navbar.contact") },

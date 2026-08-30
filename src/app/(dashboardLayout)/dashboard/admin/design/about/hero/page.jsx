@@ -144,7 +144,7 @@ const AboutHeroDesignPage = () => {
                         label="Badge Text (Bengali)"
                         value={content.badge?.textBn}
                         onChange={(e) => setContent({ ...content, badge: { ...content.badge, textBn: e.target.value } })}
-                        placeholder="???? ???????????? ??????"
+                        placeholder="ব্যাজ টেক্সট লিখুন"
                     />
                 </div>
             </div>
@@ -163,7 +163,7 @@ const AboutHeroDesignPage = () => {
                         label="Line 1 (Bengali)"
                         value={content.heading?.line1Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, line1Bn: e.target.value } })}
-                        placeholder="???????"
+                        placeholder="এখানে লিখুন"
                     />
                     <InputField
                         label="Highlighted Text (English)"
@@ -175,7 +175,7 @@ const AboutHeroDesignPage = () => {
                         label="Highlighted Text (Bengali)"
                         value={content.heading?.highlightBn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, highlightBn: e.target.value } })}
-                        placeholder="???????"
+                        placeholder="এখানে লিখুন"
                     />
                     <InputField
                         label="Line 2 (English)"
@@ -187,7 +187,7 @@ const AboutHeroDesignPage = () => {
                         label="Line 2 (Bengali)"
                         value={content.heading?.line2Bn}
                         onChange={(e) => setContent({ ...content, heading: { ...content.heading, line2Bn: e.target.value } })}
-                        placeholder="???????"
+                        placeholder="এখানে লিখুন"
                     />
                 </div>
             </div>
@@ -207,7 +207,7 @@ const AboutHeroDesignPage = () => {
                         label="Description (Bengali)"
                         value={content.description?.textBn}
                         onChange={(e) => setContent({ ...content, description: { ...content.description, textBn: e.target.value } })}
-                        placeholder="???? ???? ?????? ????? ??..."
+                        placeholder="এখানে বিবরণ লিখুন..."
                         textarea
                     />
                 </div>
@@ -227,7 +227,7 @@ const AboutHeroDesignPage = () => {
                         label="Button Text (Bengali)"
                         value={content.cta?.buttonTextBn}
                         onChange={(e) => setContent({ ...content, cta: { ...content.cta, buttonTextBn: e.target.value } })}
-                        placeholder="????????? ?????"
+                        placeholder="বাটন টেক্সট"
                     />
                 </div>
             </div>
