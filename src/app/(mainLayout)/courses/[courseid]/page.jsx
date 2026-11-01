@@ -17,6 +17,7 @@ import { MdVerified, MdOutlineMenuBook, MdPlayCircleOutline } from "react-icons/
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ReviewsSection from "@/components/Reviews/ReviewsSection";
+import CheckoutModal from "@/components/checkout/CheckoutModal";
 import { API_URL } from "@/config/api";
 
 // Animated Counter - matching Website Details
@@ -122,6 +123,7 @@ const SingleCourse = () => {
 
   const [expandedModule, setExpandedModule] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
 
   const bengaliClass = language === "bn" ? "hind-siliguri" : "";
@@ -195,7 +197,7 @@ const SingleCourse = () => {
   };
 
   const handleBuyNow = () => {
-    router.push(`/checkout?courseId=${currentCourse._id}`);
+    setShowCheckout(true);
   };
 
   const handleToggleLike = async () => {
@@ -269,7 +271,7 @@ const SingleCourse = () => {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.015)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none"></div>
 
         <div className="container mx-auto px-4 lg:px-24 relative z-10">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl lg:max-w-[56%]">
             {/* Breadcrumb */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -398,7 +400,7 @@ const SingleCourse = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
             {/* Left Content */}
-            <div className="lg:col-span-8 space-y-6">
+            <div className="lg:col-span-7 space-y-6">
               {/* Mobile Pricing Card */}
               <div className="lg:hidden bg-white dark:bg-slate-900 rounded-md border border-gray-200 dark:border-slate-800 overflow-hidden">
                 <img src={currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png"} alt={currentCourse.title} className="w-full aspect-video object-cover" />
@@ -435,6 +437,98 @@ const SingleCourse = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Admission / batch info */}
+                    {/* Batch Information - Premium Design */}
+                    {batches.length > 0 && (
+                      <div className="p-5 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-2xl border-2 border-red-100 dark:border-red-900/30 shadow-lg">
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-5 pb-4 border-b border-red-100 dark:border-red-900/30">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-200 dark:shadow-none">
+                              <LuGraduationCap className="text-white" size={24} />
+                            </div>
+                            <div>
+                              <h4 className="text-base font-bold outfit text-red-600 dark:text-red-400">{t("courseDetails.admissionGoingOn")}</h4>
+                              <p className="text-sm text-gray-800 dark:text-gray-300 font-semibold poppins">{batches[0].batchName}</p>
+                            </div>
+                          </div>
+                          <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm ${batches[0].status === 'upcoming' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'
+                            }`}>
+                            {batches[0].status}
+                          </span>
+                        </div>
+
+                        {/* Batch Details */}
+                        <div className="space-y-4">
+                          {/* Date & Batch Grid */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuCalendar className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.startDate")}</span>
+                              </div>
+                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
+                                {new Date(batches[0].startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                              </p>
+                            </div>
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuTimer className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.batchNo")}</span>
+                              </div>
+                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
+                                {batches[0].batchCode}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Class Schedule */}
+                          {batches[0].schedule?.length > 0 && (
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                              <div className="flex items-center gap-2 mb-4">
+                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                  <LuClock className="text-red-600 dark:text-red-400" size={16} />
+                                </div>
+                                <span className="text-sm text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.classSchedule")}</span>
+                              </div>
+                              <div className="space-y-3">
+                                {batches[0].schedule.map((sch, sIdx) => {
+                                  // Helper to format 22:00 -> 10.00pm
+                                  const formatTime = (timeStr) => {
+                                    if (!timeStr) return "";
+                                    if (timeStr.toLowerCase().includes('am') || timeStr.toLowerCase().includes('pm')) return timeStr.toLowerCase();
+                                    const parts = timeStr.split(/[:.]/);
+                                    if (parts.length >= 2) {
+                                      let h = parseInt(parts[0]);
+                                      const m = parts[1].padStart(2, '0');
+                                      const ampm = h >= 12 ? 'pm' : 'am';
+                                      h = h % 12 || 12;
+                                      return `${h}.${m}${ampm}`;
+                                    }
+                                    return timeStr;
+                                  };
+
+                                  return (
+                                    <div key={sIdx} className="flex items-center justify-between py-2 px-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                      <span className="text-sm font-bold text-gray-800 dark:text-gray-200 capitalize poppins">{sch.day}</span>
+                                      <span className="text-sm font-semibold text-gray-800 dark:text-gray-300 bg-white dark:bg-slate-600 px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-600 poppins">
+                                        {formatTime(sch.startTime)} - {formatTime(sch.endTime)}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
 
               {/* Tabs */}
               {/* Tab Headers - Sticky on mobile, normal on desktop */}
@@ -808,188 +902,12 @@ const SingleCourse = () => {
                         exit={{ opacity: 0, y: -12 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <ReviewsSection productId={currentCourse._id} productType="course" />
+                        <ReviewsSection productId={currentCourse._id} productType="course" showTestimonials />
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
               </div>
-            </div>
-
-            {/* Right Sidebar - 100% Mirror of Website Details */}
-            <div className="lg:col-span-4 hidden lg:block">
-              <div className="sticky top-24 -mt-[28rem] space-y-5">
-                {/* Pricing Card */}
-                <div className="bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden">
-                  {/* Image mirroring Website Gallery/Preview */}
-                  <div className="relative aspect-video group cursor-pointer overflow-hidden bg-gray-100">
-                    <img
-                      src={currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png"}
-                      alt={currentCourse.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <MdPlayCircleOutline className="text-white text-5xl" />
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5 space-y-5">
-                    {/* Batch Information - Premium Design */}
-                    {batches.length > 0 && (
-                      <div className="p-5 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-2xl border-2 border-red-100 dark:border-red-900/30 shadow-lg">
-                        {/* Header */}
-                        <div className="flex items-center justify-between mb-5 pb-4 border-b border-red-100 dark:border-red-900/30">
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-200 dark:shadow-none">
-                              <LuGraduationCap className="text-white" size={24} />
-                            </div>
-                            <div>
-                              <h4 className="text-base font-bold outfit text-red-600 dark:text-red-400">{t("courseDetails.admissionGoingOn")}</h4>
-                              <p className="text-sm text-gray-800 dark:text-gray-300 font-semibold poppins">{batches[0].batchName}</p>
-                            </div>
-                          </div>
-                          <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm ${batches[0].status === 'upcoming' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'
-                            }`}>
-                            {batches[0].status}
-                          </span>
-                        </div>
-
-                        {/* Batch Details */}
-                        <div className="space-y-4">
-                          {/* Date & Batch Grid */}
-                          <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                              <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                  <LuCalendar className="text-red-600 dark:text-red-400" size={16} />
-                                </div>
-                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.startDate")}</span>
-                              </div>
-                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
-                                {new Date(batches[0].startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
-                              </p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                              <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                  <LuTimer className="text-red-600 dark:text-red-400" size={16} />
-                                </div>
-                                <span className="text-xs text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.batchNo")}</span>
-                              </div>
-                              <p className="text-lg font-bold text-gray-800 dark:text-gray-200 poppins">
-                                {batches[0].batchCode}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Class Schedule */}
-                          {batches[0].schedule?.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                              <div className="flex items-center gap-2 mb-4">
-                                <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                  <LuClock className="text-red-600 dark:text-red-400" size={16} />
-                                </div>
-                                <span className="text-sm text-red-600 dark:text-red-400 font-bold poppins uppercase">{t("courseDetails.classSchedule")}</span>
-                              </div>
-                              <div className="space-y-3">
-                                {batches[0].schedule.map((sch, sIdx) => {
-                                  // Helper to format 22:00 -> 10.00pm
-                                  const formatTime = (timeStr) => {
-                                    if (!timeStr) return "";
-                                    if (timeStr.toLowerCase().includes('am') || timeStr.toLowerCase().includes('pm')) return timeStr.toLowerCase();
-                                    const parts = timeStr.split(/[:.]/);
-                                    if (parts.length >= 2) {
-                                      let h = parseInt(parts[0]);
-                                      const m = parts[1].padStart(2, '0');
-                                      const ampm = h >= 12 ? 'pm' : 'am';
-                                      h = h % 12 || 12;
-                                      return `${h}.${m}${ampm}`;
-                                    }
-                                    return timeStr;
-                                  };
-
-                                  return (
-                                    <div key={sIdx} className="flex items-center justify-between py-2 px-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                      <span className="text-sm font-bold text-gray-800 dark:text-gray-200 capitalize poppins">{sch.day}</span>
-                                      <span className="text-sm font-semibold text-gray-800 dark:text-gray-300 bg-white dark:bg-slate-600 px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-600 poppins">
-                                        {formatTime(sch.startTime)} - {formatTime(sch.endTime)}
-                                      </span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Price */}
-                    <div>
-                      <div className="flex items-baseline gap-2">
-                        {priceLabel ? (
-                          <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">{priceLabel}</span>
-                        ) : (
-                          <>
-                            <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">৳{(discountPrice || price).toLocaleString()}</span>
-                            {discountPrice && (
-                              <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>
-                            )}
-                          </>
-                        )}
-                      </div>
-                      <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">{t("courseDetails.lifetimeAccess")}</p>
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="space-y-2.5">
-                      <motion.button
-                        onClick={handleBuyNow}
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`w-full py-5 text-white font-bold rounded-xl shadow-xl flex items-center justify-center gap-4 enroll-wave-btn tracking-widest group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
-                      >
-                        <LuZap className="enroll-jump-icon text-white" size={26} />
-                        <span className="text-xl uppercase">{t("courseDetails.enrollNow")}</span>
-                        <FaArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                      </motion.button>
-                      <button
-                        onClick={handleAddToCart}
-                        className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-md hover:border-red-400 hover:text-red-600 transition-colors poppins"
-                      >
-                        {t("courseDetails.addToCart")}
-                      </button>
-                      <button
-                        onClick={() => setShowVideoModal(true)}
-                        disabled={!currentCourse.sampleVideoUrl}
-                        className={`w-full py-2.5 bg-gray-50 border border-gray-200 text-gray-600 font-medium rounded-md transition-colors flex items-center justify-center gap-2 text-sm poppins ${currentCourse.sampleVideoUrl ? 'hover:border-red-400 hover:text-red-600' : 'opacity-50 cursor-not-allowed'}`}
-                      >
-                        <LuVideo size={14} /> {t("courseDetails.sampleLesson")}
-                      </button>
-                    </div>
-
-                    {/* What's Included mirroring Website style */}
-                    <div className="pt-4 border-t border-gray-100">
-                      <h5 className="text-sm font-bold text-gray-900 mb-3 outfit">{t("courseDetails.courseIncludes")}</h5>
-                      <ul className="space-y-2.5">
-                        {[
-                          { icon: LuMonitor, text: `${currentCourse.totalLessons || 0}+ ${t("courseDetails.videoLessons")}` },
-                          { icon: LuClock, text: `${currentCourse.totalDuration || '12 Hours'} ${t("courseDetails.durationLabel")}` },
-                          { icon: LuTrophy, text: t("courseDetails.completionCertificate") },
-                          { icon: LuShieldCheck, text: t("courseDetails.lifetimeUpdates") },
-                        ].map((item, i) => (
-                          <li key={i} className="flex items-center gap-2.5 text-gray-600 text-sm poppins">
-                            <item.icon className="text-red-500" size={15} />
-                            <span>{item.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Recommended Courses Widget mirroring Website Popular Websites */}
 
                 {/* Recommended Courses Widget mirroring Website Popular Websites */}
                 <div className="bg-white rounded-md p-5 border border-gray-200 shadow-sm">
@@ -1022,11 +940,101 @@ const SingleCourse = () => {
                     {t("courseDetails.viewAllCourses")}
                   </Link>
                 </div>
+            </div>
+
+            {/* Right Sidebar - 100% Mirror of Website Details */}
+            <div className="lg:col-span-5 hidden lg:block lg:self-stretch">
+              <div className="sticky top-20 -mt-[34rem] space-y-5">
+                {/* Pricing Card */}
+                <div className="bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden">
+                  {/* Image mirroring Website Gallery/Preview */}
+                  <div className="relative aspect-video group cursor-pointer overflow-hidden bg-gray-100">
+                    <img
+                      src={currentCourse.thumbnail || currentCourse.image || "/images/placeholder.png"}
+                      alt={currentCourse.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <MdPlayCircleOutline className="text-white text-5xl" />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5 space-y-5">
+                    {/* Price */}
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        {priceLabel ? (
+                          <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">{priceLabel}</span>
+                        ) : (
+                          <>
+                            <span className="text-2xl font-bold text-gray-900 dark:text-white outfit">৳{(discountPrice || price).toLocaleString()}</span>
+                            {discountPrice && (
+                              <span className="text-gray-400 line-through text-sm">৳{price.toLocaleString()}</span>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <p className="text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wide mt-1 poppins">{t("courseDetails.lifetimeAccess")}</p>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="space-y-2.5">
+                      <motion.button
+                        onClick={handleBuyNow}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full py-5 text-white font-bold rounded-xl shadow-xl flex items-center justify-center gap-4 enroll-wave-btn tracking-widest group ${language === "bn" ? "hind-siliguri" : "outfit"}`}
+                      >
+                        <LuZap className="enroll-jump-icon text-white" size={26} />
+                        <span className="text-xl uppercase">{t("courseDetails.enrollNow")}</span>
+                        <FaArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                      </motion.button>
+                      {/* Cart hidden */}
+{false && (
+<button
+                        onClick={handleAddToCart}
+                        className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-md hover:border-red-400 hover:text-red-600 transition-colors poppins"
+                      >
+                        {t("courseDetails.addToCart")}
+                      </button>
+)}
+                      <button
+                        onClick={() => setShowVideoModal(true)}
+                        disabled={!currentCourse.sampleVideoUrl}
+                        className={`w-full py-2.5 bg-gray-50 border border-gray-200 text-gray-600 font-medium rounded-md transition-colors flex items-center justify-center gap-2 text-sm poppins ${currentCourse.sampleVideoUrl ? 'hover:border-red-400 hover:text-red-600' : 'opacity-50 cursor-not-allowed'}`}
+                      >
+                        <LuVideo size={14} /> {t("courseDetails.sampleLesson")}
+                      </button>
+                    </div>
+
+                    {/* What's Included mirroring Website style */}
+                    <div className="pt-4 border-t border-gray-100">
+                      <h5 className="text-sm font-bold text-gray-900 mb-3 outfit">{t("courseDetails.courseIncludes")}</h5>
+                      <ul className="space-y-2.5">
+                        {[
+                          { icon: LuMonitor, text: `${currentCourse.totalLessons || 0}+ ${t("courseDetails.videoLessons")}` },
+                          { icon: LuClock, text: `${currentCourse.totalDuration || '12 Hours'} ${t("courseDetails.durationLabel")}` },
+                          { icon: LuTrophy, text: t("courseDetails.completionCertificate") },
+                          { icon: LuShieldCheck, text: t("courseDetails.lifetimeUpdates") },
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-center gap-2.5 text-gray-600 text-sm poppins">
+                            <item.icon className="text-red-500" size={15} />
+                            <span>{item.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recommended Courses Widget mirroring Website Popular Websites */}
               </div>
             </div>
           </div>
         </div>
       </section >
+      <CheckoutModal isOpen={showCheckout} onClose={() => setShowCheckout(false)} course={currentCourse} />
       <AnimatePresence>
         {showVideoModal && (
           <VideoModal

@@ -528,7 +528,8 @@ const Navbar = () => {
                 {isDarkMode ? <LuMoon size={18} /> : <LuSun size={18} />}
               </button>
 
-              {/* Cart */}
+              {/* Cart (hidden) */}
+              {false && (
               <Link href="/cart" className="relative w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-all">
                 <LuShoppingCart size={20} />
                 {mounted && items.length > 0 && (
@@ -537,6 +538,7 @@ const Navbar = () => {
                   </span>
                 )}
               </Link>
+              )}
 
               {/* Profile / Auth */}
               {mounted && user ? (
