@@ -142,13 +142,16 @@ const CourseCard = ({ course, view = "grid" }) => {
           <p className="text-[10px] text-slate-400 mb-4">Last updated: {lastUpdated}</p>
 
           <div className="flex items-center gap-3 w-full">
-            <button
+            {/* Cart hidden */}
+{false && (
+<button
               onClick={handleAddToCart}
               disabled={isAdded}
               className={`p-2.5 border rounded-xl transition-all shadow-sm ${isAdded ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white dark:bg-white/10 border-slate-200 dark:border-white/10 text-slate-600 dark:text-white hover:text-[#E62D26] hover:border-[#E62D26]'}`}
             >
               {isAdded ? <LuCheck size={20} /> : <LuShoppingCart size={20} />}
             </button>
+)}
             <Link
               href={`/courses/${courseLink}`}
               className="flex-1 py-2.5 bg-white dark:bg-white/10 border border-[#E62D26] text-[#E62D26] rounded-xl text-sm font-medium hover:bg-[#E62D26] hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
@@ -288,7 +291,9 @@ const CourseCard = ({ course, view = "grid" }) => {
               <LuBookOpenCheck size={14} />
               Details
             </Link>
-            <motion.button
+            {/* Cart hidden */}
+{false && (
+<motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
               disabled={isAdded}
@@ -300,6 +305,7 @@ const CourseCard = ({ course, view = "grid" }) => {
               {isAdded ? <LuCheck size={14} /> : <LuShoppingCart size={14} />}
               {isAdded ? 'Added!' : 'Add'}
             </motion.button>
+)}
           </div>
         </div>
       </div>

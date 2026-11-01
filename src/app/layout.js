@@ -48,7 +48,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
+      lang="bn"
       className={`${poppins.variable} ${hindSiliguri.variable}`}
       suppressHydrationWarning
     >

@@ -11,46 +11,41 @@ const translations = { en, bn };
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguageState] = useState("en");
+  // Bangla is the default; English is only used if chosen during this browser session
+  const [language, setLanguageState] = useState("bn");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load language preference from localStorage on mount
+  const applyToDocument = (lang) => {
+    document.documentElement.lang = lang === "bn" ? "bn" : "en";
+    // Apply Bengali font globally when Bengali is selected
+    document.body.classList.toggle("font-bengali", lang === "bn");
+  };
+
+  // On mount: restore this session's choice (if any), otherwise stay on Bangla
   useEffect(() => {
-    setIsLoaded(true);
+    let lang = "bn";
     try {
-      if (typeof window !== 'undefined') {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage && (savedLanguage === "en" || savedLanguage === "bn")) {
-          setLanguageState(savedLanguage);
-          // Apply Bengali font on initial load if Bengali was saved
-          if (savedLanguage === "bn") {
-            document.body.classList.add("font-bengali");
-          }
-        }
-      }
+      // Drop the old persistent preference so a new visit always starts in Bangla
+      localStorage.removeItem("language");
+      const saved = sessionStorage.getItem("language");
+      if (saved === "en" || saved === "bn") lang = saved;
     } catch (error) {
       console.error("Error loading language preference:", error);
     }
+    setLanguageState(lang);
+    applyToDocument(lang);
+    setIsLoaded(true);
   }, []);
 
-  // Save language preference to localStorage
+  // Save language choice for the current session only (cleared when the tab/browser is closed)
   const setLanguage = useCallback((lang) => {
     setLanguageState(lang);
     try {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem("language", lang);
-        // Update document language attribute
-        document.documentElement.lang = lang === "bn" ? "bn" : "en";
-        // Apply Bengali font globally when Bengali is selected
-        if (lang === "bn") {
-          document.body.classList.add("font-bengali");
-        } else {
-          document.body.classList.remove("font-bengali");
-        }
-      }
+      sessionStorage.setItem("language", lang);
     } catch (error) {
       console.error("Error saving language preference:", error);
     }
+    applyToDocument(lang);
   }, []);
 
   // Translation function with nested key support (e.g., "navbar.home")

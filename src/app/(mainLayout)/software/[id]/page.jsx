@@ -529,12 +529,15 @@ const SoftwareDetailsPage = () => {
                                             >
                                                 Buy Now <FaArrowRight size={12} />
                                             </button>
-                                            <button
+                                            {/* Cart hidden */}
+{false && (
+<button
                                                 onClick={handleAddToCart}
                                                 className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-md hover:border-red-400 hover:text-red-600 transition-colors"
                                             >
                                                 Add to Cart
                                             </button>
+)}
                                             {software.previewUrl && (
                                                 <a
                                                     href={software.previewUrl}

@@ -136,13 +136,16 @@ const ProductCard = ({ product, type, view = "grid" }) => {
                     <p className="text-[10px] text-slate-400 mb-4">Last updated: {lastUpdated}</p>
 
                     <div className="flex items-center gap-3 w-full">
-                        <button
+                        {/* Cart hidden */}
+{false && (
+<button
                             onClick={handleAddToCart}
                             disabled={isAdded}
                             className={`p-2.5 border rounded-md transition-colors shadow-sm ${isAdded ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-600 hover:text-[#E62D26] hover:border-[#E62D26]'}`}
                         >
                             {isAdded ? <LuCheck size={20} /> : <LuShoppingCart size={20} />}
                         </button>
+)}
                         <Link
                             href={detailUrl}
                             className="flex-1 py-2.5 bg-white border border-[#E62D26] text-[#E62D26] rounded-md text-sm font-normal hover:bg-[#E62D26] hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
@@ -249,7 +252,9 @@ const ProductCard = ({ product, type, view = "grid" }) => {
                             <LuEye size={16} />
                             Details
                         </Link>
-                        <button
+                        {/* Cart hidden */}
+{false && (
+<button
                             onClick={handleAddToCart}
                             disabled={isAdded}
                             className={`flex items-center justify-center gap-2 py-2.5 border rounded-md text-sm font-normal transition-colors ${isAdded
@@ -260,6 +265,7 @@ const ProductCard = ({ product, type, view = "grid" }) => {
                             {isAdded ? <LuCheck size={16} /> : <LuShoppingCart size={16} />}
                             {isAdded ? 'Added' : 'Add To Cart'}
                         </button>
+)}
                     </div>
                 </div>
             </div>
